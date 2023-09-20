@@ -6,9 +6,9 @@ public interface UserDao {
 
     User getUser(String token);
 
-    void createAccount(String email, String password);
+    void createAccount(String email, String encryptedPassword);
 
-    void login(String email, String password);
+    void login(String email, String encryptedPassword);
 
     void deleteAccount(String email);
 
