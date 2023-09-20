@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
+
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,10 +12,8 @@ public class Book {
 
     private String title;
 
-    @ManyToOne
-    private Author author; // не впевний що правильно зв'язки налаштував
+    private List<Long> authorIDs;
 
-    @ManyToMany
     private List<Category> categories;
 
     public Long getId() {
@@ -31,8 +29,8 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Long> getAuthorIDs() {
+        return authorIDs;
     }
 
     public List<Category> getCategories() {

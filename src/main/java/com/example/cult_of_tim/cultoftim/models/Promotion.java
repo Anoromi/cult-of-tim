@@ -3,8 +3,8 @@ package com.example.cult_of_tim.cultoftim.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
-@Entity
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,9 +12,7 @@ public class Promotion {
     private String description;
     private Date startDate;
     private Date endDate;
-
-    @ManyToOne
-    private User user;
+    private List<Long> userIDs;
 
     public Long getId() {
         return id;
@@ -48,11 +46,8 @@ public class Promotion {
         this.endDate = endDate;
     }
 
-    public User getUser() {
-        return user;
+    public List<Long> getUserIDs() {
+        return userIDs;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -4,18 +4,15 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String email;
-    @OneToMany
-    private List<Book> books; // не впевний, що до цього, але вирішив це додати, якось так
-
-    @OneToMany
-    private List<Promotion> promotions;
+    private List<Long> booksIDs;
+    private List<Long> promotionsIDs;
 
     public Long getId() {
         return id;
@@ -32,14 +29,11 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public List<Book> getBooks() {
-        return books;
-    }
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public List<Long> getBooks() {
+        return booksIDs;
     }
 
-    public List<Promotion> getPromotions() {
-        return promotions;
+    public List<Long> getPromotions() {
+        return promotionsIDs;
     }
 }
