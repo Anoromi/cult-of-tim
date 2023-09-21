@@ -13,7 +13,7 @@ public interface CategoryService {
 
     Long createCategory(String name);
 
-    void updateCategory(Long id, Category updatedCategory);
+    Category updateCategory(Long id, Category updatedCategory);
 
     void deleteCategory(Long id);
 }

@@ -23,14 +23,16 @@ public class CategoryDaoMock implements CategoryDao {
     }
 
     @Override
-    public void createCategory(Category category) {
+    public Long createCategory(Category category) {
         category.setId(nextCategoryId++);
         categoryMap.put(category.getId(), category);
+        return category.getId();
     }
 
     @Override
-    public void updateCategory(Category category) {
+    public Category updateCategory(Category category) {
         categoryMap.put(category.getId(), category);
+        return category;
     }
 
     @Override

@@ -48,16 +48,13 @@ public class BookMockService implements BookService {
         newBook.setTitle(title);
         newBook.setAuthorIDs(authorIds);
         newBook.setCategoryIDs(categoryIds);
-
-        bookDao.createBook(newBook);
-
-        return newBook.getId();
+        return bookDao.createBook(newBook);
     }
 
     @Override
-    public void updateBook(Long id, Book updatedBook) {
+    public Book updateBook(Long id, Book updatedBook) {
         updatedBook.setId(id);
-        bookDao.updateBook(updatedBook);
+        return bookDao.updateBook(updatedBook);
     }
 
     @Override

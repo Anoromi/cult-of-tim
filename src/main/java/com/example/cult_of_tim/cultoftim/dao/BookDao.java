@@ -15,9 +15,9 @@ public interface BookDao {
 
     List<Book> getBooksByCategoryId(Long categoryId);
 
-    void createBook(Book book);
+    Long createBook(Book book);
 
-    void updateBook(Book book);
+    Book updateBook(Book book);
 
     void deleteBookById(Long id);
 

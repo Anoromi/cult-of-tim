@@ -45,14 +45,16 @@ public class BookDaoMock implements BookDao {
     }
 
     @Override
-    public void createBook(Book book) {
+    public Long createBook(Book book) {
         book.setId(nextBookId++);
         bookMap.put(book.getId(), book);
+        return book.getId();
     }
 
     @Override
-    public void updateBook(Book book) {
+    public Book updateBook(Book book) {
         bookMap.put(book.getId(), book);
+        return book;
     }
 
     @Override

@@ -14,9 +14,9 @@ public interface PromotionDao {
 
     boolean isGlobal(Long promotionID);
 
-    void createPromotion(Promotion promotion);
+    Long createPromotion(Promotion promotion);
 
-    void updatePromotion(Promotion promotion);
+    Promotion updatePromotion(Promotion promotion);
 
     void deletePromotion(Long id);
 }

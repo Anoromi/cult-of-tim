@@ -40,9 +40,7 @@ public class UserMockService implements UserService {
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
 
-        userDao.createUser(newUser);
-
-        return newUser.getId();
+        return userDao.createUser(newUser);
     }
 
     @Override
@@ -53,9 +51,7 @@ public class UserMockService implements UserService {
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setPassword(PasswordEncrypter.encryptPassword(updatedUser.getPassword()));
 
-        userDao.updateUser(existingUser);
-
-        return existingUser;
+        return userDao.updateUser(existingUser);
     }
 
     @Override

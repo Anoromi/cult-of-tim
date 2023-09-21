@@ -40,16 +40,13 @@ public class CategoryMockService implements CategoryService {
     public Long createCategory(String name) {
         Category newCategory = new Category();
         newCategory.setName(name);
-
-        categoryDao.createCategory(newCategory);
-
-        return newCategory.getId();
+        return categoryDao.createCategory(newCategory);
     }
 
     @Override
-    public void updateCategory(Long id, Category updatedCategory) {
+    public Category updateCategory(Long id, Category updatedCategory) {
         updatedCategory.setId(id);
-        categoryDao.updateCategory(updatedCategory);
+        return categoryDao.updateCategory(updatedCategory);
     }
 
     @Override

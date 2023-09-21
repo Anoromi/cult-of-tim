@@ -21,14 +21,16 @@ public class PromotionDaoMock implements PromotionDao {
     }
 
     @Override
-    public void createPromotion(Promotion promotion) {
+    public Long createPromotion(Promotion promotion) {
         promotion.setId(nextPromotionId++);
         promotionMap.put(promotion.getId(), promotion);
+        return promotion.getId();
     }
 
     @Override
-    public void updatePromotion(Promotion promotion) {
+    public Promotion updatePromotion(Promotion promotion) {
         promotionMap.put(promotion.getId(), promotion);
+        return promotion;
     }
 
     @Override

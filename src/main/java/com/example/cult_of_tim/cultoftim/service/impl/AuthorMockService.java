@@ -33,16 +33,13 @@ public class AuthorMockService implements AuthorService {
     public Long createAuthor(String name) {
         Author newAuthor = new Author();
         newAuthor.setName(name);
-
-        authorDao.createAuthor(newAuthor);
-
-        return newAuthor.getId();
+        return authorDao.createAuthor(newAuthor);
     }
 
     @Override
-    public void updateAuthor(Long id, Author updatedAuthor) {
+    public Author updateAuthor(Long id, Author updatedAuthor) {
         updatedAuthor.setId(id);
-        authorDao.updateAuthor(updatedAuthor);
+        return authorDao.updateAuthor(updatedAuthor);
     }
 
     @Override

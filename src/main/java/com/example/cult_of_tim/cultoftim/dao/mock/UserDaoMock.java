@@ -30,39 +30,20 @@ public class UserDaoMock implements UserDao {
     }
 
     @Override
-    public void createUser(User user) {
+    public Long createUser(User user) {
         user.setId(nextUserId++);
         userMap.put(user.getId(), user);
+        return user.getId();
     }
 
     @Override
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         userMap.put(user.getId(), user);
+        return user;
     }
 
     @Override
     public void deleteUserById(Long id) {
         userMap.remove(id);
     }
-
-    /*@Override
-    public Optional<User> getUser(String token) {
-        return Optional.empty();
-    }
-
-    @Override
-    public void createAccount(String email, String encryptedPassword) throws IllegalArgumentException {
-        User newUser = new User(email, encryptedPassword);
-        userList.put(email, newUser);
-    }
-
-    @Override
-    public String login(String email, String encryptedPassword) throws IllegalArgumentException {
-        throw new UnsupportedOperationException("This method is not supported");
-    }
-
-    @Override
-    public void deleteAccount(String email) {
-        userList.remove(getUser());
-    }*/
 }

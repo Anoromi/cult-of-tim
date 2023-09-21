@@ -40,14 +40,14 @@ public class PromotionMockService implements PromotionService {
     }
 
     @Override
-    public void createPromotion(Promotion promotion) {
-        promotionDao.createPromotion(promotion);
+    public Long createPromotion(Promotion promotion) {
+        return promotionDao.createPromotion(promotion);
     }
 
     @Override
-    public void updatePromotion(Long id, Promotion updatedPromotion) {
+    public Promotion updatePromotion(Long id, Promotion updatedPromotion) {
         updatedPromotion.setId(id);
-        promotionDao.updatePromotion(updatedPromotion);
+        return promotionDao.updatePromotion(updatedPromotion);
     }
 
     @Override

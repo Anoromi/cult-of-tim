@@ -15,9 +15,9 @@ public interface PromotionService {
 
     boolean isGlobal(Long promotionID);
 
-    void createPromotion(Promotion promotion);
+    Long createPromotion(Promotion promotion);
 
-    void updatePromotion(Long id, Promotion updatedPromotion);
+    Promotion updatePromotion(Long id, Promotion updatedPromotion);
 
     void deletePromotion(Long id);
 

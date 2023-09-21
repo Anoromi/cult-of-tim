@@ -4,11 +4,7 @@ import com.example.cult_of_tim.cultoftim.dao.AuthorDao;
 import com.example.cult_of_tim.cultoftim.models.Author;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class AuthorDaoMock implements AuthorDao {
@@ -27,14 +23,16 @@ public class AuthorDaoMock implements AuthorDao {
     }
 
     @Override
-    public void createAuthor(Author author) {
+    public Long createAuthor(Author author) {
         author.setId(nextAuthorId++);
         authorMap.put(author.getId(), author);
+        return author.getId();
     }
 
     @Override
-    public void updateAuthor(Author author) {
+    public Author updateAuthor(Author author) {
         authorMap.put(author.getId(), author);
+        return author;
     }
 
     @Override
