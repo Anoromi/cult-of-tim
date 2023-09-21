@@ -7,8 +7,8 @@ public class Purchase {
 
     private Long id;
     private LocalDateTime purchaseDate;
-    private User user;
-    private List<Book> bookItem;
+    private Long userId;
+    private List<Long> bookIds;
 
     public Long getId() {
         return id;
@@ -26,19 +26,19 @@ public class Purchase {
         this.purchaseDate = purchaseDate;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public List<Book> getBookItem() {
-        return bookItem;
+    public List<Long> getBookIds() {
+        return bookIds;
     }
 
-    public void setBookItem(List<Book> bookItem) {
-        this.bookItem = bookItem;
+    public void setBookIds(List<Long> bookIds) {
+        this.bookIds = bookIds;
     }
 }
