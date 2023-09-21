@@ -2,24 +2,32 @@ package com.example.cult_of_tim.cultoftim.models;
 
 public class User {
 
+    private Long id;
+    private String username;
     private String email;
-    private String password;
 
-    /**
-     * Getter for an email
-     * @return email
-     */
-    public String getEmail()
-    {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
         return email;
     }
 
-    /**
-     * Getter for a password
-     * @return password
-     */
-    public String getPassword()
-    {
-        return password;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
 }
