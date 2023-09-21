@@ -4,6 +4,7 @@ public class User {
 
     private Long id;
     private String username;
+    private String password;
     private String email;
 
     public Long getId() {
@@ -30,4 +31,11 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

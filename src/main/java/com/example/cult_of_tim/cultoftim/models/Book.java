@@ -10,7 +10,7 @@ public class Book {
 
     private List<Long> authorIDs;
 
-    private List<Category> categories;
+    private List<Long> categoryIDs;
     private int quantity;
     private boolean available;
 
@@ -39,12 +39,12 @@ public class Book {
         this.authorIDs = authorIDs;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public List<Long> getCategoryIDs() {
+        return categoryIDs;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategoryIDs(List<Long> categoryIDs) {
+        this.categoryIDs = categoryIDs;
     }
 
     public int getQuantity() {
