@@ -4,7 +4,9 @@ import com.example.cult_of_tim.cultoftim.dao.BookDao;
 import com.example.cult_of_tim.cultoftim.models.Book;
 import com.example.cult_of_tim.cultoftim.models.User;
 
-
+/**
+ * This class validates data before buying Book
+ */
 
 public class BuyBookHandler {
     private final BookDao bookDao;
