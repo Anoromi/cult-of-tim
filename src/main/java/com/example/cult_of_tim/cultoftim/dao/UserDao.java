@@ -2,16 +2,20 @@ package com.example.cult_of_tim.cultoftim.dao;
 
 import com.example.cult_of_tim.cultoftim.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
 
-    Optional<User> getUser(String token);
+    Optional<User> getUserById(Long id);
 
-    void createAccount(String email, String encryptedPassword) throws IllegalArgumentException;
+    Optional<User> getUserByEmail(String email);
 
-    String login(String email, String encryptedPassword) throws IllegalArgumentException;
+    List<User> getAllUsers();
 
-    void deleteAccount(String email);
+    void createUser(User user);
 
+    void updateUser(User user);
+
+    void deleteUserById(Long id);
 }
