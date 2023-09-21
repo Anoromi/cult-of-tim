@@ -1,14 +1,10 @@
 package com.example.cult_of_tim.cultoftim.models;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class Promotion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String description;
     private LocalDateTime startDate;
@@ -18,6 +14,22 @@ public class Promotion {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Long> getUserIDs() {
+        return userIDs;
+    }
+
+    public void setUserIDs(List<Long> userIDs) {
+        this.userIDs = userIDs;
+    }
+
+    public boolean isGlobalPromotion() {
+        return globalPromotion;
+    }
+
+    public void setGlobalPromotion(boolean globalPromotion) {
+        this.globalPromotion = globalPromotion;
     }
 
     public void setId(Long id) {
