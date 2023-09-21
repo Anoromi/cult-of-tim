@@ -12,8 +12,6 @@ public class User {
     private String username;
     private String email;
     private List<Long> booksIDs;
-    private List<Long> promotionsIDs;
-
     public Long getId() {
         return id;
     }
@@ -33,7 +31,4 @@ public class User {
         return booksIDs;
     }
 
-    public List<Long> getPromotions() {
-        return promotionsIDs;
-    }
 }
