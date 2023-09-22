@@ -4,6 +4,7 @@ import com.example.cult_of_tim.cultoftim.dao.UserDao;
 import com.example.cult_of_tim.cultoftim.models.User;
 import com.example.cult_of_tim.cultoftim.service.UserService;
 import com.example.cult_of_tim.cultoftim.util.PasswordEncrypter;
+import com.example.cult_of_tim.cultoftim.validator.EmailPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,12 @@ import java.util.Optional;
 @Service
 public class UserMockService implements UserService {
     private final UserDao userDao;
+    private final EmailPasswordValidator emailPasswordValidator;
 
     @Autowired
-    public UserMockService(UserDao userDao) {
+    public UserMockService(UserDao userDao, EmailPasswordValidator emailPasswordValidator) {
         this.userDao = userDao;
+        this.emailPasswordValidator = emailPasswordValidator;
     }
 
     @Override
@@ -37,9 +40,19 @@ public class UserMockService implements UserService {
     @Override
     public Long registerUser(String email, String password) throws IllegalArgumentException {
         User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(PasswordEncrypter.encryptPassword(password));
-
+        if (emailPasswordValidator.isValidEmail(email) && emailPasswordValidator.isValidPassword(password))
+        {
+            newUser.setEmail(email);
+            newUser.setPassword(PasswordEncrypter.encryptPassword(password));
+        }
+        else if (!emailPasswordValidator.isValidEmail(email))
+        {
+            throw new IllegalArgumentException("Email is invalid!");
+        }
+        else if (!emailPasswordValidator.isValidPassword(password))
+        {
+            throw new IllegalArgumentException("Password is invalid!");
+        }
         return userDao.createUser(newUser);
     }
 

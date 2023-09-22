@@ -30,8 +30,8 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Long userId = userService.registerUser("emailexample@gmail.com", "123123");
-        System.out.println(userService.login("emailexample@gmail.com", "123123"));
+        Long userId = userService.registerUser("emailexample@gmail.com", "1234Abcd@");
+        System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
     }
 }
