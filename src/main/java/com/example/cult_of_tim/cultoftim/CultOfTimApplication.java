@@ -1,9 +1,10 @@
 package com.example.cult_of_tim.cultoftim;
 
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
-import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
-import com.example.cult_of_tim.cultoftim.service.*;
+import com.example.cult_of_tim.cultoftim.service.AuthorService;
+import com.example.cult_of_tim.cultoftim.service.BookService;
+import com.example.cult_of_tim.cultoftim.service.CategoryService;
+import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -37,7 +38,7 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Long userId = userService.registerUser("emailexample@gmail.com", "1233Abcd@");
+        Long userId = userService.registerUser("emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
     }
