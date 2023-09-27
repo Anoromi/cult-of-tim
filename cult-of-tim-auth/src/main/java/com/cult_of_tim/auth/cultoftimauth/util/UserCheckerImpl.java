@@ -4,13 +4,19 @@ package com.cult_of_tim.auth.cultoftimauth.util;
 import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class UserCheckerImpl implements UserChecker {
 
+    private final UserDao userDao;
+
     @Autowired
-    private UserDao userDao;
+    public UserCheckerImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
 
     @Override

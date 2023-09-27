@@ -3,8 +3,8 @@ package com.cult_of_tim.auth.cultoftimauth.service.impl;
 import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
+import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.validator.EmailValidator;
 import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +15,21 @@ import java.util.Optional;
 
 @Service
 public class UserMockService implements UserService {
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
+
+    private final EmailValidator emailValidator;
+
+    private final PasswordValidator passwordValidator;
+
+    private final UserChecker passwordChecker;
 
     @Autowired
-    private EmailValidator emailValidator;
-
-    @Autowired
-    private PasswordValidator passwordValidator;
-
-    @Autowired
-    private UserChecker passwordChecker;
-
-    //@Autowired
-    //public UserMockService(UserDao userDao, EmailValidator emailValidator, PasswordValidator passwordValidator, UserChecker passwordChecker) {
-    //    this.userDao = userDao;
-    //    this.emailValidator = emailValidator;
-    //    this.passwordValidator = passwordValidator;
-    //    this.passwordChecker = passwordChecker;
-    //}
+    public UserMockService(UserDao userDao, EmailValidator emailValidator, PasswordValidator passwordValidator, UserChecker passwordChecker) {
+        this.userDao = userDao;
+        this.emailValidator = emailValidator;
+        this.passwordValidator = passwordValidator;
+        this.passwordChecker = passwordChecker;
+    }
 
     @Override
     public Optional<User> getUserById(Long id) {
