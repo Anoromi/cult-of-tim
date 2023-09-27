@@ -1,0 +1,1 @@
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.cult_of_tim.auth.cultoftimauth.CultOfTimAuthApplication

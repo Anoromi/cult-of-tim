@@ -1,9 +1,8 @@
-package com.example.cult_of_tim.cultoftim.util;
+package com.cult_of_tim.auth.cultoftimauth.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
 public class PasswordEncrypter {
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

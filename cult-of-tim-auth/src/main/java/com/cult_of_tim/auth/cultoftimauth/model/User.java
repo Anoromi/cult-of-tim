@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.cult_of_tim.auth.cultoftimauth.model;
 
 public class User {
 

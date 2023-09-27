@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.validator.regex;
+package com.cult_of_tim.auth.cultoftimauth.validator.regex;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

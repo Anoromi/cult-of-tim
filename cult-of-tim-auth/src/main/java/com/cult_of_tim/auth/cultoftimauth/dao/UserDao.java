@@ -1,6 +1,8 @@
-package com.example.cult_of_tim.cultoftim.dao;
+package com.cult_of_tim.auth.cultoftimauth.dao;
 
-import com.example.cult_of_tim.cultoftim.models.User;
+
+
+import com.cult_of_tim.auth.cultoftimauth.model.User;
 
 import java.util.List;
 import java.util.Optional;

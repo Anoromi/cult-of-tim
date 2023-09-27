@@ -1,10 +1,12 @@
-package com.example.cult_of_tim.cultoftim.service.impl;
+package com.cult_of_tim.auth.cultoftimauth.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.UserDao;
-import com.example.cult_of_tim.cultoftim.models.User;
-import com.example.cult_of_tim.cultoftim.service.UserService;
-import com.example.cult_of_tim.cultoftim.util.PasswordEncrypter;
-import com.example.cult_of_tim.cultoftim.validator.EmailPasswordValidator;
+import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
+import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
+import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
+import com.cult_of_tim.auth.cultoftimauth.validator.EmailValidator;
+import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,17 @@ import java.util.Optional;
 @Service
 public class UserMockService implements UserService {
     private final UserDao userDao;
-    private final EmailPasswordValidator emailPasswordValidator;
+    private final EmailValidator emailValidator;
+    private final PasswordValidator passwordValidator;
+
+    private final UserChecker passwordChecker;
 
     @Autowired
-    public UserMockService(UserDao userDao, EmailPasswordValidator emailPasswordValidator) {
+    public UserMockService(UserDao userDao, EmailValidator emailValidator, PasswordValidator passwordValidator, UserChecker passwordChecker) {
         this.userDao = userDao;
-        this.emailPasswordValidator = emailPasswordValidator;
+        this.emailValidator = emailValidator;
+        this.passwordValidator = passwordValidator;
+        this.passwordChecker = passwordChecker;
     }
 
     @Override
@@ -40,26 +47,22 @@ public class UserMockService implements UserService {
     @Override
     public Long registerUser(String email, String password) throws IllegalArgumentException {
         User newUser = new User();
-        if (emailPasswordValidator.isValidEmail(email) && emailPasswordValidator.isValidPassword(password))
-        {
-            newUser.setEmail(email);
-            newUser.setPassword(PasswordEncrypter.encryptPassword(password));
-        }
-        else if (!emailPasswordValidator.isValidEmail(email))
-        {
+
+        if (!emailValidator.isValidEmail(email)) {
             throw new IllegalArgumentException("Email is invalid!");
         }
-        else if (!emailPasswordValidator.isValidPassword(password))
-        {
+        if (!passwordValidator.isValidPassword(password)) {
             throw new IllegalArgumentException("Password is invalid!");
         }
+
+        newUser.setEmail(email);
+        newUser.setPassword(PasswordEncrypter.encryptPassword(password));
         return userDao.createUser(newUser);
     }
 
     @Override
     public User updateUser(String email, User updatedUser) throws IllegalArgumentException {
-        User existingUser = userDao.getUserByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User existingUser = userDao.getUserByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setPassword(PasswordEncrypter.encryptPassword(updatedUser.getPassword()));
@@ -75,13 +78,8 @@ public class UserMockService implements UserService {
 
     @Override
     public boolean login(String email, String password) throws IllegalArgumentException {
-        Optional<User> userOptional = userDao.getUserByEmail(email);
+        var user = passwordChecker.lookupUser(email, password);
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return PasswordEncrypter.checkPassword(password, user.getPassword());
-        }
-
-        return false;
+        return user.isPresent();
     }
 }

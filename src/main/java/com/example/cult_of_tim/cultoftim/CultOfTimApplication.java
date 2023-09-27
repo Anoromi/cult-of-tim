@@ -1,5 +1,8 @@
 package com.example.cult_of_tim.cultoftim;
 
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
+import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.example.cult_of_tim.cultoftim.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,15 +16,19 @@ public class CultOfTimApplication implements CommandLineRunner {
     final AuthorService authorService;
     final CategoryService categoryService;
     final PromotionService promotionService;
-    final UserService userService;
+    //UserService userService;
 
     @Autowired
-    public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService, UserService userService) {
+    UserChecker userChecker;
+
+    @Autowired
+    public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService) {
+
         this.bookService = bookService;
         this.authorService = authorService;
         this.categoryService = categoryService;
         this.promotionService = promotionService;
-        this.userService = userService;
+        //this.userService = userService;
     }
 
     public static void main(String[] args) {
@@ -30,8 +37,8 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Long userId = userService.registerUser("emailexample@gmail.com", "1234Abcd@");
-        System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
-        System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
+        //Long userId = userService.registerUser("emailexample@gmail.com", "1234Abcd@");
+        //System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
+        //System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
     }
 }

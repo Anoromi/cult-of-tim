@@ -1,7 +1,7 @@
-package com.example.cult_of_tim.cultoftim.dao.mock;
+package com.cult_of_tim.auth.cultoftimauth.dao.mock;
 
-import com.example.cult_of_tim.cultoftim.dao.UserDao;
-import com.example.cult_of_tim.cultoftim.models.User;
+import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
+import com.cult_of_tim.auth.cultoftimauth.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
