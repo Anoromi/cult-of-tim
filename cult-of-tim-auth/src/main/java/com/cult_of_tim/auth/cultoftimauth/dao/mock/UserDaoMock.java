@@ -2,11 +2,13 @@ package com.cult_of_tim.auth.cultoftimauth.dao.mock;
 
 import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Component
+@Service
 public class UserDaoMock implements UserDao {
 
     private final Map<Long, User> userMap = new HashMap<>();

@@ -16,19 +16,17 @@ public class CultOfTimApplication implements CommandLineRunner {
     final AuthorService authorService;
     final CategoryService categoryService;
     final PromotionService promotionService;
-    //UserService userService;
+    final UserService userService;
+
 
     @Autowired
-    UserChecker userChecker;
-
-    @Autowired
-    public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService) {
+    public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService, UserService userService) {
 
         this.bookService = bookService;
         this.authorService = authorService;
         this.categoryService = categoryService;
         this.promotionService = promotionService;
-        //this.userService = userService;
+        this.userService = userService;
     }
 
     public static void main(String[] args) {
