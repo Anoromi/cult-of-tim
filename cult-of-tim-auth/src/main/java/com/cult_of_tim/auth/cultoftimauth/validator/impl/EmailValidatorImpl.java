@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
  * An interface implementation for email and password validation while registration.
  * @author Oleksandr Severhin
  */
-@Service
 public class EmailValidatorImpl implements EmailValidator {
 
     private static String EMAIL_REGEX;

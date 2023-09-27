@@ -7,7 +7,10 @@ import com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.UserCheckerImpl;
 import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
+import com.cult_of_tim.auth.cultoftimauth.validator.EmailValidator;
 import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
+import com.cult_of_tim.auth.cultoftimauth.validator.impl.EmailValidatorImpl;
+import com.cult_of_tim.auth.cultoftimauth.validator.impl.PasswordValidatorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -19,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnClass(UserDao.class)
-//@ConditionalOnClass(UserChecker.class)
 //@ConditionalOnProperty(name = "my.namespace.serviceA", havingValue = "true")
 //@EnableAutoConfiguration
 public class CultOfTimAuthConfiguration {
@@ -40,6 +42,21 @@ public class CultOfTimAuthConfiguration {
     @Bean
     public UserDao userDao() {
         return new UserDaoMock();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserMockService();
+    }
+
+    @Bean
+    public EmailValidator emailValidator() {
+        return new EmailValidatorImpl();
+    }
+
+    @Bean
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidatorImpl();
     }
 
 
