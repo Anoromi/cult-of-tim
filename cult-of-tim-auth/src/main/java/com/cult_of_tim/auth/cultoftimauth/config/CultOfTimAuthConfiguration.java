@@ -18,12 +18,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnClass(UserDao.class)
-//@ConditionalOnProperty(name = "my.namespace.serviceA", havingValue = "true")
-//@EnableAutoConfiguration
 public class CultOfTimAuthConfiguration {
 
 
@@ -38,27 +36,5 @@ public class CultOfTimAuthConfiguration {
     public UserChecker normalUserChecker() {
         return new UserCheckerImpl();
     }
-
-    @Bean
-    public UserDao userDao() {
-        return new UserDaoMock();
-    }
-
-    @Bean
-    public UserService userService() {
-        return new UserMockService();
-    }
-
-    @Bean
-    public EmailValidator emailValidator() {
-        return new EmailValidatorImpl();
-    }
-
-    @Bean
-    public PasswordValidator passwordValidator() {
-        return new PasswordValidatorImpl();
-    }
-
-
 
 }
