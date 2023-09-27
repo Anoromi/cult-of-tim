@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.example.cult_of_tim.cultoftim", "com.cult_of_tim.auth.cultoftimauth"})
 public class CultOfTimApplication implements CommandLineRunner {
 
     final BookService bookService;
