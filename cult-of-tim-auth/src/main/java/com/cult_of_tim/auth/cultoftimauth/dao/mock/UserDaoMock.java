@@ -3,8 +3,6 @@ package com.cult_of_tim.auth.cultoftimauth.dao.mock;
 import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -53,5 +51,10 @@ public class UserDaoMock implements UserDao {
     @Override
     public Optional<UserToken> getUserTokenFor(UUID token) {
         return Optional.empty();
+    }
+
+    @Override
+    public String findByToken(UserToken token) {
+        throw new RuntimeException();
     }
 }

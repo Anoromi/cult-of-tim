@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
-@Service
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class TokenValidatorWithExpiration implements TokenValidator {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Autowired
     public TokenValidatorWithExpiration(UserDao userDao) {
@@ -21,7 +21,7 @@ public class TokenValidatorWithExpiration implements TokenValidator {
 
     private static boolean isExpired(UserToken token) {
         Date currentDate = new Date();
-        Date expireDate = token.getExpireDate();
+        Date expireDate = token.expiresAt;
         return expireDate != null && expireDate.before(currentDate);
     }
 
@@ -33,7 +33,7 @@ public class TokenValidatorWithExpiration implements TokenValidator {
             if (isExpired(token)) {
                 return null;
             } else {
-                return userDao.getUserById(token.getUserId());
+                return userDao.getUserById(token.userId);
             }
         } else {
             return null;

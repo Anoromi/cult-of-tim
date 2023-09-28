@@ -24,4 +24,6 @@ public interface UserDao {
     void deleteUserById(Long id);
 
     Optional<UserToken> getUserTokenFor(UUID token);
+
+    String findByToken(UserToken token);
 }

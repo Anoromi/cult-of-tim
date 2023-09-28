@@ -5,6 +5,9 @@ import com.cult_of_tim.auth.cultoftimauth.dao.mock.UserDaoMock;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.UserCheckerImpl;
 import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
+import com.cult_of_tim.auth.cultoftimauth.validator.TokenValidator;
+import com.cult_of_tim.auth.cultoftimauth.validator.impl.TokenValidatorNoExpiration;
+import com.cult_of_tim.auth.cultoftimauth.validator.impl.TokenValidatorWithExpiration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +27,7 @@ public class CultOfTimAuthConfiguration {
     //}
 
     @Bean
-    @ConditionalOnProperty(prefix = "cultoftim.auth", name= "checkPassword", havingValue = "false")
+    @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkPassword", havingValue = "false")
     public UserChecker noPasswordChecker(UserDao userDao) {
         return new WithoutPasswordChecker(userDao);
     }
@@ -42,13 +45,13 @@ public class CultOfTimAuthConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(TokenValidator.class)
+    @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkTokenExpiry", havingValue = "false")
     public TokenValidator noExpirationChecker(UserDao userDao) {
         return new TokenValidatorNoExpiration(userDao);
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "cultoftim.auth", name= "checkPassword", havingValue = "true")
+    @ConditionalOnMissingBean(TokenValidator.class)
     public TokenValidator expirationChecker(UserDao userDao) {
         return new TokenValidatorWithExpiration(userDao);
     }

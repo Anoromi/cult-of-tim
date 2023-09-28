@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public class UserToken {
 
-    UUID tokenId;
-    Date expiresAt;
+    public UUID tokenId;
+    public Date expiresAt;
 
     // TODO change to UUID
-    Long userId;
+    public Long userId;
 
 
 
