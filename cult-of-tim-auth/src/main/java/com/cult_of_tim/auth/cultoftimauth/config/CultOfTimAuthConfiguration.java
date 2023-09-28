@@ -6,6 +6,7 @@ import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.UserCheckerImpl;
 import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ public class CultOfTimAuthConfiguration {
     //}
 
     @Bean
+    @ConditionalOnProperty(prefix = "cultoftim.auth", name= "checkPassword", havingValue = "true")
     public UserChecker noPasswordChecker(UserDao userDao) {
         return new WithoutPasswordChecker(userDao);
     }
