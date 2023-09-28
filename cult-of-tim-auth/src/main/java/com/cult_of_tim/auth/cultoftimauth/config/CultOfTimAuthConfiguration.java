@@ -8,6 +8,7 @@ import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
 import com.cult_of_tim.auth.cultoftimauth.validator.TokenValidator;
 import com.cult_of_tim.auth.cultoftimauth.validator.impl.TokenValidatorNoExpiration;
 import com.cult_of_tim.auth.cultoftimauth.validator.impl.TokenValidatorWithExpiration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +46,7 @@ public class CultOfTimAuthConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkTokenExpiry", havingValue = "false")
+    @ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
     public TokenValidator noExpirationChecker(UserDao userDao) {
         return new TokenValidatorNoExpiration(userDao);
     }
