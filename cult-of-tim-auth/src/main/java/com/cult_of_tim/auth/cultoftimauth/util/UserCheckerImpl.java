@@ -17,7 +17,6 @@ public class UserCheckerImpl implements UserChecker {
 
     private final UserDao userDao;
 
-    @Hehe
     @Autowired
     public UserCheckerImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -34,6 +33,4 @@ public class UserCheckerImpl implements UserChecker {
         return Optional.empty();
     }
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @interface Hehe {}
 }
