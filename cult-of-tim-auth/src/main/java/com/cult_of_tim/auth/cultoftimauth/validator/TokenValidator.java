@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.validator;
+package com.cult_of_tim.auth.cultoftimauth.validator;
 
 import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
 import com.example.cult_of_tim.cultoftim.models.User;

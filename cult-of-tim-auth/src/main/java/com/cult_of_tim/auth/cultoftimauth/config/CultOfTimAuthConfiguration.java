@@ -41,4 +41,15 @@ public class CultOfTimAuthConfiguration {
         return new UserDaoMock();
     }
 
+    @Bean
+    @ConditionalOnMissingBean(TokenValidator.class)
+    public TokenValidator noExpirationChecker(UserDao userDao) {
+        return new TokenValidatorNoExpiration(userDao);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "cultoftim.auth", name= "checkPassword", havingValue = "true")
+    public TokenValidator expirationChecker(UserDao userDao) {
+        return new TokenValidatorWithExpiration(userDao);
+    }
 }
