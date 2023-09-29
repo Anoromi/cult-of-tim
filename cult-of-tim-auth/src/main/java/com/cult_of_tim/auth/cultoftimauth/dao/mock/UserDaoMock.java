@@ -1,12 +1,13 @@
-package com.example.cult_of_tim.cultoftim.dao.mock;
+package com.cult_of_tim.auth.cultoftimauth.dao.mock;
 
-import com.example.cult_of_tim.cultoftim.dao.UserDao;
-import com.example.cult_of_tim.cultoftim.models.User;
-import org.springframework.stereotype.Component;
+import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
+import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Component
+@Service
 public class UserDaoMock implements UserDao {
 
     private final Map<Long, User> userMap = new HashMap<>();
@@ -45,5 +46,15 @@ public class UserDaoMock implements UserDao {
     @Override
     public void deleteUserById(Long id) {
         userMap.remove(id);
+    }
+
+    @Override
+    public Optional<UserToken> getUserTokenFor(UUID token) {
+        return Optional.empty();
+    }
+
+    @Override
+    public String findByToken(UserToken token) {
+        throw new RuntimeException();
     }
 }

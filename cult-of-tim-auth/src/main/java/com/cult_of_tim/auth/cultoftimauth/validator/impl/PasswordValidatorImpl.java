@@ -1,29 +1,19 @@
-package com.example.cult_of_tim.cultoftim.validator.impl;
+package com.cult_of_tim.auth.cultoftimauth.validator.impl;
 
-import com.example.cult_of_tim.cultoftim.validator.EmailPasswordValidator;
+import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * An interface implementation for email and password validation while registration.
- * @author Oleksandr Severhin
- */
 @Service
-public class EmailPasswordValidatorImpl implements EmailPasswordValidator {
+public class PasswordValidatorImpl implements PasswordValidator {
 
-    private static String EMAIL_REGEX;
     private static String AT_LEAST_ONE_UPPERCASE_LETTER;
     private static String AT_LEAST_ONE_DIGIT;
     private static String AT_LEAST_ONE_SPECIAL_SYMBOL;
 
-    @Autowired
-    @Qualifier("getEmailRegex")
-    private void setEmailRegex(String emailRegex) {
-        EMAIL_REGEX = emailRegex;
-    }
+
+
 
     @Autowired
     @Qualifier("getAtLeastOneUppercaseLetter")
@@ -31,27 +21,18 @@ public class EmailPasswordValidatorImpl implements EmailPasswordValidator {
         AT_LEAST_ONE_UPPERCASE_LETTER = oneUpperCaseRegex;
     }
 
+
     @Autowired
     @Qualifier("getAtLeastOneDigit")
     private void setAtLeastOneDigit(String oneDigitRegex) {
         AT_LEAST_ONE_DIGIT = oneDigitRegex;
     }
 
+
     @Autowired
     @Qualifier("getAtLeastOneSpecialSymbol")
     private void setAtLeastOneSpecialSymbol(String oneSpecSymbolRegex) {
         AT_LEAST_ONE_SPECIAL_SYMBOL = oneSpecSymbolRegex;
-    }
-
-    /**
-     * Checks if email is valid
-     * @param email a String email parameter
-     * @return true if mail is valid, false otherwise
-     */
-    public boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
     /**

@@ -1,10 +1,15 @@
 package com.example.cult_of_tim.cultoftim;
 
-import com.example.cult_of_tim.cultoftim.service.*;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.example.cult_of_tim.cultoftim.service.AuthorService;
+import com.example.cult_of_tim.cultoftim.service.BookService;
+import com.example.cult_of_tim.cultoftim.service.CategoryService;
+import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class CultOfTimApplication implements CommandLineRunner {
@@ -15,8 +20,10 @@ public class CultOfTimApplication implements CommandLineRunner {
     final PromotionService promotionService;
     final UserService userService;
 
+
     @Autowired
     public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService, UserService userService) {
+
         this.bookService = bookService;
         this.authorService = authorService;
         this.categoryService = categoryService;

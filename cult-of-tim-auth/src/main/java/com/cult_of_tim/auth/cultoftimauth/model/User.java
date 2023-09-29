@@ -1,7 +1,8 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.cult_of_tim.auth.cultoftimauth.model;
 
 public class User {
 
+    // TODO change to UUID
     private Long id;
     private String username;
     private String password;

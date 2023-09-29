@@ -1,1 +1,3 @@
 rootProject.name = 'cult-of-tim'
+
+include(":cult-of-tim-auth")

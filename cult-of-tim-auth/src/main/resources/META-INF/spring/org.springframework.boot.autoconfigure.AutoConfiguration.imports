@@ -1,0 +1,2 @@
+com.cult_of_tim.auth.cultoftimauth.config.CultOfTimAuthConfiguration
+com.cult_of_tim.auth.cultoftimauth.validator.regex.EmailPasswordValidationRegex
