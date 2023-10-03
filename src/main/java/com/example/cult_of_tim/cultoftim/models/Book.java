@@ -1,16 +1,23 @@
 package com.example.cult_of_tim.cultoftim.models;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
-
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
 
-    private List<Long> authorIDs;
+    @ManyToMany
+    private List<Author> authors;
 
-    private List<Long> categoryIDs;
+    @ManyToMany
+    private List<Category> categories;
+
     private int quantity;
     private boolean available;
 
@@ -31,21 +38,6 @@ public class Book {
         this.title = title;
     }
 
-    public List<Long> getAuthorIDs() {
-        return authorIDs;
-    }
-
-    public void setAuthorIDs(List<Long> authorIDs) {
-        this.authorIDs = authorIDs;
-    }
-
-    public List<Long> getCategoryIDs() {
-        return categoryIDs;
-    }
-
-    public void setCategoryIDs(List<Long> categoryIDs) {
-        this.categoryIDs = categoryIDs;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -61,5 +53,21 @@ public class Book {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
