@@ -1,7 +1,13 @@
 package com.example.cult_of_tim.cultoftim.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "author")
 public class Author {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
 
