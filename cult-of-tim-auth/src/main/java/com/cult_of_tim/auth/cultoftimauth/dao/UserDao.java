@@ -11,17 +11,17 @@ import java.util.UUID;
 
 public interface UserDao {
 
-    Optional<User> getUserById(Long id);
+    Optional<User> getUserById(UUID id);
 
     Optional<User> getUserByEmail(String email);
 
     List<User> getAllUsers();
 
-    Long createUser(User user);
+    UUID createUser(User user);
 
     User updateUser(User user);
 
-    void deleteUserById(Long id);
+    void deleteUserById(UUID id);
 
     Optional<UserToken> getUserTokenFor(UUID token);
 

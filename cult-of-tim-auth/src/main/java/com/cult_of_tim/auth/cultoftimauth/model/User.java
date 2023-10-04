@@ -2,26 +2,22 @@ package com.cult_of_tim.auth.cultoftimauth.model;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 public class User {
 
-    // TODO change to UUID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
+    @Column(length = 100)
     private String username;
+
     private String password;
+
     private String email;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -45,5 +41,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

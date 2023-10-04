@@ -11,14 +11,15 @@ public class Promotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @ManyToMany
-    private List<User> users;
+    @OneToMany
+    private List<PromotionDiscount> discounts;
 
     private boolean globalPromotion;
 
@@ -26,13 +27,6 @@ public class Promotion {
         return id;
     }
 
-    public List<User> getUserIDs() {
-        return users;
-    }
-
-    public void setUserIDs(List<User> users) {
-        this.users = users;
-    }
 
     public boolean isGlobalPromotion() {
         return globalPromotion;
@@ -40,14 +34,6 @@ public class Promotion {
 
     public void setGlobalPromotion(boolean globalPromotion) {
         this.globalPromotion = globalPromotion;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public void setId(Long id) {
@@ -79,4 +65,11 @@ public class Promotion {
     }
 
 
+    public List<PromotionDiscount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<PromotionDiscount> discounts) {
+        this.discounts = discounts;
+    }
 }

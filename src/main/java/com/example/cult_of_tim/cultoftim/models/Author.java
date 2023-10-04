@@ -11,13 +11,18 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(length = 100)
+    private String firstName;
+
+    @Column(length = 100)
+    private String lastName;
+
+    @ManyToMany
+    private List<Book> books;
 
     public Long getId() {
         return id;
     }
-    @ManyToMany
-    private List<Book> books;
 
     public void setId(Long id) {
         this.id = id;
@@ -31,11 +36,20 @@ public class Author {
         this.books = books;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
 }
