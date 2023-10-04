@@ -2,7 +2,9 @@ package com.example.cult_of_tim.cultoftim.models;
 
 import jakarta.persistence.*;
 
+
 @Entity
+@IdClass(PromotionDiscountID.class)
 public class PromotionDiscount {
 
     @Id
@@ -24,11 +26,6 @@ public class PromotionDiscount {
     private Book book;
 
     private int discountPercentage;
-
-
-
-
-
-
-
 }
+
+
