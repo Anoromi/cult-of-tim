@@ -1,0 +1,24 @@
+package com.example.cult_of_tim.cultoftim.repositories;
+
+import com.example.cult_of_tim.cultoftim.models.Promotion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PromotionRepository extends JpaRepository<Promotion, Long> {
+
+    Optional<Promotion> findById(Long id);
+
+    List<Promotion> findAll();
+
+    List<Promotion> findByUserId(Long userId);
+
+    boolean existsByIdAndGlobal(Long promotionId, boolean global);
+
+    Promotion save(Promotion promotion);
+
+    void deleteById(Long id);
+}
