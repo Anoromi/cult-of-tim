@@ -46,7 +46,7 @@ public class CultOfTimAuthConfiguration {
     }
 
     @Bean
-    @ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
+@ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
     public TokenValidator noExpirationChecker(UserDao userDao) {
         return new TokenValidatorNoExpiration(userDao);
     }
