@@ -12,7 +12,7 @@ public interface PurchaseService {
 
     List<Purchase> getPurchasesByUserId(Long userId);
 
-    Long createPurchase(Purchase purchase);
+    Purchase createPurchase(Purchase purchase);
 
     Purchase updatePurchase(Purchase purchase);
 

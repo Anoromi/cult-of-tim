@@ -2,6 +2,7 @@ package com.example.cult_of_tim.cultoftim.service.impl;
 
 import com.example.cult_of_tim.cultoftim.dao.PromotionDao;
 import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,83 +13,63 @@ import java.util.Optional;
 
 @Service
 public class PromotionMockService implements PromotionService {
-    private final PromotionDao promotionDao;
+    private final PromotionRepository promotionRepository;
 
     @Autowired
-    public PromotionMockService(PromotionDao promotionDao) {
-        this.promotionDao = promotionDao;
+    public PromotionMockService(PromotionRepository promotionRepository) {
+        this.promotionRepository = promotionRepository;
     }
 
     @Override
     public Optional<Promotion> getPromotionById(Long id) {
-        return promotionDao.getPromotionById(id);
+        return promotionRepository.findById(id);
     }
 
     @Override
     public List<Promotion> getAllPromotions() {
-        return promotionDao.getAllPromotions();
+        return promotionRepository.findAll();
     }
 
     @Override
     public List<Promotion> getUserPromotions(Long userID) {
-        return promotionDao.getUserPromotions(userID);
+        return promotionRepository.findByUserId(userID);
     }
 
     @Override
     public boolean isGlobal(Long promotionID) {
-        return promotionDao.isGlobal(promotionID);
+        return promotionRepository.existsByIdAndGlobal(promotionID, true);
     }
 
     @Override
-    public Long createPromotion(Promotion promotion) {
-        return promotionDao.createPromotion(promotion);
+    public Promotion createPromotion(Promotion promotion) {
+        return promotionRepository.save(promotion);
     }
 
     @Override
     public Promotion updatePromotion(Long id, Promotion updatedPromotion) {
         updatedPromotion.setId(id);
-        return promotionDao.updatePromotion(updatedPromotion);
+        return promotionRepository.save(updatedPromotion);
     }
 
     @Override
     public void deletePromotion(Long id) {
-        promotionDao.deletePromotion(id);
+        promotionRepository.deleteById(id);
     }
 
     @Override
     public void changePromotionEndDate(Long promotionID, LocalDateTime newEndDate) {
-        Promotion promotion = promotionDao.getPromotionById(promotionID)
+        Promotion promotion = promotionRepository.findById(promotionID)
                 .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
 
         promotion.setEndDate(newEndDate);
 
-        promotionDao.updatePromotion(promotion);
-    }
-
-    @Override
-    public void assignPromotionToUser(Long promotionID, Long userID) {
-        Promotion promotion = promotionDao.getPromotionById(promotionID)
-                .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
-
-        if (!promotion.getUserIDs().contains(userID)) {
-            promotion.getUserIDs().add(userID);
-            promotionDao.updatePromotion(promotion);
-        }
-    }
-
-    @Override
-    public void removePromotionFromUser(Long promotionID, Long userID) {
-        Promotion promotion = promotionDao.getPromotionById(promotionID)
-                .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
-
-        promotion.getUserIDs().remove(userID);
-        promotionDao.updatePromotion(promotion);
+        promotionRepository.save(promotion);
     }
 
     @Override
     public List<Promotion> getActivePromotions() {
         LocalDateTime now = LocalDateTime.now();
-        return promotionDao.getAllPromotions().stream()
+        return promotionRepository.findAll().stream()
                 .filter(promotion -> promotion.getStartDate().isBefore(now) && promotion.getEndDate().isAfter(now))
                 .toList();
     }
@@ -96,14 +77,14 @@ public class PromotionMockService implements PromotionService {
     @Override
     public List<Promotion> getExpiredPromotions() {
         LocalDateTime now = LocalDateTime.now();
-        return promotionDao.getAllPromotions().stream()
+        return promotionRepository.findAll().stream()
                 .filter(promotion -> promotion.getEndDate().isBefore(now))
                 .toList();
     }
 
     @Override
     public boolean isPromotionExpired(Long promotionID) {
-        Promotion promotion = promotionDao.getPromotionById(promotionID)
+        Promotion promotion = promotionRepository.findById(promotionID)
                 .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
 
         return promotion.getEndDate().isBefore(LocalDateTime.now());
@@ -111,7 +92,7 @@ public class PromotionMockService implements PromotionService {
 
     @Override
     public boolean isPromotionActive(Long promotionID) {
-        Promotion promotion = promotionDao.getPromotionById(promotionID)
+        Promotion promotion = promotionRepository.findById(promotionID)
                 .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
 
         LocalDateTime now = LocalDateTime.now();

@@ -11,7 +11,7 @@ public interface CategoryService {
 
     List<Category> getAllCategories();
 
-    Long createCategory(String name);
+    Category createCategory(String name);
 
     Category updateCategory(Long id, Category updatedCategory);
 

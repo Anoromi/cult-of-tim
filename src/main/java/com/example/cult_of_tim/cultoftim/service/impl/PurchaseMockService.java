@@ -1,7 +1,7 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.PurchaseDao;
 import com.example.cult_of_tim.cultoftim.models.Purchase;
+import com.example.cult_of_tim.cultoftim.repositories.PurchaseRepository;
 import com.example.cult_of_tim.cultoftim.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,41 +12,39 @@ import java.util.Optional;
 @Service
 public class PurchaseMockService implements PurchaseService {
 
-    private final PurchaseDao purchaseDao;
+    private final PurchaseRepository purchaseRepository;
 
     @Autowired
-    public PurchaseMockService(PurchaseDao purchaseDao) {
-        this.purchaseDao = purchaseDao;
+    public PurchaseMockService(PurchaseRepository purchaseRepository) {
+        this.purchaseRepository = purchaseRepository;
     }
 
     @Override
-    public Optional<Purchase> getPurchaseById(Long id) {
-        return purchaseDao.getPurchaseById(id);
-    }
+    public Optional<Purchase> getPurchaseById(Long id) { return purchaseRepository.findById(id); }
 
     @Override
     public List<Purchase> getAllPurchases() {
-        return purchaseDao.getAllPurchases();
+        return purchaseRepository.findAll();
     }
 
     @Override
     public List<Purchase> getPurchasesByUserId(Long userId) {
-        return purchaseDao.getPurchasesByUserId(userId);
+        return purchaseRepository.findByUserId(userId);
     }
 
     @Override
-    public Long createPurchase(Purchase purchase) {
-        return purchaseDao.createPurchase(purchase);
+    public Purchase createPurchase(Purchase purchase) {
+        return purchaseRepository.save(purchase);
     }
 
     @Override
     public Purchase updatePurchase(Purchase purchase) {
-        return purchaseDao.updatePurchase(purchase);
+        return purchaseRepository.save(purchase);
     }
 
     @Override
     public void deletePurchaseById(Long id) {
-        purchaseDao.deletePurchaseById(id);
+        purchaseRepository.deleteById(id);
     }
 }
 

@@ -15,15 +15,11 @@ public interface PromotionService {
 
     boolean isGlobal(Long promotionID);
 
-    Long createPromotion(Promotion promotion);
+    Promotion createPromotion(Promotion promotion);
 
     Promotion updatePromotion(Long id, Promotion updatedPromotion);
 
     void deletePromotion(Long id);
-
-    void assignPromotionToUser(Long promotionID, Long userID);
-
-    void removePromotionFromUser(Long promotionID, Long userID);
 
     void changePromotionEndDate(Long promotionID, LocalDateTime newEndDate);
 

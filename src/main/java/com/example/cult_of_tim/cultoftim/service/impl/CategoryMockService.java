@@ -1,7 +1,7 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.CategoryDao;
 import com.example.cult_of_tim.cultoftim.models.Category;
+import com.example.cult_of_tim.cultoftim.repositories.CategoryRepository;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class CategoryMockService implements CategoryService {
 
-    private /*final*/ CategoryDao categoryDao;
+    private /*final*/ CategoryRepository categoryRepository;
 
     // better
     /*
@@ -22,35 +22,35 @@ public class CategoryMockService implements CategoryService {
     }*/
 
     @Autowired
-    public void setCategoryDao(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
+    public void setCategoryDao(CategoryRepository categoryDao) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public Optional<Category> getCategoryById(Long id) {
-        return categoryDao.getCategoryById(id);
+        return categoryRepository.findById(id);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryDao.getAllCategories();
+        return categoryRepository.findAll();
     }
 
     @Override
-    public Long createCategory(String name) {
+    public Category createCategory(String name) {
         Category newCategory = new Category();
         newCategory.setName(name);
-        return categoryDao.createCategory(newCategory);
+        return categoryRepository.save(newCategory);
     }
 
     @Override
     public Category updateCategory(Long id, Category updatedCategory) {
         updatedCategory.setId(id);
-        return categoryDao.updateCategory(updatedCategory);
+        return categoryRepository.save(updatedCategory);
     }
 
     @Override
     public void deleteCategory(Long id) {
-        categoryDao.deleteCategoryById(id);
+        categoryRepository.deleteById(id);
     }
 }

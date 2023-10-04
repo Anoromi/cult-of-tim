@@ -72,4 +72,5 @@ public class Promotion {
     public void setDiscounts(List<PromotionDiscount> discounts) {
         this.discounts = discounts;
     }
+
 }
