@@ -1,7 +1,8 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.AuthorDao;
+
 import com.example.cult_of_tim.cultoftim.models.Author;
+import com.example.cult_of_tim.cultoftim.repositories.AuthorRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,38 +13,38 @@ import java.util.Optional;
 @Service
 public class AuthorMockService implements AuthorService {
 
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorRepository;
 
     @Autowired
-    public AuthorMockService(AuthorDao authorDao) {
-        this.authorDao = authorDao;
+    public AuthorMockService(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
     }
 
     @Override
     public Optional<Author> getAuthorById(Long id) {
-        return authorDao.getAuthorById(id);
+        return authorRepository.findById(id);
     }
 
     @Override
     public List<Author> getAllAuthors() {
-        return authorDao.getAllAuthors();
+        return authorRepository.findAll();
     }
 
     @Override
-    public Long createAuthor(String name) {
+    public Author createAuthor(String name) {
         Author newAuthor = new Author();
-        newAuthor.setName(name);
-        return authorDao.createAuthor(newAuthor);
+        newAuthor.setFirstName(name);
+        return authorRepository.save(newAuthor);
     }
 
     @Override
     public Author updateAuthor(Long id, Author updatedAuthor) {
         updatedAuthor.setId(id);
-        return authorDao.updateAuthor(updatedAuthor);
+        return authorRepository.save(updatedAuthor);
     }
 
     @Override
     public void deleteAuthor(Long id) {
-        authorDao.deleteAuthorById(id);
+        authorRepository.deleteById(id);
     }
 }
