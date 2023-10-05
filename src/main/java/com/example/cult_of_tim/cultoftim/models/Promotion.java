@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim.models;
 
 import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class Promotion {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
     private List<PromotionDiscount> discounts;
 
     private boolean globalPromotion;

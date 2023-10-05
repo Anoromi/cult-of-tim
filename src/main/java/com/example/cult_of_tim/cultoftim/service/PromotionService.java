@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim.service;
 
 import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,5 +30,7 @@ public interface PromotionService {
     boolean isPromotionExpired(Long promotionID);
 
     boolean isPromotionActive(Long promotionID);
+
+    Promotion addBookWithDiscountToPromotion(Long promotionId, Long bookId, int discountPercentage);
 }
 

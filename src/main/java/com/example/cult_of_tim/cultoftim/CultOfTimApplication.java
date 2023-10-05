@@ -21,7 +21,7 @@ import java.util.UUID;
 @SpringBootApplication
 @EnableJpaRepositories()
 @EntityScan()
-public class CultOfTimApplication implements CommandLineRunner {
+    public class CultOfTimApplication implements CommandLineRunner {
 
     final BookService bookService;
     final AuthorService authorService;
@@ -69,5 +69,11 @@ public class CultOfTimApplication implements CommandLineRunner {
         promdto.setDiscounts(List.of(promotionDiscount));
         Promotion promotion = promotionService.createPromotion(promdto);
 
+        Promotion promdto2 = new Promotion();
+        promdto2.setStartDate(LocalDateTime.now());
+        promdto2.setEndDate(LocalDateTime.now().plusDays(2));
+        Promotion promotion2 = promotionService.createPromotion(promdto2);
+        promotionService.addBookWithDiscountToPromotion(promotion.getId(), book.getId(), 50);
+        //promotionService.addBookWithDiscountToPromotion(promotion2.getId(), book.getId(), 50);
     }
 }

@@ -1,6 +1,9 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
+import com.example.cult_of_tim.cultoftim.models.Book;
 import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
+import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +16,12 @@ import java.util.Optional;
 @Service
 public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public PromotionServiceImpl(PromotionRepository promotionRepository) {
+    public PromotionServiceImpl(PromotionRepository promotionRepository, BookRepository bookRepository) {
         this.promotionRepository = promotionRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -93,5 +98,33 @@ public class PromotionServiceImpl implements PromotionService {
         LocalDateTime now = LocalDateTime.now();
         return promotion.getStartDate().isBefore(now) && promotion.getEndDate().isAfter(now);
     }
-}
 
+    @Override
+    public Promotion addBookWithDiscountToPromotion(Long promotionId, Long bookId, int discountPercentage) {
+        Promotion promotion = promotionRepository.findById(promotionId)
+                .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        boolean promotionDiscountExists = promotion.getDiscounts().stream()
+                .anyMatch(pd -> pd.getBook().getId().equals(bookId));
+
+        if (!promotionDiscountExists) {
+            PromotionDiscount promotionDiscount = new PromotionDiscount();
+            promotionDiscount.setPromotion(promotion);
+            promotionDiscount.setBook(book);
+            promotionDiscount.setDiscountPercentage(discountPercentage);
+
+            if (promotion.getDiscounts() == null) {
+                promotion.setDiscounts(List.of(promotionDiscount));
+            } else {
+                promotion.getDiscounts().add(promotionDiscount);
+            }
+
+            return promotionRepository.save(promotion);
+        } else {
+            throw new IllegalArgumentException("Promotion for the Book with id: " + bookId + " is already created");
+        }
+    }
+}

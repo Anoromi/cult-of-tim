@@ -29,13 +29,19 @@ public class PromotionDiscount {
 
     private int discountPercentage;
 
+    public int getDiscountPercentage() { return discountPercentage; }
+
     public void setDiscountPercentage(int discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 
+    public Book getBook() { return book; }
+
     public void setBook(Book book) {
         this.book = book;
     }
+
+    public void setPromotion(Promotion promotion) { this.promotion = promotion;}
 }
 
 
