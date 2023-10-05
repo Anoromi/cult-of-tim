@@ -43,13 +43,8 @@ public class PromotionMockService implements PromotionService {
     }
 
     @Override
-    public Promotion updatePromotion(Long id, Promotion updatedPromotion){
+    public Promotion updatePromotion(Long id, Promotion updatedPromotion) {
         updatedPromotion.setId(id);
-        updatedPromotion.setDescription(description);
-        updatedPromotion.setStartDate(startDate);
-        updatedPromotion.setEndDate(endDate);
-        updatedPromotion.setDiscounts(discounts);
-        updatedPromotion.setGlobalPromotion(globalPromotion);
         return promotionRepository.save(updatedPromotion);
     }
 

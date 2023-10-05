@@ -13,9 +13,10 @@ public interface BookService {
 
     List<Book> getAllBooks();
 
-    List<Book> getBooksByAuthorsContaining(List<Author> authors);
 
-    List<Book> getBooksByCategoriesContaining(List<Category> categories);
+    List<Book> getBooksByAuthorId(Long authorId);
+
+    List<Book> getBooksByCategoryId(Long categoryId);
 
     Book createBook(String title, List<Author> author, List<Category> category);
 
