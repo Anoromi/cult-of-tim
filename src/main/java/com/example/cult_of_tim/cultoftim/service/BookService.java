@@ -1,6 +1,8 @@
 package com.example.cult_of_tim.cultoftim.service;
 
+import com.example.cult_of_tim.cultoftim.models.Author;
 import com.example.cult_of_tim.cultoftim.models.Book;
+import com.example.cult_of_tim.cultoftim.models.Category;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,7 @@ public interface BookService {
 
     List<Book> getBooksByCategoryId(Long categoryId);
 
-    Long createBook(String title, List<Long> authorIds, List<Long> categoryIds);
+    Book createBook(String title, List<Author> author, List<Category> category);
 
     Book updateBook(Long id, Book updatedBook);
 

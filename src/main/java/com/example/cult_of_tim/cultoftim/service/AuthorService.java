@@ -11,7 +11,7 @@ public interface AuthorService {
 
     List<Author> getAllAuthors();
 
-    Long createAuthor(String name);
+    Author createAuthor(String name);
 
     Author updateAuthor(Long id, Author updatedAuthor);
 
