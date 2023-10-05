@@ -19,5 +19,5 @@ public interface PromotionDiscountRepository extends JpaRepository<PromotionDisc
 
     PromotionDiscount save(PromotionDiscount promotionDiscount);
 
-    void deleteByPromotionIdAndBookId(Long promotionId, Long bookId);
+    //void deleteByPromotionIdAndBookId(Long promotionId, Long bookId);
 }

@@ -31,9 +31,10 @@ public class AuthorMockService implements AuthorService {
     }
 
     @Override
-    public Author createAuthor(String name) {
+    public Author createAuthor(String firstName, String lastName) {
         Author newAuthor = new Author();
-        newAuthor.setFirstName(name);
+        newAuthor.setFirstName(firstName);
+        newAuthor.setLastName(firstName);
         return authorRepository.save(newAuthor);
     }
 

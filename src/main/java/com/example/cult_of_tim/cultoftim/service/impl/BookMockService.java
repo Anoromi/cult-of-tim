@@ -1,6 +1,5 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.BookDao;
 import com.example.cult_of_tim.cultoftim.models.Author;
 import com.example.cult_of_tim.cultoftim.models.Book;
 import com.example.cult_of_tim.cultoftim.models.Category;
@@ -15,15 +14,13 @@ import java.util.Optional;
 @Service
 public class BookMockService implements BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    // better
-    /*
     @Autowired
-    public BookMockService(BookDao bookDao) {
-        this.bookDao = bookDao;
-    }*/
+    public BookMockService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
 
     @Override
     public Optional<Book> getBookById(Long id) {

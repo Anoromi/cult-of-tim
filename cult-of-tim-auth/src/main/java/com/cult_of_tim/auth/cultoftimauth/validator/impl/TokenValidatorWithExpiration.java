@@ -21,7 +21,7 @@ public class TokenValidatorWithExpiration implements TokenValidator {
 
     private static boolean isExpired(UserToken token) {
         Date currentDate = new Date();
-        Date expireDate = token.expiresAt;
+        Date expireDate = token.getExpiresAt();
         return expireDate != null && expireDate.before(currentDate);
     }
 
@@ -29,14 +29,8 @@ public class TokenValidatorWithExpiration implements TokenValidator {
     public Optional<User> validateToken(UserToken token) {
         String tokenData = userDao.findByToken(token);
 
-        if (tokenData != null) {
-            if (isExpired(token)) {
-                return null;
-            } else {
-                return userDao.getUserById(token.userId);
-            }
-        } else {
-            return null;
-        }
+        if(tokenData == null || isExpired(token))
+            return Optional.empty();
+        return userDao.getUserById(token.getUser().getId());
     }
 }

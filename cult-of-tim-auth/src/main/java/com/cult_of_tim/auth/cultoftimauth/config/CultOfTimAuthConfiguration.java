@@ -1,7 +1,6 @@
 package com.cult_of_tim.auth.cultoftimauth.config;
 
 import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
-import com.cult_of_tim.auth.cultoftimauth.dao.mock.UserDaoMock;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.UserCheckerImpl;
 import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
@@ -39,11 +38,11 @@ public class CultOfTimAuthConfiguration {
         return new UserCheckerImpl(userDao);
     }
 
-    @Bean
-    @Primary
-    public UserDao userDao() {
-        return new UserDaoMock();
-    }
+    //@Bean
+    //@Primary
+    //public UserDao userDao() {
+    //    return new UserDaoMock();
+    //}
 
     @Bean
 @ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")

@@ -13,6 +13,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.UUID;
+
 @SpringBootApplication
 public class CultOfTimApplication implements CommandLineRunner {
 
@@ -41,13 +43,13 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        var author = new Author();
-        author.setName("Hello");
-        repo.save(author);
+        //var author = new Author();
+        //author.setName("Hello");
+        //repo.save(author);
 
-        System.out.println(repo.getAuthorsByName("Hello").getId());
+        //System.out.println(repo.getAuthorsByName("Hello").getId());
 
-        Long userId = userService.registerUser("emailexample@gmail.com", "1234Abcd@");
+        UUID userId = userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
     }

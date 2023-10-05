@@ -28,7 +28,7 @@ public class TokenValidatorNoExpiration  implements TokenValidator {
     public Optional<User> validateToken(UserToken token) {
         String tokenData = userDao.findByToken(token);
         if (tokenData != null) {
-            return userDao.getUserById(token.userId);
+            return userDao.getUserById(token.getUser().getId());
         } else {
             return null;
         }

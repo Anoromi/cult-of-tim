@@ -7,22 +7,24 @@ import jakarta.persistence.*;
 @IdClass(PromotionDiscountID.class)
 public class PromotionDiscount {
 
-    @Id
-    @Column(name = "promotionId")
-    private Long promotionId;
+    //@Id
+    //@Column(name = "promotionId")
+    //private Long promotionId;
+
+    //@Id
+    //@Column(name = "bookId")
+    //private Long bookId;
+
 
     @Id
-    @Column(name = "bookId")
-    private Long bookId;
-
-
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="promotionId", referencedColumnName="id")
+    @PrimaryKeyJoinColumn(name="promotionId", referencedColumnName="promotionId")
     private Promotion promotion;
 
 
+    @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="bookId", referencedColumnName = "id")
+    @PrimaryKeyJoinColumn(name = "bookId", referencedColumnName = "bookId")
     private Book book;
 
     private int discountPercentage;
