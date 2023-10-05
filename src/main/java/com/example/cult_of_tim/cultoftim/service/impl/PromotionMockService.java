@@ -2,6 +2,7 @@ package com.example.cult_of_tim.cultoftim.service.impl;
 
 import com.example.cult_of_tim.cultoftim.dao.PromotionDao;
 import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +38,29 @@ public class PromotionMockService implements PromotionService {
 
     @Override
     public boolean isGlobal(Long promotionID) {
-        return promotionRepository.existsByIdAndGlobal(promotionID, true);
+        return promotionRepository.existsByIdAndGlobalPromotion(promotionID, true);
     }
 
     @Override
-    public Promotion createPromotion(Promotion promotion) {
+    public Promotion createPromotion(String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion) {
+        Promotion promotion = new Promotion();
+        promotion.setDescription(description);
+        promotion.setStartDate(startDate);
+        promotion.setEndDate(endDate);
+        promotion.setDiscounts(discounts);
+        promotion.setGlobalPromotion(globalPromotion);
         return promotionRepository.save(promotion);
     }
 
     @Override
-    public Promotion updatePromotion(Long id, Promotion updatedPromotion) {
+    public Promotion updatePromotion(Long id, String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion) {
+        Promotion updatedPromotion = new Promotion();
         updatedPromotion.setId(id);
+        updatedPromotion.setDescription(description);
+        updatedPromotion.setStartDate(startDate);
+        updatedPromotion.setEndDate(endDate);
+        updatedPromotion.setDiscounts(discounts);
+        updatedPromotion.setGlobalPromotion(globalPromotion);
         return promotionRepository.save(updatedPromotion);
     }
 

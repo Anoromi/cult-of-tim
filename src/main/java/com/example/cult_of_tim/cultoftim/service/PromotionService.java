@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim.service;
 
 import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,9 +16,9 @@ public interface PromotionService {
 
     boolean isGlobal(Long promotionID);
 
-    Promotion createPromotion(Promotion promotion);
+    Promotion createPromotion(String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion);
 
-    Promotion updatePromotion(Long id, Promotion updatedPromotion);
+    Promotion updatePromotion(Long id, String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion);
 
     void deletePromotion(Long id);
 

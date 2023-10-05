@@ -10,15 +10,15 @@ import java.util.Optional;
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
-    Optional<Promotion> findById(Long id);
+    //Optional<Promotion> findById(Long id);
 
-    List<Promotion> findAll();
+    //List<Promotion> findAll();
 
     List<Promotion> findByUserId(Long userId);
 
-    boolean existsByIdAndGlobal(Long promotionId, boolean global);
+    boolean existsByIdAndGlobalPromotion(Long promotionId, boolean global);
 
-    Promotion save(Promotion promotion);
+   // Promotion save(Promotion promotion);
 
-    void deleteById(Long id);
+    //void deleteById(Long id);
 }
