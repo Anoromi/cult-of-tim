@@ -9,6 +9,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "authorId")
     private Long id;
 
     @Column(length = 100)
@@ -17,7 +18,12 @@ public class Author {
     @Column(length = 100)
     private String lastName;
 
-    @ManyToMany
+     @ManyToMany(fetch = FetchType.LAZY,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE
+      },
+      mappedBy = "authors")
     private List<Book> books;
 
     public Long getId() {

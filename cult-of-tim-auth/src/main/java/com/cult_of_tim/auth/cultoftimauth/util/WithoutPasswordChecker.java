@@ -1,19 +1,21 @@
 package com.cult_of_tim.auth.cultoftimauth.util;
 
-import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 public class WithoutPasswordChecker implements UserChecker {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    public WithoutPasswordChecker(UserDao userDao) {
-        this.userDao = userDao;
+    public WithoutPasswordChecker(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public Optional<User> lookupUser(String email, String password) {
-        return userDao.getUserByEmail(email);
+        return userRepository.findByEmail(email);
     }
 }

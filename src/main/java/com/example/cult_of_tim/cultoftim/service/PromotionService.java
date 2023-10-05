@@ -12,8 +12,6 @@ public interface PromotionService {
 
     List<Promotion> getAllPromotions();
 
-    List<Promotion> getUserPromotions(Long userID);
-
     boolean isGlobal(Long promotionID);
 
     Promotion createPromotion(String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion);

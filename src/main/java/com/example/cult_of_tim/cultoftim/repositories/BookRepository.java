@@ -7,13 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findByAuthorId(Long authorId);
+    List<Book> findByAuthorsId(Long authorId);
 
-    List<Book> findByCategoryId(Long categoryId);
+    //List<Book>  findBooksByAuthorsContaining(List<Long> author);
+    // List<Book> findBookByByAuthorId(long authorId);
+
+    List<Book> findByCategoriesId(Long categoryId);
 
     List<Book> findByAvailable(boolean available);
 

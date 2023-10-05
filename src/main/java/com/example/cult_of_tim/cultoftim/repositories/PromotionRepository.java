@@ -14,8 +14,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     //List<Promotion> findAll();
 
-    List<Promotion> findByUserId(Long userId);
-
     boolean existsByIdAndGlobalPromotion(Long promotionId, boolean global);
 
    // Promotion save(Promotion promotion);

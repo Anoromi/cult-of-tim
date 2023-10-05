@@ -32,11 +32,6 @@ public class PromotionMockService implements PromotionService {
     }
 
     @Override
-    public List<Promotion> getUserPromotions(Long userID) {
-        return promotionRepository.findByUserId(userID);
-    }
-
-    @Override
     public boolean isGlobal(Long promotionID) {
         return promotionRepository.existsByIdAndGlobalPromotion(promotionID, true);
     }

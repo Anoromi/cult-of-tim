@@ -1,8 +1,6 @@
 package com.cult_of_tim.auth.cultoftimauth.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,6 +9,7 @@ import java.util.UUID;
 public class UserToken {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID tokenId;
     private Date expiresAt;
 

@@ -1,21 +1,28 @@
 package com.cult_of_tim.auth.cultoftimauth.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "userTable")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private UUID userId;
 
     @Column(length = 100)
     private String username;
 
+    //@Column(name = "user_password")
     private String password;
 
+    //@Column(name = "user_email")
     private String email;
 
 
@@ -43,11 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }

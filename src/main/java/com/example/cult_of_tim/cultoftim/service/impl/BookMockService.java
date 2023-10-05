@@ -34,12 +34,13 @@ public class BookMockService implements BookService {
 
     @Override
     public List<Book> getBooksByAuthorId(Long authorId) {
-        return bookRepository.findByAuthorId(authorId);
+        return bookRepository.findByAuthorsId(authorId);
     }
 
     @Override
     public List<Book> getBooksByCategoryId(Long categoryId) {
-        return bookRepository.findByCategoryId(categoryId);
+        return List.of();
+        //return bookRepository.findByCategoryId(categoryId);
     }
 
     @Override

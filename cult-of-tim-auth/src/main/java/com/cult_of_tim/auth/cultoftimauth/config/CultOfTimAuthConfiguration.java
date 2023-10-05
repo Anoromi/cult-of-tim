@@ -1,6 +1,6 @@
 package com.cult_of_tim.auth.cultoftimauth.config;
 
-import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
+import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.util.UserCheckerImpl;
 import com.cult_of_tim.auth.cultoftimauth.util.WithoutPasswordChecker;
@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 @ComponentScan("com.cult_of_tim.auth")
@@ -28,13 +27,13 @@ public class CultOfTimAuthConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkPassword", havingValue = "false")
-    public UserChecker noPasswordChecker(UserDao userDao) {
+    public UserChecker noPasswordChecker(UserRepository userDao) {
         return new WithoutPasswordChecker(userDao);
     }
 
     @Bean
     @ConditionalOnMissingBean(UserChecker.class)
-    public UserChecker defaultChecker(UserDao userDao) {
+    public UserChecker defaultChecker(UserRepository userDao) {
         return new UserCheckerImpl(userDao);
     }
 
@@ -46,13 +45,13 @@ public class CultOfTimAuthConfiguration {
 
     @Bean
 @ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
-    public TokenValidator noExpirationChecker(UserDao userDao) {
-        return new TokenValidatorNoExpiration(userDao);
+    public TokenValidator noExpirationChecker(UserRepository userRepository) {
+        return new TokenValidatorNoExpiration(userRepository);
     }
 
     @Bean
     @ConditionalOnMissingBean(TokenValidator.class)
-    public TokenValidator expirationChecker(UserDao userDao) {
-        return new TokenValidatorWithExpiration(userDao);
+    public TokenValidator expirationChecker(UserRepository userRepository) {
+        return new TokenValidatorWithExpiration(userRepository);
     }
 }

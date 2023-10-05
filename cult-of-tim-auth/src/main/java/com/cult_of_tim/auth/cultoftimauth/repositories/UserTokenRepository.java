@@ -13,7 +13,7 @@ public interface UserTokenRepository extends JpaRepository<UserToken, UUID> {
 
     Optional<UserToken> findByTokenId(UUID tokenId);
 
-    List<UserToken> findByUserId(UUID userId);
+    List<UserToken> findByUserUserId(UUID userId);
 
    // UserToken save(UserToken userToken);
 

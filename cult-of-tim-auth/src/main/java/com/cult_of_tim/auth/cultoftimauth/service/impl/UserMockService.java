@@ -54,7 +54,8 @@ public class UserMockService implements UserService {
 
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
-        return userRepository.save(newUser).getId();
+        newUser.setUsername(username);
+        return userRepository.save(newUser).getUserId();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class UserMockService implements UserService {
     @Override
     public void deleteUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        user.ifPresent(value -> userRepository.deleteById(value.getId()));
+        user.ifPresent(value -> userRepository.deleteById(value.getUserId()));
     }
 
     @Override
