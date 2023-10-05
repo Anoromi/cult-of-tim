@@ -11,13 +11,12 @@ import java.util.Optional;
 @Repository
 public interface PromotionDiscountRepository extends JpaRepository<PromotionDiscount, PromotionDiscountID> {
 
-    Optional<PromotionDiscount> findByPromotionIdAndBookId(PromotionDiscountID id);
+    Optional<PromotionDiscount> findByPromotionIdAndBookId(Long promotion_id, Long book_id);
 
     List<PromotionDiscount> findByPromotionId(Long promotionId);
 
     List<PromotionDiscount> findByBookId(Long bookId);
 
-    PromotionDiscount save(PromotionDiscount promotionDiscount);
 
     //void deleteByPromotionIdAndBookId(Long promotionId, Long bookId);
 }
