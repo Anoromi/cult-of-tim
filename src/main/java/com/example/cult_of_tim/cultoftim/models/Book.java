@@ -5,19 +5,20 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bookId")
+    @Column(name = "book_id")
     private Long id;
 
     private String title;
 
     @ManyToMany
     @JoinTable(
-            name = "authors",
-            joinColumns = {@JoinColumn(name = "bookId")},
-            inverseJoinColumns = {@JoinColumn(name = "authorId")})
+            name = "book_author",
+            joinColumns = {@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private List<Author> authors;
 
     @ManyToMany

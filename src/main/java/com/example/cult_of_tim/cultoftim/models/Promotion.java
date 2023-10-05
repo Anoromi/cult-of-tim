@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "promotions")
 public class Promotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "promotionId")
+    @Column(name = "promotion_id")
     private Long id;
 
     private String description;

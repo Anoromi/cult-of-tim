@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "authors")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authorId")
+    @Column(name = "author_id")
     private Long id;
 
     @Column(length = 100)
@@ -34,13 +35,13 @@ public class Author {
         this.id = id;
     }
 
-    public List<Book> getBooks() {
+    /*public List<Book> getBooks() {
         return books;
     }
 
     public void setBooks(List<Book> books) {
         this.books = books;
-    }
+    }*/
 
     public String getFirstName() {
         return firstName;

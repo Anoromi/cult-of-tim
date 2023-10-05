@@ -17,5 +17,4 @@ public interface PromotionDiscountRepository extends JpaRepository<PromotionDisc
 
     List<PromotionDiscount> findByBookId(Long bookId);
 
-
 }

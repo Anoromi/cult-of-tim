@@ -1,7 +1,6 @@
 package com.example.cult_of_tim.cultoftim.service;
 
 import com.example.cult_of_tim.cultoftim.models.Promotion;
-import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 
 import java.time.LocalDateTime;
 import java.util.List;

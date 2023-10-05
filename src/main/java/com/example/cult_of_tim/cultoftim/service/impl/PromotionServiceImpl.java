@@ -1,8 +1,6 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-import com.example.cult_of_tim.cultoftim.dao.PromotionDao;
 import com.example.cult_of_tim.cultoftim.models.Promotion;
-import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PromotionMockService implements PromotionService {
+public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
 
     @Autowired
-    public PromotionMockService(PromotionRepository promotionRepository) {
+    public PromotionServiceImpl(PromotionRepository promotionRepository) {
         this.promotionRepository = promotionRepository;
     }
 

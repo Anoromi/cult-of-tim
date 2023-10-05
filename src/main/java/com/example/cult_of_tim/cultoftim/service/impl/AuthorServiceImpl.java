@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AuthorMockService implements AuthorService {
+public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
     @Autowired
-    public AuthorMockService(AuthorRepository authorRepository) {
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 

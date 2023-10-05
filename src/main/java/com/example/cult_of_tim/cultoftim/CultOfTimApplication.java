@@ -1,7 +1,7 @@
 package com.example.cult_of_tim.cultoftim;
 
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.example.cult_of_tim.cultoftim.models.Author;
+import com.example.cult_of_tim.cultoftim.models.*;
 import com.example.cult_of_tim.cultoftim.repositories.AuthorRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
@@ -12,9 +12,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -56,5 +57,17 @@ public class CultOfTimApplication implements CommandLineRunner {
         UUID userId = userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
+        Author author = authorService.createAuthor("First", "Second");
+        Category category = categoryService.createCategory("category");
+        Book book = bookService.createBook("title", List.of(author), List.of(category));
+        Promotion promdto = new Promotion();
+        promdto.setStartDate(LocalDateTime.now());
+        promdto.setEndDate(LocalDateTime.now().plusDays(2));
+        PromotionDiscount promotionDiscount = new PromotionDiscount();
+        promotionDiscount.setDiscountPercentage(50);
+        promotionDiscount.setBook(book);
+        promdto.setDiscounts(List.of(promotionDiscount));
+        Promotion promotion = promotionService.createPromotion(promdto);
+
     }
 }

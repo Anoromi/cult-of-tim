@@ -10,19 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryMockService implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
-    private /*final*/ CategoryRepository categoryRepository;
-
-    // better
-    /*
-    @Autowired
-    public CategoryMockService(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }*/
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public void setCategoryDao(CategoryRepository categoryDao) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 

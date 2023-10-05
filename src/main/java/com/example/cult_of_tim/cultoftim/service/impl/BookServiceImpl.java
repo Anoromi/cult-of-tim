@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookMockService implements BookService {
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookMockService(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-
 
     @Override
     public Optional<Book> getBookById(Long id) {

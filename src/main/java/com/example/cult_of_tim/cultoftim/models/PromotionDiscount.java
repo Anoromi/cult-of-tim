@@ -18,16 +18,24 @@ public class PromotionDiscount {
 
     @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="promotionId", referencedColumnName="promotionId")
+    @JoinColumn(name="promotion_id", referencedColumnName="promotion_id")
     private Promotion promotion;
 
 
     @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "bookId", referencedColumnName = "bookId")
+    @JoinColumn(name = "book_id", referencedColumnName = "book_id")
     private Book book;
 
     private int discountPercentage;
+
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }
 
 
