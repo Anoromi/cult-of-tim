@@ -16,7 +16,8 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     boolean existsByIdAndGlobalPromotion(Long promotionId, boolean global);
 
-   // Promotion save(Promotion promotion);
 
-    //void deleteById(Long id);
+    boolean  existsByIdAndGlobalPromotionTrue(Long promotionId);
+
+
 }

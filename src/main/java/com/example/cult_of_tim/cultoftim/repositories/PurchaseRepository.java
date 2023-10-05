@@ -10,13 +10,9 @@ import java.util.Optional;
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
-    //Optional<Purchase> findById(Long id);
 
-    //List<Purchase> findAll();
 
     List<Purchase> findByUserId(Long userId);
 
-    //Purchase save(Purchase purchase);
 
-    //void deleteById(Long id);
 }

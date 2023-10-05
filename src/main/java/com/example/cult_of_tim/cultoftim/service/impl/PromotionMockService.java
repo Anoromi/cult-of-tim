@@ -31,25 +31,19 @@ public class PromotionMockService implements PromotionService {
         return promotionRepository.findAll();
     }
 
+
     @Override
     public boolean isGlobal(Long promotionID) {
-        return promotionRepository.existsByIdAndGlobalPromotion(promotionID, true);
+        return promotionRepository.existsByIdAndGlobalPromotionTrue(promotionID);
     }
 
     @Override
-    public Promotion createPromotion(String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion) {
-        Promotion promotion = new Promotion();
-        promotion.setDescription(description);
-        promotion.setStartDate(startDate);
-        promotion.setEndDate(endDate);
-        promotion.setDiscounts(discounts);
-        promotion.setGlobalPromotion(globalPromotion);
+    public Promotion createPromotion(Promotion promotion) {
         return promotionRepository.save(promotion);
     }
 
     @Override
-    public Promotion updatePromotion(Long id, String description, LocalDateTime startDate, LocalDateTime endDate, List<PromotionDiscount> discounts, boolean globalPromotion) {
-        Promotion updatedPromotion = new Promotion();
+    public Promotion updatePromotion(Long id, Promotion updatedPromotion){
         updatedPromotion.setId(id);
         updatedPromotion.setDescription(description);
         updatedPromotion.setStartDate(startDate);
