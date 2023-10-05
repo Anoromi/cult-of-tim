@@ -15,7 +15,4 @@ public interface UserTokenRepository extends JpaRepository<UserToken, UUID> {
 
     List<UserToken> findByUserId(UUID userId);
 
-   // UserToken save(UserToken userToken);
-
-    //void deleteByTokenId(UUID tokenId);
 }

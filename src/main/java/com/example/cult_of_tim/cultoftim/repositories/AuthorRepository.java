@@ -10,15 +10,10 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    //Optional<Author> findById(Long id);
-
-    //List<Author> findAll();
 
     List<Author> findByFirstName(String firstName);
 
     List<Author> findByLastName(String lastName);
 
-    //Author save(Author author);
 
-   // void deleteById(Long id);
 }
