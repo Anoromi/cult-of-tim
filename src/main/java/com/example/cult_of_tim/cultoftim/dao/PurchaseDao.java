@@ -1,6 +1,6 @@
 package com.example.cult_of_tim.cultoftim.dao;
 
-import com.example.cult_of_tim.cultoftim.models.Purchase;
+import com.example.cult_of_tim.cultoftim.entity.Purchase;
 
 import java.util.List;
 import java.util.Optional;

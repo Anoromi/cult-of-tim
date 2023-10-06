@@ -1,36 +1,36 @@
 package com.example.cult_of_tim.cultoftim.service;
 
-import com.example.cult_of_tim.cultoftim.models.Promotion;
-import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
+import com.example.cult_of_tim.cultoftim.dto.PromotionDiscountDto;
+import com.example.cult_of_tim.cultoftim.dto.PromotionDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface PromotionService {
-    Optional<Promotion> getPromotionById(Long id);
+    Optional<PromotionDto> getPromotionById(Long id);
 
-    List<Promotion> getAllPromotions();
+    List<PromotionDto> getAllPromotions();
 
 
     boolean isGlobal(Long promotionID);
 
-    Promotion createPromotion(Promotion promotion);
+    PromotionDto createPromotion(PromotionDto promotion);
 
-    Promotion updatePromotion(Long id, Promotion updatedPromotion);
+    PromotionDto updatePromotion(Long id, PromotionDto updatedPromotion);
 
     void deletePromotion(Long id);
 
     void changePromotionEndDate(Long promotionID, LocalDateTime newEndDate);
 
-    List<Promotion> getActivePromotions();
+    List<PromotionDto> getActivePromotions();
 
-    List<Promotion> getExpiredPromotions();
+    List<PromotionDto> getExpiredPromotions();
 
     boolean isPromotionExpired(Long promotionID);
 
     boolean isPromotionActive(Long promotionID);
 
-    Promotion addBookWithDiscountToPromotion(Long promotionId, Long bookId, int discountPercentage);
+    void addBookWithDiscountToPromotion(PromotionDiscountDto promotionDiscount);
 }
 

@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.entity;
 
 import jakarta.persistence.*;
 
@@ -6,15 +6,6 @@ import jakarta.persistence.*;
 @Entity
 @IdClass(PromotionDiscountID.class)
 public class PromotionDiscount {
-
-    //@Id
-    //@Column(name = "promotionId")
-    //private Long promotionId;
-
-    //@Id
-    //@Column(name = "bookId")
-    //private Long bookId;
-
 
     @Id
     @ManyToOne
@@ -39,6 +30,10 @@ public class PromotionDiscount {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
     }
 
     public void setPromotion(Promotion promotion) { this.promotion = promotion;}

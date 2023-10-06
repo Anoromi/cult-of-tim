@@ -1,10 +1,7 @@
 package com.example.cult_of_tim.cultoftim;
 
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.example.cult_of_tim.cultoftim.models.Author;
-import com.example.cult_of_tim.cultoftim.models.Book;
-import com.example.cult_of_tim.cultoftim.models.Category;
-import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
@@ -53,13 +50,24 @@ public class CultOfTimApplication implements CommandLineRunner {
         userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
-        Author author = authorService.createAuthor("First", "Second");
-        Category category = categoryService.createCategory("category");
-        Book book = bookService.createBook("title", List.of(author), List.of(category));
-        Promotion promdto = new Promotion();
+        AuthorDto author = authorService.createAuthor("First", "Second");
+        CategoryDto category = categoryService.createCategory("category");
+
+        BookDto bookDto = new BookDto();
+        bookDto.setTitle("title");
+        bookDto.setAuthors(List.of(author));
+        bookDto.setCategories(List.of(category));
+        BookDto book = bookService.createBook(bookDto);
+
+        PromotionDto promdto = new PromotionDto();
         promdto.setStartDate(LocalDateTime.now());
         promdto.setEndDate(LocalDateTime.now().plusDays(2));
-        Promotion promotion = promotionService.createPromotion(promdto);
-        promotionService.addBookWithDiscountToPromotion(promotion.getId(), book.getId(), 50);
+        PromotionDto promotion = promotionService.createPromotion(promdto);
+
+        PromotionDiscountDto promotionDiscountDto = new PromotionDiscountDto();
+        promotionDiscountDto.setPromotionId(promotion.getId());
+        promotionDiscountDto.setBookId(book.getId());
+        promotionDiscountDto.setDiscountPercentage(50);
+        promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
     }
 }

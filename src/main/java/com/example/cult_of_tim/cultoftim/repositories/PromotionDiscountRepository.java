@@ -1,7 +1,7 @@
 package com.example.cult_of_tim.cultoftim.repositories;
 
-import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
-import com.example.cult_of_tim.cultoftim.models.PromotionDiscountID;
+import com.example.cult_of_tim.cultoftim.entity.PromotionDiscount;
+import com.example.cult_of_tim.cultoftim.entity.PromotionDiscountID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

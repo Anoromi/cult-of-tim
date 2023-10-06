@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.entity;
 
 import java.io.Serializable;
 

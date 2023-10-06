@@ -1,7 +1,5 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.entity;
 
-import com.cult_of_tim.auth.cultoftimauth.model.User;
-import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

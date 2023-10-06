@@ -1,6 +1,6 @@
 package com.example.cult_of_tim.cultoftim.dao;
 
-import com.example.cult_of_tim.cultoftim.models.Category;
+import com.example.cult_of_tim.cultoftim.entity.Category;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,20 +1,20 @@
 package com.example.cult_of_tim.cultoftim.service;
 
-import com.example.cult_of_tim.cultoftim.models.Purchase;
+import com.example.cult_of_tim.cultoftim.dto.PurchaseDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PurchaseService {
-    Optional<Purchase> getPurchaseById(Long id);
+    Optional<PurchaseDto> getPurchaseById(Long id);
 
-    List<Purchase> getAllPurchases();
+    List<PurchaseDto> getAllPurchases();
 
-    List<Purchase> getPurchasesByUserId(Long userId);
+    List<PurchaseDto> getPurchasesByUserId(Long userId);
 
-    Purchase createPurchase(Purchase purchase);
+    PurchaseDto createPurchase(PurchaseDto purchase);
 
-    Purchase updatePurchase(Purchase purchase);
+    PurchaseDto updatePurchase(PurchaseDto purchase);
 
     void deletePurchaseById(Long id);
 }
