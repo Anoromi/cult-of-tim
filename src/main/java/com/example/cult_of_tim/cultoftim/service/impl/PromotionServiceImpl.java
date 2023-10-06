@@ -6,6 +6,7 @@ import com.example.cult_of_tim.cultoftim.models.PromotionDiscount;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +101,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional
     public Promotion addBookWithDiscountToPromotion(Long promotionId, Long bookId, int discountPercentage) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new IllegalArgumentException("Promotion not found"));
@@ -124,7 +126,7 @@ public class PromotionServiceImpl implements PromotionService {
 
             return promotionRepository.save(promotion);
         } else {
-            throw new IllegalArgumentException("Promotion for the Book with id: " + bookId + " is already created");
+            throw new IllegalArgumentException("Promotion discount for the Book with id: " + bookId + " is already created");
         }
     }
 }
