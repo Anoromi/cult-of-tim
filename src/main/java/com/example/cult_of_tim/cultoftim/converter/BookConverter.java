@@ -2,6 +2,7 @@ package com.example.cult_of_tim.cultoftim.converter;
 
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -9,7 +10,9 @@ import java.util.stream.Collectors;
 @Component
 public class BookConverter {
 
+    @Autowired
     private AuthorConverter authorConverter;
+    @Autowired
     private CategoryConverter categoryConverter;
 
     public BookDto toDto(Book book) {
