@@ -1,7 +1,6 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.dto;
 
-public class Category {
-
+public class CategoryDto {
     private Long id;
     private String name;
 
@@ -17,8 +16,8 @@ public class Category {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
 }
+

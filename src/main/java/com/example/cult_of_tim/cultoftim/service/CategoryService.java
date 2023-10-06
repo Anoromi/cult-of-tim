@@ -1,19 +1,19 @@
 package com.example.cult_of_tim.cultoftim.service;
 
-import com.example.cult_of_tim.cultoftim.models.Category;
+import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
 
-    Optional<Category> getCategoryById(Long id);
+    Optional<CategoryDto> getCategoryById(Long id);
 
-    List<Category> getAllCategories();
+    List<CategoryDto> getAllCategories();
 
-    Long createCategory(String name);
+    CategoryDto createCategory(String name);
 
-    Category updateCategory(Long id, Category updatedCategory);
+    CategoryDto updateCategory(Long id, CategoryDto updatedCategory);
 
     void deleteCategory(Long id);
 }

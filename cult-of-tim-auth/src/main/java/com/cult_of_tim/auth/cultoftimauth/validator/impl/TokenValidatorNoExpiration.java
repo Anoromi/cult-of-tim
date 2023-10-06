@@ -1,23 +1,22 @@
 package com.cult_of_tim.auth.cultoftimauth.validator.impl;
 
-import com.cult_of_tim.auth.cultoftimauth.dao.UserDao;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
+import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.validator.TokenValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class TokenValidatorNoExpiration  implements TokenValidator {
 
-    private UserDao userDao;
+    private UserRepository userRepository;
 
-    @Autowired
-    public TokenValidatorNoExpiration(UserDao userDao) {
-        this.userDao = userDao;
+    public TokenValidatorNoExpiration(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
+
 
     /**
      * Validates the token and returns the user
@@ -26,11 +25,9 @@ public class TokenValidatorNoExpiration  implements TokenValidator {
      */
     @Override
     public Optional<User> validateToken(UserToken token) {
-        String tokenData = userDao.findByToken(token);
-        if (tokenData != null) {
-            return userDao.getUserById(token.userId);
-        } else {
-            return null;
-        }
+        //String tokenData = userRepository.findById(token.getTokenId());
+        if(token.getExpiresAt().before(new Date()))
+            return Optional.ofNullable(token.getUser());
+        return Optional.empty();
     }
 }

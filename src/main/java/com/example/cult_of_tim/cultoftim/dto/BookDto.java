@@ -1,16 +1,12 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.dto;
 
 import java.util.List;
 
-
-public class Book {
+public class BookDto {
     private Long id;
-
     private String title;
-
-    private List<Long> authorIDs;
-
-    private List<Long> categoryIDs;
+    private List<AuthorDto> authors;
+    private List<CategoryDto> categories;
     private int quantity;
     private boolean available;
 
@@ -22,7 +18,6 @@ public class Book {
         this.id = id;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -31,20 +26,20 @@ public class Book {
         this.title = title;
     }
 
-    public List<Long> getAuthorIDs() {
-        return authorIDs;
+    public List<AuthorDto> getAuthors() {
+        return authors;
     }
 
-    public void setAuthorIDs(List<Long> authorIDs) {
-        this.authorIDs = authorIDs;
+    public void setAuthors(List<AuthorDto> authors) {
+        this.authors = authors;
     }
 
-    public List<Long> getCategoryIDs() {
-        return categoryIDs;
+    public List<CategoryDto> getCategories() {
+        return categories;
     }
 
-    public void setCategoryIDs(List<Long> categoryIDs) {
-        this.categoryIDs = categoryIDs;
+    public void setCategories(List<CategoryDto> categories) {
+        this.categories = categories;
     }
 
     public int getQuantity() {
@@ -63,3 +58,4 @@ public class Book {
         this.available = available;
     }
 }
+

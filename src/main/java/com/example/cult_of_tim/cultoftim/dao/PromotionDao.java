@@ -1,6 +1,6 @@
 package com.example.cult_of_tim.cultoftim.dao;
 
-import com.example.cult_of_tim.cultoftim.models.Promotion;
+import com.example.cult_of_tim.cultoftim.entity.Promotion;
 
 import java.util.List;
 import java.util.Optional;

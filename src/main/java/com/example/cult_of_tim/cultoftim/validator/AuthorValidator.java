@@ -1,6 +1,6 @@
 package com.example.cult_of_tim.cultoftim.validator;
 
-import com.example.cult_of_tim.cultoftim.models.Author;
+import com.example.cult_of_tim.cultoftim.entity.Author;
 
 import java.util.List;
 

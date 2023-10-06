@@ -1,35 +1,16 @@
-package com.example.cult_of_tim.cultoftim.models;
+package com.example.cult_of_tim.cultoftim.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class Promotion {
-
+public class PromotionDto {
     private Long id;
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private List<Long> userIDs;
     private boolean globalPromotion;
 
     public Long getId() {
         return id;
-    }
-
-    public List<Long> getUserIDs() {
-        return userIDs;
-    }
-
-    public void setUserIDs(List<Long> userIDs) {
-        this.userIDs = userIDs;
-    }
-
-    public boolean isGlobalPromotion() {
-        return globalPromotion;
-    }
-
-    public void setGlobalPromotion(boolean globalPromotion) {
-        this.globalPromotion = globalPromotion;
     }
 
     public void setId(Long id) {
@@ -60,5 +41,12 @@ public class Promotion {
         this.endDate = endDate;
     }
 
+    public boolean isGlobalPromotion() {
+        return globalPromotion;
+    }
 
+    public void setGlobalPromotion(boolean globalPromotion) {
+        this.globalPromotion = globalPromotion;
+    }
 }
+

@@ -1,19 +1,19 @@
 package com.example.cult_of_tim.cultoftim.service;
 
-import com.example.cult_of_tim.cultoftim.models.Author;
+import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AuthorService {
 
-    Optional<Author> getAuthorById(Long id);
+    Optional<AuthorDto> getAuthorById(Long id);
 
-    List<Author> getAllAuthors();
+    List<AuthorDto> getAllAuthors();
 
-    Long createAuthor(String name);
+    AuthorDto createAuthor(String firstName, String lastName);
 
-    Author updateAuthor(Long id, Author updatedAuthor);
+    AuthorDto updateAuthor(Long id, AuthorDto updatedAuthor);
 
     void deleteAuthor(Long id);
 }
