@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 public class PurchaseConverter {
 
     public PurchaseDto toDto(Purchase purchase) {
-        PurchaseDto purchaseDto = new PurchaseDto();
-        purchaseDto.setId(purchase.getId());
-        purchaseDto.setPurchaseDate(purchase.getPurchaseDate());
-        purchaseDto.setUserId(purchase.getUserId());
-        return purchaseDto;
+        return PurchaseDto.builder()
+                .id(purchase.getId())
+                .purchaseDate(purchase.getPurchaseDate())
+                .userId(purchase.getUserId())
+                .build();
     }
 
     public Purchase toEntity(PurchaseDto purchaseDto) {
-        Purchase purchase = new Purchase();
-        purchase.setId(purchaseDto.getId());
-        purchase.setPurchaseDate(purchaseDto.getPurchaseDate());
-        purchase.setUserId(purchaseDto.getUserId());
-        return purchase;
+        return Purchase.builder()
+                .id(purchaseDto.getId())
+                .purchaseDate(purchaseDto.getPurchaseDate())
+                .userId(purchaseDto.getUserId())
+                .build();
     }
 }
 
