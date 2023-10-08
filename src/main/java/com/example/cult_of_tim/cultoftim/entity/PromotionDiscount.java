@@ -1,8 +1,15 @@
 package com.example.cult_of_tim.cultoftim.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @IdClass(PromotionDiscountID.class)
 public class PromotionDiscount {
@@ -19,24 +26,6 @@ public class PromotionDiscount {
     private Book book;
 
     private int discountPercentage;
-
-    public int getDiscountPercentage() { return discountPercentage; }
-
-    public void setDiscountPercentage(int discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
-
-    public Book getBook() { return book; }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(Promotion promotion) { this.promotion = promotion;}
 }
 
 
