@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 public class PromotionConverter {
 
     public PromotionDto toDto(Promotion promotion) {
-        PromotionDto promotionDto = new PromotionDto();
-        promotionDto.setId(promotion.getId());
-        promotionDto.setDescription(promotion.getDescription());
-        promotionDto.setStartDate(promotion.getStartDate());
-        promotionDto.setEndDate(promotion.getEndDate());
-        promotionDto.setGlobalPromotion(promotion.isGlobalPromotion());
-        return promotionDto;
+        return PromotionDto.builder()
+                .id(promotion.getId())
+                .description(promotion.getDescription())
+                .startDate(promotion.getStartDate())
+                .endDate(promotion.getEndDate())
+                .globalPromotion(promotion.isGlobalPromotion())
+                .build();
     }
 
     public Promotion toEntity(PromotionDto promotionDto) {
-        Promotion promotion = new Promotion();
-        promotion.setId(promotionDto.getId());
-        promotion.setDescription(promotionDto.getDescription());
-        promotion.setStartDate(promotionDto.getStartDate());
-        promotion.setEndDate(promotionDto.getEndDate());
-        promotion.setGlobalPromotion(promotionDto.isGlobalPromotion());
-        return promotion;
+        return Promotion.builder()
+                .id(promotionDto.getId())
+                .description(promotionDto.getDescription())
+                .startDate(promotionDto.getStartDate())
+                .endDate(promotionDto.getEndDate())
+                .globalPromotion(promotionDto.isGlobalPromotion())
+                .build();
     }
 }
 

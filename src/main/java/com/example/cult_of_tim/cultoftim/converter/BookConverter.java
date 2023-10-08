@@ -2,39 +2,38 @@ package com.example.cult_of_tim.cultoftim.converter;
 
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class BookConverter {
 
-    @Autowired
     private AuthorConverter authorConverter;
-    @Autowired
     private CategoryConverter categoryConverter;
 
     public BookDto toDto(Book book) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthors(book.getAuthors().stream().map(authorConverter::toDto).collect(Collectors.toList()));
-        bookDto.setCategories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()));
-        bookDto.setQuantity(book.getQuantity());
-        bookDto.setAvailable(book.isAvailable());
-        return bookDto;
+        return BookDto.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .authors(book.getAuthors().stream().map(authorConverter::toDto).collect(Collectors.toList()))
+                .categories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()))
+                .quantity(book.getQuantity())
+                .available(book.isAvailable())
+                .build();
     }
 
     public Book toEntity(BookDto bookDto) {
-        Book book = new Book();
-        book.setId(bookDto.getId());
-        book.setTitle(bookDto.getTitle());
-        book.setAuthors(bookDto.getAuthors().stream().map(authorConverter::toEntity).collect(Collectors.toList()));
-        book.setCategories(bookDto.getCategories().stream().map(categoryConverter::toEntity).collect(Collectors.toList()));
-        book.setQuantity(bookDto.getQuantity());
-        book.setAvailable(bookDto.isAvailable());
-        return book;
+        return Book.builder()
+                .id(bookDto.getId())
+                .title(bookDto.getTitle())
+                .authors(bookDto.getAuthors().stream().map(authorConverter::toEntity).collect(Collectors.toList()))
+                .categories(bookDto.getCategories().stream().map(categoryConverter::toEntity).collect(Collectors.toList()))
+                .quantity(bookDto.getQuantity())
+                .available(bookDto.isAvailable())
+                .build();
     }
 }
 
