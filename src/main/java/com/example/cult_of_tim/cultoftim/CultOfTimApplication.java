@@ -7,6 +7,8 @@ import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +32,9 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     final PromotionDiscountRepository promotionDiscountRepository;
 
+        private static final Logger logger
+      = LoggerFactory.getLogger(SpringApplication.class);
+
 
     @Autowired
     public CultOfTimApplication(BookService bookService, AuthorService authorService, CategoryService categoryService, PromotionService promotionService, UserService userService, PromotionDiscountRepository promotionDiscountRepository) {
@@ -47,6 +52,7 @@ public class CultOfTimApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        logger.debug("Debugging hello");
         userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));

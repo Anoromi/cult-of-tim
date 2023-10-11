@@ -7,6 +7,9 @@ import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.validator.EmailValidator;
 import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class UserMockService implements UserService {
     private final PasswordValidator passwordValidator;
 
     private final UserChecker passwordChecker;
+
+    private final Logger logger = LoggerFactory.getLogger(UserMockService.class);
 
     @Autowired
     public UserMockService(UserRepository userRepository, EmailValidator emailValidator, PasswordValidator passwordValidator, UserChecker passwordChecker) {
@@ -55,6 +60,11 @@ public class UserMockService implements UserService {
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
         newUser.setUsername(username);
+
+        MDC.put("user", username);
+        logger.info("Registered user");
+        MDC.remove("user");
+
         return userRepository.save(newUser).getUserId();
     }
 
