@@ -3,6 +3,7 @@ package com.example.cult_of_tim.cultoftim.util;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.LayoutBase;
+import org.slf4j.Marker;
 
 public class TimCustomLayout extends LayoutBase<ILoggingEvent> {
 
@@ -13,7 +14,10 @@ public class TimCustomLayout extends LayoutBase<ILoggingEvent> {
         sbuf.append(event.getTimeStamp() - event.getLoggerContextVO().getBirthTime());
         sbuf.append(" ");
         sbuf.append(event.getLevel());
-        sbuf.append(" [");
+        sbuf.append(" {");
+        if (event.getMarkerList() != null && !event.getMarkerList().isEmpty())
+            sbuf.append(String.join(",", event.getMarkerList().stream().map(Marker::getName).toList()));
+        sbuf.append("} [");
         sbuf.append(event.getThreadName());
         sbuf.append("] ");
         sbuf.append(event.getLoggerName());
