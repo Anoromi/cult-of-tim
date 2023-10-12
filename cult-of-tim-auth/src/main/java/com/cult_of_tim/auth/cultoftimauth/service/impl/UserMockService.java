@@ -86,8 +86,22 @@ public class UserMockService implements UserService {
 
     @Override
     public boolean login(String email, String password) throws IllegalArgumentException {
+        if (logger.isDebugEnabled()) {
+            logger.debug(authMarker, "Attempting login for user with email: {}", email);
+        }
+
         var user = passwordChecker.lookupUser(email, password);
 
-        return user.isPresent();
+        if (user.isPresent()) {
+            if (logger.isInfoEnabled()) {
+                logger.info(authMarker, "User with email {} has successfully logged in", email);
+            }
+            return true;
+        } else {
+            if (logger.isInfoEnabled()) {
+                logger.info(authMarker, "Login attempt failed for user with email: {}", email);
+            }
+            return false;
+        }
     }
 }
