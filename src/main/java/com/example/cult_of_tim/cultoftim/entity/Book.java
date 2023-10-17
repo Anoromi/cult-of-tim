@@ -22,6 +22,8 @@ public class Book {
 
     private String title;
 
+    private double price;
+
     @ManyToMany
     @JoinTable(
             name = "book_author",
