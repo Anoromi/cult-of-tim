@@ -91,23 +91,23 @@ public class PurchaseServiceImpl implements PurchaseService {
             }
         }
 
-        double totalCost = booksToPurchase.stream()
-                .mapToDouble(Book::getPrice)
+        int  totalCost = booksToPurchase.stream()
+                .mapToInt(Book::getPrice)
                 .sum();
 
         LocalDateTime now = LocalDateTime.now();
         List<Promotion> activePromotions = promotionRepository.findAll();
         activePromotions = activePromotions.stream().filter(x -> now.isBefore(x.getEndDate())).collect(Collectors.toList());
 
-        double totalDiscountAmount = 0.0;
+        int  totalDiscountAmount = 0;
 
 
         for (Promotion promotion : activePromotions) {
             for (PromotionDiscount discount : promotion.getDiscounts()) {
                 Book book = discount.getBook();
-                double bookPrice = book.getPrice();
+                Integer bookPrice = book.getPrice();
                 double discountPercentage = discount.getDiscountPercentage() / 100.0;
-                double discountAmount = discountPercentage * bookPrice;
+                int discountAmount = (int) (discountPercentage * bookPrice);
 
 
                 totalDiscountAmount += discountAmount;

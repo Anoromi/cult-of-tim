@@ -22,7 +22,7 @@ public class Book {
 
     private String title;
 
-    private double price;
+    private Integer price;
 
     @ManyToMany
     @JoinTable(
