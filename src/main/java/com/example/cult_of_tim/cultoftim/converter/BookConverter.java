@@ -21,7 +21,6 @@ public class BookConverter {
                 .authors(book.getAuthors().stream().map(authorConverter::toDto).collect(Collectors.toList()))
                 .categories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()))
                 .quantity(book.getQuantity())
-                .available(book.isAvailable())
                 .build();
     }
 
@@ -32,7 +31,6 @@ public class BookConverter {
                 .authors(bookDto.getAuthors().stream().map(authorConverter::toEntity).collect(Collectors.toList()))
                 .categories(bookDto.getCategories().stream().map(categoryConverter::toEntity).collect(Collectors.toList()))
                 .quantity(bookDto.getQuantity())
-                .available(bookDto.isAvailable())
                 .build();
     }
 }

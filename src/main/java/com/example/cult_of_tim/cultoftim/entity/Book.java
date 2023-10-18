@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Book {
     @Column(name = "book_id")
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @ManyToMany
@@ -32,6 +34,12 @@ public class Book {
     @ManyToMany
     private List<Category> categories;
 
+    @Column(length = 13)
+    private String isbn13;
+
+    @Column(nullable = false)
     private int quantity;
+
+    @Formula("quantity != 0")
     private boolean available;
 }

@@ -9,16 +9,18 @@ public class AuthorConverter {
     public AuthorDto toDto(Author author) {
         return AuthorDto.builder()
                 .id(author.getId())
-                .firstName(author.getFirstName())
-                .lastName(author.getLastName())
+                //.firstName(author.getFirstName())
+                //.lastName(author.getLastName())
+                .fullName(author.getFullName())
                 .build();
     }
 
     public Author toEntity(AuthorDto authorDto) {
         return Author.builder()
                 .id(authorDto.getId())
-                .firstName(authorDto.getFirstName())
-                .lastName(authorDto.getLastName())
+                //.firstName(authorDto.getFirstName())
+                //.lastName(authorDto.getLastName())
+                .fullName(authorDto.getFullName())
                 .build();
     }
 }

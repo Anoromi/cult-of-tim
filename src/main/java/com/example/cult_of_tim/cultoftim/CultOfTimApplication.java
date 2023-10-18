@@ -56,7 +56,7 @@ public class CultOfTimApplication implements CommandLineRunner {
         userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
-        AuthorDto author = authorService.createAuthor("First", "Second");
+        AuthorDto author = authorService.createAuthor("First Second");
         CategoryDto category = categoryService.createCategory("category");
 
         BookDto bookDto = new BookDto();
@@ -75,5 +75,8 @@ public class CultOfTimApplication implements CommandLineRunner {
         promotionDiscountDto.setBookId(book.getId());
         promotionDiscountDto.setDiscountPercentage(50);
         promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
+
+        bookService.addBookFromOpenLibrary("9780545029360", 10);
+        //bookService.addBookFromOpenLibrary("9780545029365", 10);
     }
 }

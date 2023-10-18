@@ -12,6 +12,8 @@ public interface BookService {
     List<BookDto> getAllBooks();
 
 
+    void addBookFromOpenLibrary(String isbn13, int count);
+
     List<BookDto> getBooksByAuthorId(Long authorId);
 
     List<BookDto> getBooksByCategoryId(Long categoryId);

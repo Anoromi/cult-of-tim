@@ -4,10 +4,17 @@ package com.example.cult_of_tim.cultoftim.service.impl;
 import com.example.cult_of_tim.cultoftim.converter.AuthorConverter;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.entity.Author;
+import com.example.cult_of_tim.cultoftim.external.OpenLibraryAuthor;
 import com.example.cult_of_tim.cultoftim.repositories.AuthorRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,12 +46,43 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto createAuthor(String firstName, String lastName) {
+    public AuthorDto createAuthor(String fullName) {
         Author newAuthor = new Author();
-        newAuthor.setFirstName(firstName);
-        newAuthor.setLastName(lastName);
+        //newAuthor.setFirstName(firstName);
+        //newAuthor.setLastName(lastName);
+        newAuthor.setFullName(fullName);
         Author savedAuthor = authorRepository.save(newAuthor);
         return authorConverter.toDto(savedAuthor);
+    }
+
+    @Override
+    public AuthorDto createAuthorFromOpenLibrary(String openLibraryAuthId) {
+        try {
+            var result = WebClient.builder()
+                    .baseUrl("https://openlibrary.org")
+                    .clientConnector(new ReactorClientHttpConnector(
+                            HttpClient.create().followRedirect(true)
+                    ))
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build().get().uri("/authors/{authorId}.json", openLibraryAuthId)
+                    .retrieve()
+                    .toEntity(OpenLibraryAuthor.class)
+                    .block();
+
+            assert result != null;
+            assert result.getBody() != null;
+
+            var author = new Author();
+            author.setFullName(result.getBody().name());
+            author.setBooks(List.of());
+            var resultingAuthor = authorRepository.save(author);
+
+            return authorConverter.toDto(resultingAuthor);
+        }
+        catch (WebClientResponseException e) {
+            throw new IllegalArgumentException("Illegal auth id");
+        }
+
     }
 
     @Override
@@ -54,8 +92,9 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author updatedAuthor = authorConverter.toEntity(updatedAuthorDto);
 
-        existingAuthor.setFirstName(updatedAuthor.getFirstName());
-        existingAuthor.setLastName(updatedAuthor.getLastName());
+        existingAuthor.setFullName(updatedAuthor.getFullName());
+        //existingAuthor.setFirstName(updatedAuthor.getFirstName());
+        //existingAuthor.setLastName(updatedAuthor.getLastName());
 
         Author savedAuthor = authorRepository.save(existingAuthor);
         return authorConverter.toDto(savedAuthor);
