@@ -38,4 +38,7 @@ public class Author {
             mappedBy = "authors")
     private List<Book> books;
 
+    @Column(length = 20)
+    private String openLibraryId;
+
 }

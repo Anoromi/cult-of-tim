@@ -72,14 +72,19 @@ public class AuthorServiceImpl implements AuthorService {
             assert result != null;
             assert result.getBody() != null;
 
-            var author = new Author();
-            author.setFullName(result.getBody().name());
-            author.setBooks(List.of());
-            var resultingAuthor = authorRepository.save(author);
+            var optionalAuthor = authorRepository.findByOpenLibraryId(result.getBody().name());
+            Author author;
+            if (optionalAuthor.isPresent()) {
+                author = optionalAuthor.get();
+            } else {
+                var newAuthor = new Author();
+                newAuthor.setFullName(result.getBody().name());
+                newAuthor.setBooks(List.of());
+                author = authorRepository.save(newAuthor);
+            }
 
-            return authorConverter.toDto(resultingAuthor);
-        }
-        catch (WebClientResponseException e) {
+            return authorConverter.toDto(author);
+        } catch (WebClientResponseException e) {
             throw new IllegalArgumentException("Illegal auth id");
         }
 
@@ -93,8 +98,6 @@ public class AuthorServiceImpl implements AuthorService {
         Author updatedAuthor = authorConverter.toEntity(updatedAuthorDto);
 
         existingAuthor.setFullName(updatedAuthor.getFullName());
-        //existingAuthor.setFirstName(updatedAuthor.getFirstName());
-        //existingAuthor.setLastName(updatedAuthor.getLastName());
 
         Author savedAuthor = authorRepository.save(existingAuthor);
         return authorConverter.toDto(savedAuthor);
