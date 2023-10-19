@@ -37,11 +37,6 @@ public class PromotionController {
         return promotionRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public List<Promotion> getUserPromotions(@PathVariable Long userID) {
-        return promotionRepository.findByUserId(userID);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Promotion> updatePromotion(@PathVariable Long id, @RequestBody Promotion updatedPromotion) {
         if (promotionRepository.existsById(id)) {
