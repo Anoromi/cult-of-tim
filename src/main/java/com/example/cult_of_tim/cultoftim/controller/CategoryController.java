@@ -1,7 +1,8 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
-import com.example.cult_of_tim.cultoftim.entity.Category;
-import com.example.cult_of_tim.cultoftim.repositories.CategoryRepository;
+import com.example.cult_of_tim.cultoftim.controller.request.CategoryRequest;
+import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
+import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,45 +10,50 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryRequest> getAllCategories() {
+        List<CategoryDto> categories = categoryService.getAllCategories();
+        return categories.stream()
+                .map(this::mapToCategoryRequest)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
+    public ResponseEntity<CategoryRequest> getCategoryById(@PathVariable Long id) {
+        Optional<CategoryDto> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
-            return ResponseEntity.ok(category.get());
+            return ResponseEntity.ok(mapToCategoryRequest(category.get()));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        Category createdCategory = categoryRepository.save(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+    public ResponseEntity<CategoryRequest> createCategory(@RequestBody String categoryName) {
+        CategoryDto createdCategory = categoryService.createCategory(categoryName);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToCategoryRequest(createdCategory));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category updatedCategory) {
-        if (categoryRepository.existsById(id)) {
-            updatedCategory.setId(id);
-            Category savedCategory = categoryRepository.save(updatedCategory);
-            return ResponseEntity.ok(savedCategory);
+    public ResponseEntity<CategoryRequest> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
+        Optional<CategoryDto> existingCategory = categoryService.getCategoryById(id);
+        if (existingCategory.isPresent()) {
+            CategoryDto categoryDto = mapToCategoryDto(categoryRequest);
+            CategoryDto updatedCategory = categoryService.updateCategory(id, categoryDto);
+            return ResponseEntity.ok(mapToCategoryRequest(updatedCategory));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -55,12 +61,26 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        if (categoryRepository.existsById(id)) {
-            categoryRepository.deleteById(id);
+        Optional<CategoryDto> existingCategory = categoryService.getCategoryById(id);
+        if (existingCategory.isPresent()) {
+            categoryService.deleteCategory(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private CategoryDto mapToCategoryDto(CategoryRequest categoryRequest) {
+        return CategoryDto.builder()
+                .name(categoryRequest.getName())
+                .build();
+    }
+
+    private CategoryRequest mapToCategoryRequest(CategoryDto categoryDto) {
+        return CategoryRequest.builder()
+                .id(categoryDto.getId())
+                .name(categoryDto.getName())
+                .build();
     }
 
 }
