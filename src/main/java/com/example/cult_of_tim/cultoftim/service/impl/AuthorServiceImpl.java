@@ -12,9 +12,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.netty.http.client.HttpClient;
+//import org.springframework.web.reactive.function.client.WebClient;
+//import org.springframework.web.reactive.function.client.WebClientResponseException;
+//import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,36 +57,37 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto createAuthorFromOpenLibrary(String openLibraryAuthId) {
-        try {
-            var result = WebClient.builder()
-                    .baseUrl("https://openlibrary.org")
-                    .clientConnector(new ReactorClientHttpConnector(
-                            HttpClient.create().followRedirect(true)
-                    ))
-                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .build().get().uri("/authors/{authorId}.json", openLibraryAuthId)
-                    .retrieve()
-                    .toEntity(OpenLibraryAuthor.class)
-                    .block();
+        throw new Error("");
+        //try {
+        //    var result = WebClient.builder()
+        //            .baseUrl("https://openlibrary.org")
+        //            .clientConnector(new ReactorClientHttpConnector(
+        //                    HttpClient.create().followRedirect(true)
+        //            ))
+        //            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        //            .build().get().uri("/authors/{authorId}.json", openLibraryAuthId)
+        //            .retrieve()
+        //            .toEntity(OpenLibraryAuthor.class)
+        //            .block();
 
-            assert result != null;
-            assert result.getBody() != null;
+        //    assert result != null;
+        //    assert result.getBody() != null;
 
-            var optionalAuthor = authorRepository.findByOpenLibraryId(result.getBody().name());
-            Author author;
-            if (optionalAuthor.isPresent()) {
-                author = optionalAuthor.get();
-            } else {
-                var newAuthor = new Author();
-                newAuthor.setFullName(result.getBody().name());
-                newAuthor.setBooks(List.of());
-                author = authorRepository.save(newAuthor);
-            }
+        //    var optionalAuthor = authorRepository.findByOpenLibraryId(result.getBody().name());
+        //    Author author;
+        //    if (optionalAuthor.isPresent()) {
+        //        author = optionalAuthor.get();
+        //    } else {
+        //        var newAuthor = new Author();
+        //        newAuthor.setFullName(result.getBody().name());
+        //        newAuthor.setBooks(List.of());
+        //        author = authorRepository.save(newAuthor);
+        //    }
 
-            return authorConverter.toDto(author);
-        } catch (WebClientResponseException e) {
-            throw new IllegalArgumentException("Illegal auth id");
-        }
+        //    return authorConverter.toDto(author);
+        //} catch (WebClientResponseException e) {
+        //    throw new IllegalArgumentException("Illegal auth id");
+        //}
 
     }
 

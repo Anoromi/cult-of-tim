@@ -1,5 +1,6 @@
 package com.cult_of_tim.auth.cultoftimauth.service.impl;
 
+import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
@@ -47,14 +48,14 @@ public class UserMockService implements UserService {
     }
 
     @Override
-    public UUID registerUser(String username, String email, String password) throws IllegalArgumentException {
+    public UUID registerUser(String username, String email, String password) throws AuthException {
         User newUser = new User();
 
         if (!emailValidator.isValidEmail(email)) {
-            throw new IllegalArgumentException("Email is invalid!");
+            throw new AuthException("Email is invalid!");
         }
         if (!passwordValidator.isValidPassword(password)) {
-            throw new IllegalArgumentException("Password is invalid!");
+            throw new AuthException("Password is invalid!");
         }
 
         newUser.setEmail(email);
@@ -85,7 +86,7 @@ public class UserMockService implements UserService {
     }
 
     @Override
-    public boolean login(String email, String password) throws IllegalArgumentException {
+    public boolean login(String email, String password) throws AuthException {
         if (logger.isDebugEnabled()) {
             logger.debug(authMarker, "Attempting login for user with email: {}", email);
         }

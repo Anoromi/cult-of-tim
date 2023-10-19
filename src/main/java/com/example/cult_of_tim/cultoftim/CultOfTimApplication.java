@@ -1,5 +1,6 @@
 package com.example.cult_of_tim.cultoftim;
 
+import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
@@ -14,12 +15,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableJpaRepositories()
 @EntityScan()
 public class CultOfTimApplication implements CommandLineRunner {
@@ -51,7 +53,7 @@ public class CultOfTimApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws AuthException {
         logger.debug("Debugging hello");
         userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
@@ -76,7 +78,7 @@ public class CultOfTimApplication implements CommandLineRunner {
         promotionDiscountDto.setDiscountPercentage(50);
         promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
 
-        bookService.addBookFromOpenLibrary("9780545029360", 10);
+        //bookService.addBookFromOpenLibrary("9780545029360", 10);
         //bookService.addBookFromOpenLibrary("9780545029365", 10);
     }
 }

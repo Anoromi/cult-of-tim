@@ -13,7 +13,7 @@ public class GlobalControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handle(NotFoundException notFoundException, WebRequest webRequest) {
-        return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }
