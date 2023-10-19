@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.requestData;
+package com.example.cult_of_tim.cultoftim.controller.request;
 
 
 import jakarta.validation.constraints.Email;
@@ -11,14 +11,18 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RegisterUser {
     @NotBlank
-    public String username;
+    private String username;
 
     @NotBlank
     @Length(min = 8, max=60)
-    public String password;
+    private String password;
 
     @NotBlank
-    public String email;
+    private String email;
 }

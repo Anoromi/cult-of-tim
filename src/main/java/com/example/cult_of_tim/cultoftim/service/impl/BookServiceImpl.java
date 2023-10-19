@@ -4,11 +4,19 @@ import com.example.cult_of_tim.cultoftim.converter.AuthorConverter;
 import com.example.cult_of_tim.cultoftim.converter.BookConverter;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
+import com.example.cult_of_tim.cultoftim.external.OpenLibraryBook;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,44 +54,42 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addBookFromOpenLibrary(String isbn13, int quantity) {
-        throw new Error("");
+        try {
+            var result = WebClient.builder()
+                    .baseUrl("https://openlibrary.org")
+                    .clientConnector(new ReactorClientHttpConnector(
+                            HttpClient.create().followRedirect(true)
+                    ))
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build().get().uri("/isbn/{isbn}.json", isbn13)
 
-        //try {
-        //    var result = WebClient.builder()
-        //            .baseUrl("https://openlibrary.org")
-        //            .clientConnector(new ReactorClientHttpConnector(
-        //                    HttpClient.create().followRedirect(true)
-        //            ))
-        //            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        //            .build().get().uri("/isbn/{isbn}.json", isbn13)
+                    .retrieve()
+                    .toEntity(OpenLibraryBook.class)
+                    .block();
 
-        //            .retrieve()
-        //            .toEntity(OpenLibraryBook.class)
-        //            .block();
+            assert result != null;
+            assert result.getBody() != null;
+            var bodyBook = result.getBody();
 
-        //    assert result != null;
-        //    assert result.getBody() != null;
-        //    var bodyBook = result.getBody();
+            var addedAuthors = bodyBook.authors().stream().map(
+                    v -> authorConverter.toEntity(authorService.createAuthorFromOpenLibrary(v.key().replace("/authors/", "")))
+            ).toList();
 
-        //    var addedAuthors = bodyBook.authors().stream().map(
-        //            v -> authorConverter.toEntity(authorService.createAuthorFromOpenLibrary(v.key().replace("/authors/", "")))
-        //    ).toList();
+            var book = new Book();
+            book.setTitle(bodyBook.title());
+            book.setIsbn13(isbn13);
+            book.setAuthors(addedAuthors);
 
-        //    var book = new Book();
-        //    book.setTitle(bodyBook.title());
-        //    book.setIsbn13(isbn13);
-        //    book.setAuthors(addedAuthors);
+            book.setQuantity(quantity);
 
-        //    book.setQuantity(quantity);
-
-        //    bookRepository.save(book);
+            bookRepository.save(book);
 
 
 
-        //} catch (WebClientResponseException e) {
-        //    if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
-        //        throw new IllegalArgumentException("Isbn13 book not found");
-        //}
+        } catch (WebClientResponseException e) {
+            if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
+                throw new IllegalArgumentException("Isbn13 book not found");
+        }
 
 
 

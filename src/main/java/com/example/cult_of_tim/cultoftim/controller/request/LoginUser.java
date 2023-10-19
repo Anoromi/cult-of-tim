@@ -1,4 +1,4 @@
-package com.example.cult_of_tim.cultoftim.requestData;
+package com.example.cult_of_tim.cultoftim.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

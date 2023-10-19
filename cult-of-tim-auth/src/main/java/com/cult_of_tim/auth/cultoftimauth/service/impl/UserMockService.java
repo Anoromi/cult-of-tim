@@ -58,6 +58,14 @@ public class UserMockService implements UserService {
             throw new AuthException("Password is invalid!");
         }
 
+        if(userRepository.findByEmail(email).isPresent()) {
+           throw new AuthException("Email is already used");
+        }
+
+        if(userRepository.findByUsername(username).isPresent()) {
+            throw  new AuthException("Username is already used");
+        }
+
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
         newUser.setUsername(username);

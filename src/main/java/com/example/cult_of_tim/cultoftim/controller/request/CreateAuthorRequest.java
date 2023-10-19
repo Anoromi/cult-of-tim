@@ -1,7 +1,6 @@
 package com.example.cult_of_tim.cultoftim.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorRequest{
-    @NotNull
-    private Long id;
+public class CreateAuthorRequest {
     @NotBlank
     private String fullName;
 }

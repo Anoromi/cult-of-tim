@@ -1,8 +1,12 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
 import com.example.cult_of_tim.cultoftim.controller.request.AuthorRequest;
+import com.example.cult_of_tim.cultoftim.controller.request.CreateAuthorRequest;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
+import com.example.cult_of_tim.cultoftim.util.OptionalNotFoundUnwrapper;
+import com.example.cult_of_tim.cultoftim.util.exceptions.NotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +20,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/authors")
 public class AuthorController {
     private final AuthorService authorService;
+
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
-    private AuthorDto mapToAuthorDto(AuthorRequest authorRequest){
+    private AuthorDto mapToAuthorDto(AuthorRequest authorRequest) {
         return AuthorDto.builder()
                 .id(authorRequest.getId())
                 .fullName(authorRequest.getFullName())
                 .build();
     }
 
-    private AuthorRequest mapToAuthorRequest(AuthorDto authorDto){
+    private AuthorRequest mapToAuthorRequest(AuthorDto authorDto) {
         return AuthorRequest.builder()
                 .id(authorDto.getId())
                 .fullName(authorDto.getFullName())
@@ -36,29 +41,25 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorRequest> createAuthor(@RequestBody AuthorRequest authorRequest) {
-        AuthorDto authorDto = mapToAuthorDto(authorRequest);
+    public ResponseEntity<AuthorRequest> createAuthor(@RequestBody @Valid CreateAuthorRequest authorRequest) {
+        AuthorDto authorDto = AuthorDto.builder().fullName(authorRequest.getFullName()).build();
         AuthorDto createdAuthor = authorService.createAuthor(authorDto.getFullName());
         AuthorRequest response = mapToAuthorRequest(createdAuthor);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping
-    public ResponseEntity<AuthorRequest> createAuthorFromOpenLibrary(@RequestBody String openLibrary){
+    @PostMapping("/open-library/{openLibrary}")
+    public ResponseEntity<AuthorRequest> createAuthorFromOpenLibrary(@PathVariable String openLibrary) {
         AuthorDto createdAuthor = authorService.createAuthorFromOpenLibrary(openLibrary);
         AuthorRequest response = mapToAuthorRequest(createdAuthor);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorRequest> getAuthorById(@PathVariable Long id) {
+    public ResponseEntity<AuthorRequest> getAuthorById(@PathVariable Long id) throws NotFoundException {
         Optional<AuthorDto> authorDto = authorService.getAuthorById(id);
-        if (authorDto.isPresent()) {
-            AuthorRequest response = mapToAuthorRequest(authorDto.get());
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        var author = OptionalNotFoundUnwrapper.unwrap(authorDto);
+        return ResponseEntity.ok(mapToAuthorRequest(author));
     }
 
     @GetMapping
@@ -70,7 +71,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorRequest> updateAuthor(@PathVariable Long id, @RequestBody AuthorRequest updatedAuthor) {
+    public ResponseEntity<AuthorRequest> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorRequest updatedAuthor) {
         Optional<AuthorDto> existingAuthor = authorService.getAuthorById(id);
         if (existingAuthor.isPresent()) {
             AuthorDto updatedAuthorDto = authorService.updateAuthor(id, mapToAuthorDto(updatedAuthor));
