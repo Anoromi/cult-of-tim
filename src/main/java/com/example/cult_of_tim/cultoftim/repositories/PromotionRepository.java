@@ -13,5 +13,4 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     boolean existsByIdAndGlobalPromotionTrue(Long promotionId);
 
-    List<Promotion> findByUserId(Long userID);
 }
