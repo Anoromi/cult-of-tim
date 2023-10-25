@@ -7,6 +7,10 @@ import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 import com.example.cult_of_tim.cultoftim.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +39,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookRequest> getBookById(@PathVariable Long id) {
+    public ResponseEntity<BookRequest> getBookById(
+            @PathVariable Long id) {
         Optional<BookDto> book = bookService.getBookById(id);
         if (book.isPresent()) {
             BookRequest response = mapToBookRequest(book.get());
@@ -45,8 +50,15 @@ public class BookController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<BookRequest> createBook(@RequestBody BookRequest bookRequest) {
+    @PostMapping()
+    @ApiResponse(responseCode = "200", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = BookRequest.class))
+    })
+
+    @Operation(requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody())
+    public ResponseEntity<BookRequest> createBook(
+            @RequestBody
+            BookRequest bookRequest) {
         BookDto bookDto = mapToBookDto(bookRequest);
         BookDto createdBook = bookService.createBook(bookDto);
         BookRequest response = mapToBookRequest(createdBook);
@@ -54,6 +66,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
+    @Operation(requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody())
     public ResponseEntity<BookRequest> updateBook(@PathVariable Long id, @RequestBody BookRequest bookRequest) {
         Optional<BookDto> existingBook = bookService.getBookById(id);
         if (existingBook.isPresent()) {
@@ -112,6 +125,7 @@ public class BookController {
 
         return bookRequest;
     }
+
     private BookDto mapToBookDto(BookRequest bookRequest) {
         BookDto bookDto = BookDto.builder()
                 .id(bookRequest.getId())

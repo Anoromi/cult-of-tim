@@ -3,6 +3,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 import com.example.cult_of_tim.cultoftim.controller.request.PromotionRequest;
 import com.example.cult_of_tim.cultoftim.dto.PromotionDto;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

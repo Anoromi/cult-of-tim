@@ -100,6 +100,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author updatedAuthor = authorConverter.toEntity(updatedAuthorDto);
 
+        
         existingAuthor.setFullName(updatedAuthor.getFullName());
 
         Author savedAuthor = authorRepository.save(existingAuthor);

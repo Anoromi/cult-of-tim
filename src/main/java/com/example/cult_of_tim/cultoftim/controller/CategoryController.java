@@ -3,6 +3,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 import com.example.cult_of_tim.cultoftim.controller.request.CategoryRequest;
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,12 +43,14 @@ public class CategoryController {
     }
 
     @PostMapping
+    @Operation(requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody())
     public ResponseEntity<CategoryRequest> createCategory(@RequestBody String categoryName) {
         CategoryDto createdCategory = categoryService.createCategory(categoryName);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToCategoryRequest(createdCategory));
     }
 
     @PutMapping("/{id}")
+    @Operation(requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody())
     public ResponseEntity<CategoryRequest> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
         Optional<CategoryDto> existingCategory = categoryService.getCategoryById(id);
         if (existingCategory.isPresent()) {

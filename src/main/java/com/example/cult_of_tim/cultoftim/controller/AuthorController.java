@@ -6,6 +6,7 @@ import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.util.OptionalNotFoundUnwrapper;
 import com.example.cult_of_tim.cultoftim.util.exceptions.NotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,9 @@ public class AuthorController {
     }
 
     @PostMapping
+    @Operation(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
+    )
     public ResponseEntity<AuthorRequest> createAuthor(@RequestBody @Valid CreateAuthorRequest authorRequest) {
         AuthorDto authorDto = AuthorDto.builder().fullName(authorRequest.getFullName()).build();
         AuthorDto createdAuthor = authorService.createAuthor(authorDto.getFullName());
@@ -71,6 +75,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
+    @Operation(requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody())
     public ResponseEntity<AuthorRequest> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorRequest updatedAuthor) {
         Optional<AuthorDto> existingAuthor = authorService.getAuthorById(id);
         if (existingAuthor.isPresent()) {

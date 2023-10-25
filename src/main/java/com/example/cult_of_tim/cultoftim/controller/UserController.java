@@ -3,6 +3,9 @@ package com.example.cult_of_tim.cultoftim.controller;
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.controller.request.RegisterUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +23,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup",
+    consumes = "application/json")
+    @Operation(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
+    )
     public ResponseEntity<Void> signup(@RequestBody @Valid RegisterUser registerUser) throws AuthException {
         userService.registerUser(registerUser.getUsername(), registerUser.getEmail(), registerUser.getPassword());
         return new ResponseEntity<>(null, HttpStatus.OK);
@@ -35,6 +42,7 @@ public class UserController {
 
 
     @ExceptionHandler({AuthException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Bad auth data")
     public ResponseEntity<String> handleAuthError(AuthException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
