@@ -4,8 +4,6 @@ import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.controller.request.RegisterUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
