@@ -25,6 +25,15 @@ public class User {
     //@Column(name = "user_email")
     private String email;
 
+    private Integer balance;
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
 
     public String getUsername() {
         return username;

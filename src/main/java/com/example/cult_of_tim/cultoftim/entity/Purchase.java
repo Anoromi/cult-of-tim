@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Purchase {
     private LocalDateTime purchaseDate;
 
 
-    private Long userId;
+    private UUID userId;
 
     @ManyToMany
     private List<Book> books;
