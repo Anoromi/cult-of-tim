@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +15,6 @@ import java.time.LocalDateTime;
 public class PurchaseDto {
     private Long id;
     private LocalDateTime purchaseDate;
-    private Long userId;
+    private UUID userId;
 }
 
