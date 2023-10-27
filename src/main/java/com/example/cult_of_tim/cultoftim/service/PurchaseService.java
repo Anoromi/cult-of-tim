@@ -4,7 +4,6 @@ import com.example.cult_of_tim.cultoftim.dto.PurchaseDto;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface PurchaseService {
     Optional<PurchaseDto> getPurchaseById(Long id);
@@ -18,6 +17,5 @@ public interface PurchaseService {
     PurchaseDto updatePurchase(PurchaseDto purchase);
 
     void deletePurchaseById(Long id);
-    PurchaseDto purchaseBooks(UUID userId, List<Long> bookIds);
 }
 
