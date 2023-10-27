@@ -24,7 +24,7 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    private double price;
+    private Integer price;
 
     @ManyToMany
     @JoinTable(
