@@ -25,13 +25,13 @@ public class User {
     //@Column(name = "user_email")
     private String email;
 
-    private Integer balance;
+    private double balance;
 
-    public Integer getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
