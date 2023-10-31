@@ -58,12 +58,12 @@ public class UserMockService implements UserService {
             throw new AuthException("Password is invalid!");
         }
 
-        if(userRepository.findByEmail(email).isPresent()) {
-           throw new AuthException("Email is already used");
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new AuthException("Email is already used");
         }
 
-        if(userRepository.findByUsername(username).isPresent()) {
-            throw  new AuthException("Username is already used");
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new AuthException("Username is already used");
         }
 
         newUser.setEmail(email);
@@ -112,5 +112,15 @@ public class UserMockService implements UserService {
             }
             return false;
         }
+    }
+
+    @Override
+    public void setUserRole(UUID id, String role) {
+        var optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) return;
+        var user = optionalUser.get();
+
+        user.setRole(role);
+        userRepository.save(user);
     }
 }

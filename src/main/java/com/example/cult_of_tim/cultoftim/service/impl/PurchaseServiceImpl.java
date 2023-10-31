@@ -53,7 +53,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<PurchaseDto> getPurchasesByUserId(Long userId) {
+    public List<PurchaseDto> getPurchasesByUserId(UUID userId) {
         List<Purchase> purchases = purchaseRepository.findByUserId(userId);
         return purchases.stream()
                 .map(purchaseConverter::toDto)

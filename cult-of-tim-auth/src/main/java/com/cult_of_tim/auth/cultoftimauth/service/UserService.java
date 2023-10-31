@@ -24,4 +24,6 @@ public interface UserService {
     void deleteUser(String email);
 
     boolean login(String emailOrUsername, String password) throws AuthException;
+
+    void setUserRole(UUID id, String role);
 }

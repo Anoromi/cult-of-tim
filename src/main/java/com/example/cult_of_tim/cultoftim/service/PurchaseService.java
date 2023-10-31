@@ -11,7 +11,7 @@ public interface PurchaseService {
 
     List<PurchaseDto> getAllPurchases();
 
-    List<PurchaseDto> getPurchasesByUserId(Long userId);
+    List<PurchaseDto> getPurchasesByUserId(UUID userId);
 
     PurchaseDto createPurchase(PurchaseDto purchase);
 
