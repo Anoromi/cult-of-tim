@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserChecker {
 
-    Optional<User> lookupUser(String email, String password);
+    Optional<User> lookupUser(String emailOrUsername, String password);
 }
