@@ -25,25 +25,22 @@ public class UserCheckerImpl implements UserChecker {
 
 
     @Override
-    public Optional<User> lookupUser(String emailOrUsername, String password) {
+    public Optional<User> lookupUser(String email, String password) {
         if (logger.isDebugEnabled()) {
-            logger.debug(lookupUserMarker, "Looking up user with email: {}", emailOrUsername);
+            logger.debug(lookupUserMarker, "Looking up user with email: {}", email);
         }
 
-        Optional<User> userOptional = userRepository.findByEmail(emailOrUsername);
-        if (userOptional.isEmpty()) {
-            userOptional = userRepository.findByUsername(emailOrUsername);
-        }
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isPresent() && PasswordEncrypter.checkPassword(password, userOptional.get().getPassword())) {
             if (logger.isDebugEnabled()) {
-                logger.debug(lookupUserMarker, "User found and password matches for email: {}", emailOrUsername);
+                logger.debug(lookupUserMarker, "User found and password matches for email: {}", email);
             }
             return userOptional;
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug(lookupUserMarker, "User not found or password does not match for email: {}", emailOrUsername);
+            logger.debug(lookupUserMarker, "User not found or password does not match for email: {}", email);
         }
 
         return Optional.empty();
