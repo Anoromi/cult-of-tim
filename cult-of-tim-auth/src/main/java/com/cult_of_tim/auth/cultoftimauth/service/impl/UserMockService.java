@@ -89,7 +89,7 @@ public class UserMockService implements UserService {
     }
 
     @Override
-    public boolean login(String emailOrUsername, String password) throws IllegalArgumentException{
+    public String login(String emailOrUsername, String password) throws IllegalArgumentException{
         if (logger.isDebugEnabled()) {
             logger.debug(authMarker, "Attempting login for user with email/username: {}", emailOrUsername);
         }
@@ -106,13 +106,13 @@ public class UserMockService implements UserService {
             if (logger.isInfoEnabled()) {
                 logger.info(authMarker, "User with email/username {} has successfully logged in", emailOrUsername);
             }
-            return true;
+            return userToken.getTokenId().toString();
         }
 
         if (logger.isInfoEnabled()) {
             logger.info(authMarker, "Login attempt failed for user with email/username: {}", emailOrUsername);
         }
-        return false;
+        throw new IllegalArgumentException("Login attempt failed for user with email/username: " + emailOrUsername);
     }
 
     private Date getExpireDate (Integer hours){

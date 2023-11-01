@@ -22,5 +22,5 @@ public interface UserService {
 
     void deleteUser(String email);
 
-    boolean login(String emailOrUsername, String password) throws IllegalArgumentException;
+    String login(String emailOrUsername, String password) throws IllegalArgumentException;
 }
