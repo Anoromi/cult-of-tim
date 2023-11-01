@@ -2,8 +2,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.example.cult_of_tim.cultoftim.requestData.LoginUser;
-import com.example.cult_of_tim.cultoftim.requestData.RegisterUser;
+import com.example.cult_of_tim.cultoftim.controller.request.RegisterUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

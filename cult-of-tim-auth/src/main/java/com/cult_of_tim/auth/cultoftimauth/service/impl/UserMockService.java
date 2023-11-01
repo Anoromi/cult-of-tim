@@ -69,6 +69,7 @@ public class UserMockService implements UserService {
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
         newUser.setUsername(username);
+        newUser.setRole("Default");
 
         MDC.put("user", username);
         logger.info(authMarker, "Registered user");

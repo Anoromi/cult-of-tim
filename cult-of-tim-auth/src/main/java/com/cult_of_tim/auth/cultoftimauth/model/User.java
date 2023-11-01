@@ -27,12 +27,13 @@ public class User {
     @Column(length = 100)
     private String username;
 
-    //@Column(name = "user_password")
+    //@Column(name = "user_password", nullable = false)
     private String password;
 
-    //@Column(name = "user_email")
+    //@Column(name = "user_email", nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String role;
 
     private Integer balance;
