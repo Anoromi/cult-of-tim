@@ -98,6 +98,7 @@ public class UserMockService implements UserService {
 
         if (user.isPresent()) {
             UserToken userToken = new UserToken();
+            userToken.setTokenId(UUID.randomUUID());
             userToken.setUser(user.get());
             userToken.setExpiresAt(getExpireDate(12));
             userTokenRepository.save(userToken);

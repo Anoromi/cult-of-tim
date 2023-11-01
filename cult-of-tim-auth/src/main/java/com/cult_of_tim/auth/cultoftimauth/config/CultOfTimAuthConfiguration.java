@@ -25,11 +25,11 @@ public class CultOfTimAuthConfiguration {
     //    return new WithoutPasswordChecker();
     //}
 
-    @Bean
+   /* @Bean
     @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkPassword", havingValue = "false")
     public UserChecker noPasswordChecker(UserRepository userDao) {
         return new WithoutPasswordChecker(userDao);
-    }
+    }*/
 
     @Bean
     @ConditionalOnMissingBean(UserChecker.class)
