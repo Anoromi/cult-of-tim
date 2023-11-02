@@ -111,19 +111,15 @@ public class UserMockService implements UserService {
         Optional<User> user = userChecker.lookupUser(emailOrUsername, password);
 
         if (user.isPresent()) {
-            try {
-                UserToken userToken = new UserToken();
-                userToken.setUser(user.get());
-                userToken.setExpiresAt(getExpireDate(12));
-                userTokenRepository.save(userToken);
+            UserToken userToken = new UserToken();
+            userToken.setUser(user.get());
+            userToken.setExpiresAt(getExpireDate(12));
+            userTokenRepository.save(userToken);
 
-                if (logger.isInfoEnabled()) {
-                    logger.info(authMarker, "User with email/username {} has successfully logged in", emailOrUsername);
-                }
-                return LoggedUserDTO.builder().token(userToken.getTokenId().toString()).user(userConverter.toDTO(user.get())).build();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            if (logger.isInfoEnabled()) {
+                logger.info(authMarker, "User with email/username {} has successfully logged in", emailOrUsername);
             }
+            return LoggedUserDTO.builder().token(userToken.getTokenId().toString()).user(userConverter.toDTO(user.get())).build();
         }
 
         if (logger.isInfoEnabled()) {

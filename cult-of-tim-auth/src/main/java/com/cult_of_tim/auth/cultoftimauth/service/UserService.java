@@ -1,13 +1,11 @@
 package com.cult_of_tim.auth.cultoftimauth.service;
 
 
-
 import com.cult_of_tim.auth.cultoftimauth.dto.LoggedUserDTO;
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
