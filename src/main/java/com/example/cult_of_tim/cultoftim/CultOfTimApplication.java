@@ -2,6 +2,7 @@ package com.example.cult_of_tim.cultoftim;
 
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.example.cult_of_tim.cultoftim.auth.UserRoles;
 import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
@@ -57,7 +58,18 @@ public class CultOfTimApplication implements CommandLineRunner {
         logger.debug("Debugging hello");
         userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
-        System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
+        try {
+            System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
+        }
+        catch (IllegalArgumentException e) {
+
+        }
+
+        var adminUser = userService.registerUser("admin", "admin@gmail.com", "1234Abcd@");
+        userService.setUserRole(adminUser, UserRoles.ADMIN);
+
+
+
         AuthorDto author = authorService.createAuthor("First Second");
         CategoryDto category = categoryService.createCategory("category");
 

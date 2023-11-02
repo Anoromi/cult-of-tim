@@ -25,8 +25,7 @@ public class TokenValidatorNoExpiration  implements TokenValidator {
      */
     @Override
     public Optional<User> validateToken(UserToken token) {
-        //String tokenData = userRepository.findById(token.getTokenId());
-        if(token.getExpiresAt().before(new Date()))
+        if(token.getExpiresAt().after(new Date()))
             return Optional.ofNullable(token.getUser());
         return Optional.empty();
     }

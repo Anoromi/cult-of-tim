@@ -2,6 +2,8 @@ package com.cult_of_tim.auth.cultoftimauth.service;
 
 
 
+import com.cult_of_tim.auth.cultoftimauth.dto.LoggedUserDTO;
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 
@@ -23,7 +25,11 @@ public interface UserService {
 
     void deleteUser(String email);
 
-    String login(String emailOrUsername, String password) throws IllegalArgumentException;
+    LoggedUserDTO login(String emailOrUsername, String password) throws IllegalArgumentException;
+
+    Optional<UserDTO> getUserByToken(String token);
 
     void setUserRole(UUID id, String role);
+
+    User getUserBy(String emailOrUsername, String password) throws AuthException;
 }
