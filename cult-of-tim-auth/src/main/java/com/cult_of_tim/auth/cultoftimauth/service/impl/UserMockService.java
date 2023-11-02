@@ -2,7 +2,9 @@ package com.cult_of_tim.auth.cultoftimauth.service.impl;
 
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import com.cult_of_tim.auth.cultoftimauth.repositories.UserTokenRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
@@ -95,33 +97,35 @@ public class UserMockService implements UserService {
     }
 
     @Override
-    public boolean login(String email, String password) throws IllegalArgumentException {
+    public String login(String emailOrUsername, String password) throws IllegalArgumentException{
         if (logger.isDebugEnabled()) {
-            logger.debug(authMarker, "Attempting login for user with email: {}", email);
+            logger.debug(authMarker, "Attempting login for user with email/username: {}", emailOrUsername);
         }
 
-        var user = passwordChecker.lookupUser(email, password);
+        Optional<User> user = passwordChecker.lookupUser(emailOrUsername, password);
 
         if (user.isPresent()) {
+            UserToken userToken = new UserToken();
+            userToken.setTokenId(UUID.randomUUID());
+            userToken.setUser(user.get());
+            userToken.setExpiresAt(getExpireDate(12));
+            userTokenRepository.save(userToken);
+
             if (logger.isInfoEnabled()) {
-                logger.info(authMarker, "User with email {} has successfully logged in", email);
+                logger.info(authMarker, "User with email/username {} has successfully logged in", emailOrUsername);
             }
-            return true;
-        } else {
-            if (logger.isInfoEnabled()) {
-                logger.info(authMarker, "Login attempt failed for user with email: {}", email);
-            }
-            return false;
+            return userToken.getTokenId().toString();
         }
+
+        if (logger.isInfoEnabled()) {
+            logger.info(authMarker, "Login attempt failed for user with email/username: {}", emailOrUsername);
+        }
+        throw new IllegalArgumentException("Login attempt failed for user with email/username: " + emailOrUsername);
     }
 
-    @Override
-    public void setUserRole(UUID id, String role) {
-        var optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) return;
-        var user = optionalUser.get();
-
-        user.setRole(role);
-        userRepository.save(user);
+    private Date getExpireDate (Integer hours){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
     }
 }

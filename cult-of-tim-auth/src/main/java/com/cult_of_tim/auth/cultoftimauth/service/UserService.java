@@ -23,7 +23,7 @@ public interface UserService {
 
     void deleteUser(String email);
 
-    boolean login(String emailOrUsername, String password) throws AuthException;
+    String login(String emailOrUsername, String password) throws IllegalArgumentException;
 
     void setUserRole(UUID id, String role);
 }
