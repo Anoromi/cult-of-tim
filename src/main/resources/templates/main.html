@@ -4,13 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
-    <link  th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/static/css/styles.css}" />
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 2px -2px gray;
+        }
+
+        nav li {
+            float: left;
+        }
+
+        nav a {
+            display: block;
+            color: #495057;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body>
 <h1>Welcome to the Main Page!</h1>
 <nav>
     <ul>
         <li><a th:href="@{/login}">Login</a></li>
+        <li><a th:href="@{/register}">Register</a></li>
         <li><a th:href="@{/books}">Books</a></li>
         <li><a th:href="@{/authors}">Authors</a></li>
         <li><a th:href="@{/promotions}">Promotions</a></li>
