@@ -7,7 +7,7 @@
 <body>
 <h1 class="header">Books</h1>
 
-<div th:if="${userRole == 'ADMIN'}">
+<div th:if="${userRole == 'Admin'}">
   <table class="table">
     <tr>
       <th>Book name</th>
@@ -17,7 +17,7 @@
 
     <tr th:each="book : ${books}">
       <td th:text="${book.title}">Book name</td>
-      <td th:text="${book.author}">Book author(s)</td>
+      <td th:text="${book.authors}">Book author(s)</td>
       <td th:text="${book.categories}">Book category</td>
       <td th:text="${book.quantity}">Book quantity</td>
     </tr>
@@ -27,7 +27,7 @@
   <a href="/booklist/delete" class="btn btn-primary">Delete Book</a>
 </div>
 
-<div th:if="${userRole == 'DEFAULT'}">
+<div th:if="${userRole == 'Default'}">
   <table class="table">
     <tr>
       <th>Book name</th>

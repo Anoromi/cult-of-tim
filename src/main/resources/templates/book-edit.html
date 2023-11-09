@@ -7,11 +7,11 @@
 </head>
 <body>
 <h2 class="header">Editing a book</h2>
-<form class="form" id="editBookForm" th:if="${admin}" th:action="@{/books/{bookId}}" th:object="${book}" method="post">
-    <input type="text" th:field="${title}" placeholder="Book title" />
-    <input type="text" th:field="${author}" placeholder="Author(s)" />
-    <input type="text" th:field="${categories}" placeholder="Category(ies)" />
-    <input type="number" th:field="${amount}" placeholder="Amount" />
+<form class="form" id="editBookForm" th:action="@{/books/{bookId}}" method="post">
+    <input type="text" name="title" placeholder="Book title" />
+    <input type="text" name="author" placeholder="Author(s)" />
+    <input type="text" name="category" placeholder="Category(ies)" />
+    <input type="int" name="amount" placeholder="Amount" />
     <br>
     <a href="/booklist/save" class="btn btn-primary">Save Changes</a>
 </form>

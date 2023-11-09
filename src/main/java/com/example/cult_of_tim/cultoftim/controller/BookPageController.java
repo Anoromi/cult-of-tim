@@ -26,7 +26,7 @@ public class BookPageController {
     public String listBooks(Model model) {
         UserContext userContext = new UserContext();
         Optional<UserDTO> user = userContext.getUser();
-        String role = "DEFAULT";
+        String role = "Default";
         if (user.isPresent()){
             role = user.get().getRole();
         }
@@ -43,16 +43,22 @@ public class BookPageController {
         return "book-list";
     }
 
-    @GetMapping("/authorlist/add")
+    @GetMapping("/booklist/add")
     public String showAddBookForm(Model model){
         model.addAttribute("createBookRequest", new BookRequest());
         return "book-add";
     }
 
-    @GetMapping("/authorlist/add")
+    @GetMapping("/booklist/edit")
     public String showEditBookPage(Model model){
         model.addAttribute("createBookRequest", new BookRequest());
         return "book-edit";
+    }
+
+    @GetMapping("/booklist/delete")
+    public String showDeleteBookPage(Model model){
+        model.addAttribute("createBookRequest", new BookRequest());
+        return "book-delete";
     }
 
     @PostMapping("/booklist/add")
