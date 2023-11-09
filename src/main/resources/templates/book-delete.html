@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Book</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Deleting a book</h2>
+<form class="form" id="deleteBookForm" th:if="${admin}" th:action="@{/books/{bookId}}" th:object="${book}" method="post">
+    <input type="text" name="title" placeholder="Book title" />
+    <br>
+    <a href="/booklist/delete" class="btn btn-primary">Delete book</a>
+</form>
+</body>
+</html>
