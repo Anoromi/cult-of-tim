@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.validation.Validator;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Configuration
 @EnableWebSecurity
@@ -23,15 +24,17 @@ public class TimWebSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, Validator validator, TimAuthenticationManager authenticationManager,
-                                                   UserService userService) throws Exception {
+                                                   UserService userService, SpringTemplateEngine templateEngine) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.addFilterBefore(new TokenAuthenticationFilter(authenticationManager, validator),
+        http.addFilterBefore(new TokenAuthenticationFilter(authenticationManager, validator, templateEngine),
                         BasicAuthenticationFilter.class)
                 .addFilterBefore(
                         new TokenAuthorizationFilter(authenticationManager, userService),
                         BasicAuthenticationFilter.class);
 
+        //http.formLogin(form -> form)
         http.authorizeHttpRequests((authorizeHttpRequests) -> {
+            authorizeHttpRequests.requestMatchers("/").permitAll();
             authorizeHttpRequests.requestMatchers("/auth/signup")
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/auth/login")

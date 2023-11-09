@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
@@ -26,28 +27,35 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private static final String HEADER_PREFIX = "Bearer ";
+    private static final String TOKEN_COOKIE = "token";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        var cookies = request.getCookies();
         var header = request.getHeader(AUTHORIZATION_HEADER);
-        if(header != null) {
-
-            var token = header.replace(HEADER_PREFIX, "");
-
-
-            var user = userService.getUserByToken(token);
-
-            if (user.isPresent()) {
-                SecurityContextHolder.getContext().setAuthentication(
-                        UsernamePasswordAuthenticationToken.authenticated(
-                                user, null, List.of(new SimpleGrantedAuthority(user.get().getRole()))
-                        )
-                );
-            }
+        if (cookies == null) {
+            chain.doFilter(request, response);
+            return;
         }
 
-        chain.doFilter(request, response);
+        var token = Arrays.stream(cookies).filter(c -> c.getName().equals(TOKEN_COOKIE)).findAny();
+
+        if (token.isEmpty()) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+
+        var user = userService.getUserByToken(token.get().getValue());
+
+        if (user.isPresent()) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    UsernamePasswordAuthenticationToken.authenticated(
+                            user, null, List.of(new SimpleGrantedAuthority(user.get().getRole()))
+                    )
+            );
+        }
 
 
     }

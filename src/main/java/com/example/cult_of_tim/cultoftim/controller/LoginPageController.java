@@ -45,4 +45,5 @@ public class LoginPageController {
         }
         return "redirect:/register?success";
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.example.cult_of_tim.cultoftim.controller.request.LoginUser;
 import com.example.cult_of_tim.cultoftim.controller.request.RegisterUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,13 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-//     TODO
-//    @PostMapping(name = "/login")
-//    public ResponseEntity<String> login(@RequestBody @Valid LoginUser login) {
-//        String token = userService.login(login.getUsernameOrEmail(), login.getPassword()).getToken();
-//        return new ResponseEntity<>(token, HttpStatus.OK);
-//    }
+
+    //@PostMapping(name = "/auth/login")
+    //public ResponseEntity<String> login(@RequestBody @Valid LoginUser login) {
+    //    String token = userService.login(login.getUsernameOrEmail(), login.getPassword()).getToken();
+
+    //    return new ResponseEntity<>(token, HttpStatus.OK);
+    //}
 
     @ExceptionHandler({AuthException.class})
     public ResponseEntity<String> handleAuthError(AuthException exception) {
