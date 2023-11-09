@@ -32,6 +32,7 @@ public class TimWebSecurity {
                         BasicAuthenticationFilter.class);
 
         http.authorizeHttpRequests((authorizeHttpRequests) -> {
+            authorizeHttpRequests.requestMatchers("/").permitAll();
             authorizeHttpRequests.requestMatchers("/auth/signup")
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/auth/login")
