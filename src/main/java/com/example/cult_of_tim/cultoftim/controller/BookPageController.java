@@ -19,10 +19,14 @@ import java.util.Optional;
 @Controller
 public class BookPageController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
-    @GetMapping("/booklist")
+    @Autowired
+    public BookPageController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/books/list")
     public String listBooks(Model model) {
         UserContext userContext = new UserContext();
         Optional<UserDTO> user = userContext.getUser();
@@ -33,60 +37,53 @@ public class BookPageController {
         model.addAttribute("userRole", role);
         List<BookDto> books = bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "/bookslist";
-    }
-
-    @GetMapping("/booklist")
-    public String listBooksPage(Model model) {
-        List<BookDto> books = bookService.getAllBooks();
-        model.addAttribute("books", books);
         return "book-list";
     }
 
-    @GetMapping("/booklist/add")
+    @GetMapping("/books/add")
     public String showAddBookForm(Model model){
         model.addAttribute("createBookRequest", new BookRequest());
         return "book-add";
     }
 
-    @GetMapping("/booklist/edit")
+    @GetMapping("/books/edit")
     public String showEditBookPage(Model model){
         model.addAttribute("createBookRequest", new BookRequest());
         return "book-edit";
     }
 
-    @GetMapping("/booklist/delete")
+    @GetMapping("/books/delete")
     public String showDeleteBookPage(Model model){
         model.addAttribute("createBookRequest", new BookRequest());
         return "book-delete";
     }
 
-    @PostMapping("/booklist/add")
+    @PostMapping("/books/add")
     public String addBook(@ModelAttribute @Valid BookRequest bookRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "book-add";
         }
         // bookService.createBook(bookRequest); bookRequest to bookDto converted needed
-        return "redirect:/booklist";
+        return "redirect:/books/list";
     }
 
-    @PostMapping("/booklist/edit")
+    @PostMapping("/books/edit")
     public String editBook(@ModelAttribute @Valid BookRequest bookRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "book-edit";
         }
-        Long id = bookRequest.getId();
+        //Long id = bookRequest.getId();
         //bookService.updateBook(id, bookRequest.getFullName()); bookRequest to bookDto converted needed
-        return "redirect:/booklist";
+        return "redirect:/books/list";
     }
 
-    @PostMapping("/booklist/delete")
+    @PostMapping("/books/delete")
     public String deleteBook(@ModelAttribute @Valid BookRequest bookRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "book-delete";
         }
         Long id = bookRequest.getId();
         bookService.deleteBook(id);
-        return "redirect:/booklist";
+        return "redirect:/books/list";
     }
 }
