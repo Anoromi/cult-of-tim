@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
 
     @Autowired
@@ -27,17 +27,15 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    // TODO
-    //@PostMapping(name = "/login")
-    //public ResponseEntity<String> login(@RequestMapping LoginUser login) throws AuthException {
-    //    userService.login(login.getUsernameOrEmail(), login.getPassword());
-    //    retturnun
-    //}
-
+//     TODO
+//    @PostMapping(name = "/login")
+//    public ResponseEntity<String> login(@RequestBody @Valid LoginUser login) {
+//        String token = userService.login(login.getUsernameOrEmail(), login.getPassword()).getToken();
+//        return new ResponseEntity<>(token, HttpStatus.OK);
+//    }
 
     @ExceptionHandler({AuthException.class})
     public ResponseEntity<String> handleAuthError(AuthException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-
     }
 }

@@ -20,9 +20,9 @@ import java.io.IOException;
 
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private Validator validator;
+    private final Validator validator;
 
     public TokenAuthenticationFilter(AuthenticationManager authenticationManager, Validator validator) {
         super(new AntPathRequestMatcher("/auth/login", "POST"));
@@ -35,22 +35,31 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            var loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
-            var binder = new DataBinder(loginRequest);
-            binder.setValidator(validator);
-            binder.validate();
-            if(binder.getBindingResult().hasErrors())
-                throw new BadCredentialsException("");
+            String contentType = request.getContentType();
+            if (contentType != null && contentType.contains("application/json")) {
+                var loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+                var binder = new DataBinder(loginRequest);
+                binder.setValidator(validator);
+                binder.validate();
+                if (binder.getBindingResult().hasErrors())
+                    throw new BadCredentialsException("");
 
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsernameOrEmail(),
-                    loginRequest.getPassword()
-            ));
-
+                return getAuthentication(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
+            } else {
+                String usernameOrEmail = request.getParameter("usernameOrEmail");
+                String password = request.getParameter("password");
+                return getAuthentication(usernameOrEmail, password);
+            }
         } catch (IOException e) {
             throw new BadCredentialsException("");
         }
+    }
 
+    private Authentication getAuthentication(String usernameOrEmail, String password) {
+        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                usernameOrEmail,
+                password
+        ));
     }
 
     @Override

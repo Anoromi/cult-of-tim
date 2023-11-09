@@ -36,11 +36,15 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/auth/login")
                     .permitAll();
+            authorizeHttpRequests.requestMatchers("/login")
+                    .permitAll();
 
             // POST, PUT, DELETE for admin
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/authors/**")
+                    .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/promotions/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books")
                     .hasAuthority(UserRoles.ADMIN);
@@ -50,8 +54,12 @@ public class TimWebSecurity {
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/authors/**")
                     .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/promotions/**")
+                    .hasAuthority(UserRoles.ADMIN);
 
             // GET for authorized
+//            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/authors/**").authenticated();
 
@@ -60,13 +68,14 @@ public class TimWebSecurity {
             //authorizeHttpRequests.requestMatchers(Http)
         });
 
-
-        //http.addFilter(new Filter() {
-        //    @Override
-        //    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //
-        //    }
-        //});
+        // TODO fix forwarding
+        /*http.formLogin(
+                form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/books")
+                        .permitAll()
+        );*/
 
         return http.build();
     }
