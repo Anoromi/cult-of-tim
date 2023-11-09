@@ -33,7 +33,6 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         var cookies = request.getCookies();
-        var header = request.getHeader(AUTHORIZATION_HEADER);
         if (cookies == null) {
             chain.doFilter(request, response);
             return;
@@ -56,6 +55,8 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
                     )
             );
         }
+
+        chain.doFilter(request, response);
 
 
     }

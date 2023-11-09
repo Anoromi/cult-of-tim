@@ -1,0 +1,39 @@
+1699556703822 :: 582 INFO {} [background-preinit] org.hibernate.validator.internal.util.Version user:null - HV000001: Hibernate Validator 8.0.1.Final
+1699556703858 :: 618 INFO {} [main] com.example.cult_of_tim.cultoftim.CultOfTimApplication user:null - Starting CultOfTimApplication using Java 20.0.1 with PID 12548 (C:\Users\Anoromg\code\Java\cult-of-tim\build\classes\java\main started by Anoromg in C:\Users\Anoromg\code\Java\cult-of-tim)
+1699556703860 :: 620 INFO {} [main] com.example.cult_of_tim.cultoftim.CultOfTimApplication user:null - The following 1 profile is active: "dev"
+1699556704550 :: 1310 INFO {} [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate user:null - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+1699556704724 :: 1484 INFO {} [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate user:null - Finished Spring Data repository scanning in 167 ms. Found 6 JPA repository interfaces.
+1699556705025 :: 1785 INFO {} [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate user:null - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+1699556705038 :: 1798 INFO {} [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate user:null - Finished Spring Data repository scanning in 13 ms. Found 2 JPA repository interfaces.
+1699556705513 :: 2273 INFO {} [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer user:null - Tomcat initialized with port(s): 8000 (http)
+1699556705520 :: 2280 INFO {} [main] org.apache.coyote.http11.Http11NioProtocol user:null - Initializing ProtocolHandler ["http-nio-8000"]
+1699556705522 :: 2282 INFO {} [main] org.apache.catalina.core.StandardService user:null - Starting service [Tomcat]
+1699556705522 :: 2282 INFO {} [main] org.apache.catalina.core.StandardEngine user:null - Starting Servlet engine: [Apache Tomcat/10.1.12]
+1699556705623 :: 2383 INFO {} [main] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] user:null - Initializing Spring embedded WebApplicationContext
+1699556705624 :: 2384 INFO {} [main] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext user:null - Root WebApplicationContext: initialization completed in 1707 ms
+1699556705757 :: 2517 INFO {} [main] com.zaxxer.hikari.HikariDataSource user:null - HikariPool-1 - Starting...
+1699556705943 :: 2703 INFO {} [main] com.zaxxer.hikari.pool.HikariPool user:null - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=USER
+1699556705945 :: 2705 INFO {} [main] com.zaxxer.hikari.HikariDataSource user:null - HikariPool-1 - Start completed.
+1699556705990 :: 2750 INFO {} [main] org.hibernate.jpa.internal.util.LogHelper user:null - HHH000204: Processing PersistenceUnitInfo [name: default]
+1699556706054 :: 2814 INFO {} [main] org.hibernate.Version user:null - HHH000412: Hibernate ORM core version 6.2.7.Final
+1699556706056 :: 2816 INFO {} [main] org.hibernate.cfg.Environment user:null - HHH000406: Using bytecode reflection optimizer
+1699556706218 :: 2978 INFO {} [main] org.hibernate.bytecode.internal.BytecodeProviderInitiator user:null - HHH000021: Bytecode provider name : bytebuddy
+1699556706373 :: 3133 INFO {} [main] org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo user:null - No LoadTimeWeaver setup: ignoring JPA class transformer
+1699556706694 :: 3454 INFO {} [main] org.hibernate.bytecode.internal.BytecodeProviderInitiator user:null - HHH000021: Bytecode provider name : bytebuddy
+1699556707554 :: 4314 INFO {} [main] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator user:null - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+1699556707618 :: 4378 INFO {} [main] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean user:null - Initialized JPA EntityManagerFactory for persistence unit 'default'
+1699556708238 :: 4998 WARN {} [main] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration user:null - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+1699556708555 :: 5315 INFO {} [main] org.springframework.security.web.DefaultSecurityFilterChain user:null - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@58338338, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@56e589e5, org.springframework.security.web.context.SecurityContextHolderFilter@6517bc6b, org.springframework.security.web.header.HeaderWriterFilter@14144cc9, org.springframework.security.web.authentication.logout.LogoutFilter@5a90ea5c, com.example.cult_of_tim.cultoftim.auth.TokenAuthenticationFilter@6992a147, com.example.cult_of_tim.cultoftim.auth.TokenAuthorizationFilter@f3ae18f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@44eda25b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@626e5554, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4b548913, org.springframework.security.web.access.ExceptionTranslationFilter@58052571, org.springframework.security.web.access.intercept.AuthorizationFilter@c105912]
+1699556708828 :: 5588 INFO {} [main] org.apache.coyote.http11.Http11NioProtocol user:null - Starting ProtocolHandler ["http-nio-8000"]
+1699556708844 :: 5604 INFO {} [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer user:null - Tomcat started on port(s): 8000 (http) with context path ''
+1699556708853 :: 5613 INFO {} [main] com.example.cult_of_tim.cultoftim.CultOfTimApplication user:null - Started CultOfTimApplication in 5.448 seconds (process running for 6.433)
+1699556709084 :: 5844 INFO {AUTH} [main] com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService user:anoromi - Registered user
+1699556709213 :: 5973 INFO {AUTH} [main] com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService user:null - User with email/username emailexample@gmail.com has successfully logged in
+1699556709287 :: 6047 INFO {AUTH} [main] com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService user:null - Login attempt failed for user with email/username: emailexample@gmail.com
+1699556709370 :: 6130 INFO {AUTH} [main] com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService user:admin - Registered user
+1699556717174 :: 13934 INFO {} [http-nio-8000-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] user:null - Initializing Spring DispatcherServlet 'dispatcherServlet'
+1699556717175 :: 13935 INFO {} [http-nio-8000-exec-1] org.springframework.web.servlet.DispatcherServlet user:null - Initializing Servlet 'dispatcherServlet'
+1699556717177 :: 13937 INFO {} [http-nio-8000-exec-1] org.springframework.web.servlet.DispatcherServlet user:null - Completed initialization in 1 ms
+1699556737541 :: 34301 INFO {} [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean user:null - Closing JPA EntityManagerFactory for persistence unit 'default'
+1699556737548 :: 34308 INFO {} [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource user:null - HikariPool-1 - Shutdown initiated...
+1699556737550 :: 34310 INFO {} [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource user:null - HikariPool-1 - Shutdown completed.

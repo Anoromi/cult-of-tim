@@ -22,20 +22,20 @@ public class AuthorPageController {
     public AuthorPageController(AuthorService authorService) {
         this.authorService = authorService;
     }
-    @GetMapping("/authorlist")
+    @GetMapping("/authors/list")
     public String listPage(Model model){
         List<AuthorDto> authors = authorService.getAllAuthors();
         model.addAttribute("authors", authors);
         return "author-list";
     }
 
-    @GetMapping("/authorlist/add")
+    @GetMapping("/authors/add")
     public String addPage(Model model){
         model.addAttribute("createAuthorRequest", new CreateAuthorRequest());
         return "author-add";
     }
 
-    @PostMapping("/authorlist/add")
+    @PostMapping("/authors/add")
     public String addAuthor(@ModelAttribute @Valid CreateAuthorRequest createAuthorRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "author-add";
