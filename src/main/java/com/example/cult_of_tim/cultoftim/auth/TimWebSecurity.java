@@ -38,6 +38,8 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/login")
                     .permitAll();
+            authorizeHttpRequests.requestMatchers("/register")
+                    .permitAll();
 
             // POST, PUT, DELETE for admin
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books")
