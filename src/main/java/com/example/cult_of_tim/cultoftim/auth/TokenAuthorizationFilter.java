@@ -1,5 +1,6 @@
 package com.example.cult_of_tim.cultoftim.auth;
 
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -55,6 +56,7 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
                     )
             );
         }
+
 
         chain.doFilter(request, response);
 
