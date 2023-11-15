@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -41,7 +42,32 @@ public class AuthorPageController {
             return "author-add";
         }
         authorService.createAuthor(createAuthorRequest.getFullName());
-        return "redirect:/authorlist";
+        return "redirect:/authors/list";
+    }
+
+    @GetMapping("/authors/edit/{id}")
+    public String editPage(@PathVariable Long id, Model model){
+        AuthorDto authorDto = authorService.getAuthorById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("author", authorDto);
+        return "author-edit";
+    }
+    @PostMapping("/authors/edit/{id}")
+    public String editAuthor(@PathVariable Long id, @ModelAttribute @Valid CreateAuthorRequest createAuthorRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "author-edit";
+        }
+        AuthorDto updatedAuthorDto = new AuthorDto();
+        updatedAuthorDto.setFullName(createAuthorRequest.getFullName());
+
+        authorService.updateAuthor(id, updatedAuthorDto);
+        return "redirect:/authors/list";
+    }
+
+    @GetMapping("/authors/delete/{id}")
+    public String deleteAuthor(@PathVariable Long id) {
+        authorService.deleteAuthor(id);
+        return "redirect:/authors/list";
     }
 
 }
