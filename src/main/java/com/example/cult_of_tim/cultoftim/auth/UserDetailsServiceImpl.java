@@ -1,16 +1,12 @@
 package com.example.cult_of_tim.cultoftim.auth;
 
+import com.cult_of_tim.auth.cultoftimauth.converter.UserConverter;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +14,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     UserRepository userRepository;
+
+    UserConverter userConverter;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,6 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         var user = optionalUser.get();
 
-        return new UserDetailsImpl(user);
+        return new UserDetailsImpl(userConverter.toDTO(user));
     }
 }

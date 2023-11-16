@@ -13,19 +13,20 @@
     <tr>
       <th>ID</th>
       <th>Full Name</th>
-      <th>Actions</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="author : ${authors}">
       <td th:text="${author.id}"></td>
       <td th:text="${author.fullName}"></td>
-      <td></td>
+      <td><a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-info">Edit</a></td>
+      <td><a th:href="@{/authors/delete/{id}(id=${author.id})}" class="btn btn-danger">Delete</a></td>
     </tr>
     </tbody>
   </table>
-
-  <a href="/authorlist/add" class="btn btn-primary">Add New Author</a>
+  <a href="/authors/add" class="btn btn-primary">Add New Author</a>
 </div>
 </body>
 </html>

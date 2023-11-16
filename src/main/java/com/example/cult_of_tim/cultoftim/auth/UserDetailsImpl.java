@@ -1,6 +1,6 @@
 package com.example.cult_of_tim.cultoftim.auth;
 
-import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
     @Getter
-    User user;
+    UserDTO user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
