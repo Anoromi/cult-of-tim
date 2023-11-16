@@ -25,8 +25,11 @@ public class FundsController {
     }
 
     @PostMapping("/addFunds")
-    public String addFunds(@RequestParam("amount") double amount) {
-        fundsService.addFunds(amount);
+    public String addFunds(@RequestParam("amount") double amount, @AuthenticationPrincipal UserDTO userDTO) {
+        userDTO.setBalance((int) (userDTO.getBalance()+amount));
+
+        fundsService.updateUserBalance(userDTO);
+
         return "redirect:/addFunds";
     }
 }
