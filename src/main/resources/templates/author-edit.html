@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Author</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="header">Edit Author</h1>
+
+    <form th:action="@{/authors/edit/{id}(id=${author.id})}" method="post" th:object="${author}">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Invalid full name.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Author</button>
+    </form>
+</div>
+</body>
+</html>
