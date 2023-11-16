@@ -12,19 +12,25 @@
     <tr>
       <th>Book name</th>
       <th>Book author(s)</th>
+      <th>Book category(ies)</th>
+      <th>Amount</th>
       <th></th>
     </tr>
 
     <tr th:each="book : ${books}">
       <td th:text="${book.title}">Book name</td>
-      <td th:text="${book.authors}">Book author(s)</td>
-      <td th:text="${book.categories}">Book category</td>
+      <td>
+        <span th:each="author : ${book.authors}" th:text="${author.getFullName()}"></span>
+      </td>
+      <td>
+        <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
+      </td>
       <td th:text="${book.quantity}">Book quantity</td>
     </tr>
   </table>
-  <a href="/booklist/add" class="btn btn-primary">Add Book</a>
-  <a href="/booklist/edit" class="btn btn-primary">Edit Book</a>
-  <a href="/booklist/delete" class="btn btn-primary">Delete Book</a>
+  <a href="/books/add" class="btn btn-primary">Add Book</a>
+  <a href="/books/edit" class="btn btn-primary">Edit Book</a>
+  <a href="/books/delete" class="btn btn-primary">Delete Book</a>
 </div>
 
 <div th:if="${userRole == 'Default'}">
@@ -32,12 +38,17 @@
     <tr>
       <th>Book name</th>
       <th>Book author(s)</th>
+      <th>Book category(ies)</th>
     </tr>
 
     <tr th:each="book : ${books}">
       <td th:text="${book.title}">Book name</td>
-      <td th:text="${book.authors}">Book author</td>
-      <td th:text="${book.categories}">Book category</td>
+      <td>
+        <span th:each="author : ${book.authors}" th:text="${author.getFullName()}"></span>
+      </td>
+      <td>
+        <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
+      </td>
     </tr>
   </table>
 </div>

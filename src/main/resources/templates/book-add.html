@@ -7,13 +7,23 @@
 </head>
 <body>
 <h2 class="header">Adding a book</h2>
-<form class="form" id="addBookForm" th:action="@{/books}" method="post">
-    <input type="text" name="title" placeholder="Book title" />
-    <input type="text" name="author" placeholder="Author(s)" />
-    <input type="text" name="category" placeholder="Category(ies)" />
-    <input type="number" name="amount" placeholder="Amount" />
+<form class="form" id="addBookForm" th:action="@{/books/add}" method="post">
+    <label for="title">Book title:</label>
+    <input type="text" id="title" name="title" class="form-control" required>
+    <label for="authors">Author(s):</label>
+    <select id="authors" name="authors" class="form-control" multiple="multiple" required>
+        <!-- Опції для вибору авторів -->
+        <!-- <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.getFullName()}"></option> -->
+    </select>
+    <label for="categories">Category(ies):</label>
+    <select id="categories" name="categories" class="form-control" multiple="multiple" required>
+        <!-- Опції для вибору категорій -->
+        <!-- <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option> -->
+    </select>
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount" class="form-control" required>
     <br>
-    <a href="/booklist/add" class="btn btn-primary">Add New Book</a>
+    <button type="submit" class="btn btn-primary">Add Book</button>
 </form>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.example.cult_of_tim.cultoftim.converter;
 
+import com.example.cult_of_tim.cultoftim.controller.request.AuthorRequest;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.entity.Author;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,14 @@ public class AuthorConverter {
                 .fullName(author.getFullName())
                 .build();
     }
+
+    public AuthorDto toDto(AuthorRequest author) {
+        return AuthorDto.builder()
+                .id(author.getId())
+                .fullName(author.getFullName())
+                .build();
+    }
+
 
     public Author toEntity(AuthorDto authorDto) {
         return Author.builder()
