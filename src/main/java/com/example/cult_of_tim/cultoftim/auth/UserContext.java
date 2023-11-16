@@ -12,8 +12,8 @@ public class UserContext {
 
     public Optional<UserDTO> getUser() {
         var context = SecurityContextHolder.getContext().getAuthentication();
-        if(context instanceof  UsernamePasswordAuthenticationToken token) {
-            return (Optional<UserDTO>) token.getPrincipal();
+        if (context instanceof UsernamePasswordAuthenticationToken token) {
+            return Optional.ofNullable((UserDTO) token.getPrincipal());
         }
 
         return Optional.empty();

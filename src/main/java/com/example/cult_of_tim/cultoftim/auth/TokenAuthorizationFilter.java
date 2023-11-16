@@ -52,7 +52,7 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
         if (user.isPresent()) {
             SecurityContextHolder.getContext().setAuthentication(
                     UsernamePasswordAuthenticationToken.authenticated(
-                            user, null, List.of(new SimpleGrantedAuthority(user.get().getRole()))
+                            user.get(), null, List.of(new SimpleGrantedAuthority(user.get().getRole()))
                     )
             );
         }
