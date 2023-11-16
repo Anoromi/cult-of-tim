@@ -36,7 +36,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    private Integer balance;
+    private Integer balance=0;
 
 
 }

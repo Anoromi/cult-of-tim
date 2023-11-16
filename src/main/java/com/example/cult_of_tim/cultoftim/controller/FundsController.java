@@ -1,7 +1,10 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
+
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.example.cult_of_tim.cultoftim.service.FundsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +18,8 @@ public class FundsController {
     private FundsService fundsService;
 
     @GetMapping("/addFunds")
-    public String showAddFundsPage(Model model) {
-        double currentBalance = fundsService.getCurrentBalance();
+    public String showAddFundsPage(Model model, @AuthenticationPrincipal UserDTO userDTO) {
+        double currentBalance = userDTO.getBalance();
         model.addAttribute("currentBalance", "Current Balance: " + currentBalance + " UAH");
         return "addFunds";
     }
