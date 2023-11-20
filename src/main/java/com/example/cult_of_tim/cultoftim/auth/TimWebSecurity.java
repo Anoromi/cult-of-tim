@@ -39,11 +39,17 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/auth/login")
                     .permitAll();
+            authorizeHttpRequests.requestMatchers("/login/auth")
+                    .permitAll();
             authorizeHttpRequests.requestMatchers("/login")
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/register")
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/addFunds")
+                    .permitAll();
+            authorizeHttpRequests.requestMatchers("/cart/list")
+                    .permitAll();
+            authorizeHttpRequests.requestMatchers("/cart/add/**")
                     .permitAll();
 
             // POST, PUT, DELETE for admin
