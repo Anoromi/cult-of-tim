@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +64,34 @@ public class CartController {
             cartItemRepository.save(cartItem);
         }
         return "redirect:/cart/list";
+    }
+    @PostMapping("/buy")
+    public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        if (user.isPresent()) {
+            List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
+
+            double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
+
+            if (userDTO.getBalance() > totalCost) {
+
+                userDTO.setBalance((int) (userDTO.getBalance() - totalCost));
+
+                cartItemRepository.deleteAll(cartItems);
+
+                userRepository.save(user.get());
+
+                return "redirect:/cart/list";
+            } else {
+                model.addAttribute("error", "Not enough money to complete the purchase.");
+
+                return "cart/list";
+            }
+        }
+        else{
+            model.addAttribute("error", "No User");
+
+            return "cart/list";
+        }
     }
 }

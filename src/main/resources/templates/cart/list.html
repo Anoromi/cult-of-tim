@@ -7,7 +7,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
 <h2>Your Shopping Cart</h2>
 
 <table>
@@ -24,6 +23,14 @@
     </tr>
     </tbody>
 </table>
+
+<form th:action="@{/cart/buy}" method="post">
+    <button type="submit">Buy All Books</button>
+</form>
+
+
+<div th:if="${error ne null}" th:text="${error}" style="color: red;"></div>
+
 
 </body>
 </html>

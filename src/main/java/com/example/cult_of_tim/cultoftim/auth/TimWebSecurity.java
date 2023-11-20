@@ -39,8 +39,6 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/auth/login")
                     .permitAll();
-            authorizeHttpRequests.requestMatchers("/login/auth")
-                    .permitAll();
             authorizeHttpRequests.requestMatchers("/login")
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/register")
@@ -51,6 +49,9 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/cart/add/**")
                     .permitAll();
+            authorizeHttpRequests.requestMatchers("/cart/buy")
+                    .permitAll();
+
 
             // POST, PUT, DELETE for admin
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books")
