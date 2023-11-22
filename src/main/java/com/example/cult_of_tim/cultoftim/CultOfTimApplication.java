@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-//@EnableJpaRepositories()
 @EntityScan()
+
 public class CultOfTimApplication implements CommandLineRunner {
 
     @Autowired(required = false)
