@@ -1,7 +1,6 @@
 package com.example.cult_of_tim.cultoftim.repositories;
 
 import com.example.cult_of_tim.cultoftim.entity.Book;
-import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
