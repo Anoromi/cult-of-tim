@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Book list</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
@@ -14,7 +15,7 @@
       <th>Book author(s)</th>
       <th>Book category(ies)</th>
       <th>Amount</th>
-      <th></th>
+      <th>Editing</th>
     </tr>
 
     <tr th:each="book : ${books}">
@@ -26,11 +27,18 @@
         <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
       </td>
       <td th:text="${book.quantity}">Book quantity</td>
+
+      <td>
+        <form method="get" action="/books/edit">
+          <input type="hidden" name="bookId" th:value="${book.id}" />
+          <button type="submit" class="btn btn-primary">Edit a Book</button>
+        </form>
+      </td>
+
     </tr>
   </table>
-  <a href="/books/add" class="btn btn-primary">Add Book</a>
-  <a href="/books/edit" class="btn btn-primary">Edit Book</a>
-  <a href="/books/delete" class="btn btn-primary">Delete Book</a>
+  <a href="/books/add" class="btn btn-primary">Add a Book</a>
+  <a href="/books/delete" class="btn btn-primary">Delete a Book</a>
 </div>
 
 <div th:if="${userRole == 'Default'}">

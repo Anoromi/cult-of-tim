@@ -144,6 +144,12 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    @Override
+    public boolean isTitleValid(String title) {
+        List<Book> books = bookRepository.findByTitle(title);
+        return books.isEmpty();
+    }
+
     @Autowired
     public void setAuthorService(AuthorService authorService) {
         this.authorService = authorService;

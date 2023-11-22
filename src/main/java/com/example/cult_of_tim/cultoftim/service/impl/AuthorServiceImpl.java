@@ -19,6 +19,7 @@ import reactor.netty.http.client.HttpClient;
 //import org.springframework.web.reactive.function.client.WebClientResponseException;
 //import reactor.netty.http.client.HttpClient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -110,5 +111,18 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean allAuthorsValid(String authorsList) {
+        String[] authorNames = authorsList.split(", ");
+
+        for (String author : authorNames) {
+            if (authorRepository.findByFullName(author).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

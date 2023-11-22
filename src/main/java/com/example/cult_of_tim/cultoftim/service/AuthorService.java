@@ -18,4 +18,6 @@ public interface AuthorService {
     AuthorDto updateAuthor(Long id, AuthorDto updatedAuthor);
 
     void deleteAuthor(Long id);
+
+    boolean allAuthorsValid(String authorsList);
 }

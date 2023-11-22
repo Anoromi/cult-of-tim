@@ -23,4 +23,6 @@ public interface BookService {
     BookDto updateBook(Long id, BookDto updatedBook);
 
     void deleteBook(Long id);
+
+    boolean isTitleValid(String title);
 }
