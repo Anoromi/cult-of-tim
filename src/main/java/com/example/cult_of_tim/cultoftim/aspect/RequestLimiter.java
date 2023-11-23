@@ -20,7 +20,6 @@ public class RequestLimiter {
 
     @Around("within(com.example.cult_of_tim.cultoftim.controller.*)")
     public Object doBasicProfiling(ProceedingJoinPoint pjp) throws Throwable {
-        // start stopwatch
         updateCurrentInstant();
         var currentRequests = requestCount++;
         if (currentRequests > 50000) {
@@ -40,10 +39,4 @@ public class RequestLimiter {
         return currentInstant;
     }
 
-    //@Around("execution(public * com.example.cult_of_tim.cultoftim.controller.BookController(..))")
-    //public Object hello(ProceedingJoinPoint pjp) throws Throwable {
-
-    //    return pjp.proceed();
-
-    //}
 }
