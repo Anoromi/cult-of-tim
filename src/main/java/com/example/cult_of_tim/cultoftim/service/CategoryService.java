@@ -16,4 +16,6 @@ public interface CategoryService {
     CategoryDto updateCategory(Long id, CategoryDto updatedCategory);
 
     void deleteCategory(Long id);
+
+    boolean allCategoriesValid(String categories);
 }

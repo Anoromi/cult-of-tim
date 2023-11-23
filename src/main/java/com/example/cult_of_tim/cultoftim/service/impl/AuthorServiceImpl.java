@@ -111,4 +111,17 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
+
+    @Override
+    public boolean allAuthorsValid(String authorsList) {
+        String[] authorNames = authorsList.split(", ");
+
+        for (String author : authorNames) {
+            if (authorRepository.findByFullName(author).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

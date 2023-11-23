@@ -63,4 +63,17 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
+
+    @Override
+    public boolean allCategoriesValid(String categories) {
+        String[] categoriesArray = categories.split(", ");
+
+        for (String category : categoriesArray) {
+            if (categoryRepository.findByName(category).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
