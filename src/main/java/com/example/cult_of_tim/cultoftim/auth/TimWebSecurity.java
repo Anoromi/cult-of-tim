@@ -101,9 +101,7 @@ public class TimWebSecurity {
             //authorizeHttpRequests.requestMatchers(Http)
         });
         http.exceptionHandling((e) -> {
-
-
-            //e.disable();
+            e.disable();
         });
 
         // TODO fix forwarding

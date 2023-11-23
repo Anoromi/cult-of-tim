@@ -23,7 +23,7 @@ public class RequestLimiter {
         // start stopwatch
         updateCurrentInstant();
         var currentRequests = requestCount++;
-        if (currentRequests > 2) {
+        if (currentRequests > 50000) {
             throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "Too many requests");
         }
 
