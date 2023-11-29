@@ -92,6 +92,7 @@ public class TimWebSecurity {
 //            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/list").authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/add")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/edit")

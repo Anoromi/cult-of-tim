@@ -9,6 +9,9 @@ import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -40,6 +43,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
+    @Cacheable("books")
     public Optional<BookDto> getBookById(Long id) {
         return bookRepository.findById(id).map(bookConverter::toDto);
     }
@@ -124,6 +128,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CachePut(value = "books", key = "id")
     public BookDto updateBook(Long id, BookDto updatedBookDto) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
@@ -140,6 +145,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict("books")
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }

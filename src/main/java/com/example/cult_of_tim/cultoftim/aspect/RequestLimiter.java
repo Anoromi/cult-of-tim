@@ -19,6 +19,7 @@ public class RequestLimiter {
 
 
     @Around("within(com.example.cult_of_tim.cultoftim.controller.*)")
+    //@Around("execution(* com.example.cult_of_tim.cultoftim.controller.*.*(..))")
     public Object doBasicProfiling(ProceedingJoinPoint pjp) throws Throwable {
         updateCurrentInstant();
         var currentRequests = requestCount++;
