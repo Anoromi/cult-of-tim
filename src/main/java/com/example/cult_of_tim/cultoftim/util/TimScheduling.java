@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim.util;
 
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserTokenRepository;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,11 +18,10 @@ public class TimScheduling {
     @Autowired
     CacheManager cacheManager;
     @Autowired
-    private UserTokenRepository tokenRepository;
+    private UserService userService;
     @Scheduled(cron = "0 0 1 * * ?")
     public void cleanDatabaseFromOutdatedTokens() {
-        Date now = Date.from(Instant.now());
-        tokenRepository.deleteAllByExpiresAtBefore(now);
+        userService.deleteAllExpiredTokens();
 
     }
     @Scheduled(fixedRate = ONE_DAY)

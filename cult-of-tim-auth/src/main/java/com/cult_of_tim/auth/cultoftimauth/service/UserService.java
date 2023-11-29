@@ -6,6 +6,7 @@ import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,4 +31,6 @@ public interface UserService {
     void setUserRole(UUID id, String role);
 
     User getUserBy(String emailOrUsername, String password) throws AuthException;
+
+    void deleteAllExpiredTokens();
 }
