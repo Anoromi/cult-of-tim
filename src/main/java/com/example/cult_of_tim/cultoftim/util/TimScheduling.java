@@ -3,7 +3,6 @@ package com.example.cult_of_tim.cultoftim.util;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class TimScheduling {
     @Scheduled(cron = "0 0 1 * * ?")
     public void cleanDatabaseFromOutdatedTokens() {
         Date now = Date.from(Instant.now());
-        tokenRepository.deleteAllExpiredSince(now);
+        tokenRepository.deleteAllByExpiresAtBefore(now);
 
     }
     @Scheduled(fixedRate = ONE_DAY)
