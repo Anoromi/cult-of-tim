@@ -98,7 +98,7 @@ public class UserMockService implements UserService {
     @Override
     public void deleteAllExpiredTokens() {
         Date now = new Date();
-        userTokenRepository.deleteAllByExpiresAtAfter(now);
+        userTokenRepository.deleteAllByExpiresAtBefore(now);
     }
 
     @Override

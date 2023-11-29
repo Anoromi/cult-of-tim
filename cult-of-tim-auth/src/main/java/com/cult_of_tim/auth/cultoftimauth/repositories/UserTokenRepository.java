@@ -17,5 +17,5 @@ public interface UserTokenRepository extends JpaRepository<UserToken, UUID> {
     List<UserToken> findByUserUserId(UUID userId);
 
 
-    void deleteAllByExpiresAtAfter(Date now);
+    void deleteAllByExpiresAtBefore(Date now);
 }
