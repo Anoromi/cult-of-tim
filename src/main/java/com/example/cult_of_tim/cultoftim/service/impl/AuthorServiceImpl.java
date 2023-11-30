@@ -8,6 +8,9 @@ import com.example.cult_of_tim.cultoftim.external.OpenLibraryAuthor;
 import com.example.cult_of_tim.cultoftim.repositories.AuthorRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -36,6 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Cacheable("authors")
     public Optional<AuthorDto> getAuthorById(Long id) {
         return authorRepository.findById(id).map(authorConverter::toDto);
     }
@@ -94,6 +98,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @CachePut(value = "authors", key = "id")
     public AuthorDto updateAuthor(Long id, AuthorDto updatedAuthorDto) {
         Author existingAuthor = authorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Author not found"));
@@ -108,6 +113,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @CacheEvict(value = "authors", key = "id")
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
