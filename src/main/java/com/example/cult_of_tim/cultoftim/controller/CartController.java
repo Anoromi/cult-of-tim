@@ -48,6 +48,13 @@ public class CartController {
         return "cart/list";
     }
 
+    @GetMapping("/add/{bookId}")
+    public String addToCartPage(@PathVariable Long bookId, Model model) {
+        Optional<Book> book = bookRepository.findById(bookId);
+        model.addAttribute("book", book.orElse(null));
+        return "cart/add_to_cart";
+    }
+
     @PostMapping("/add/{bookId}")
     public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
 
