@@ -29,7 +29,7 @@ public class BookConverter {
         return BookDto.builder()
                 .id(book.getId())
                 .title(book.getTitle())
-                .authors(book.getAuthors().stream().map(authorConverter::toDto).collect(Collectors.toList()))
+                .authors(book.getAuthors().stream().map(authorConverter::requestToDto).collect(Collectors.toList()))
                 .categories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()))
                 .quantity(book.getQuantity())
                 .build();

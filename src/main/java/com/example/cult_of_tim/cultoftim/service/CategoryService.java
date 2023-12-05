@@ -2,8 +2,11 @@ package com.example.cult_of_tim.cultoftim.service;
 
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface CategoryService {
 
@@ -17,5 +20,7 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    boolean allCategoriesValid(String categories);
+    List<CategoryDto> createCategoryDtos(String categories);
+
+    List<String> extractNames(String input);
 }

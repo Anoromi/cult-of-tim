@@ -50,35 +50,17 @@ public class TimWebSecurity {
                     .permitAll();
 
             // POST, PUT, DELETE for admin
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books/add")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books/edit")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books/delete")
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/authors/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/promotions/**")
                     .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/add")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/edit")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/delete")
+            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/authors/**")
                     .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books/add")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books/edit")
-                    .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books/delete")
+            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/authors/**")
                     .hasAuthority(UserRoles.ADMIN);
@@ -92,11 +74,13 @@ public class TimWebSecurity {
 //            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/list").authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books")
+                    .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/add")
                     .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/edit")
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/edit/**")
                     .hasAuthority(UserRoles.ADMIN);
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/delete")
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/delete/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/authors/**").authenticated();
 

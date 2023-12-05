@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
 
+import com.example.cult_of_tim.cultoftim.controller.request.AuthorRequest;
 import com.example.cult_of_tim.cultoftim.converter.AuthorConverter;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.entity.Author;
@@ -19,8 +20,12 @@ import reactor.netty.http.client.HttpClient;
 //import org.springframework.web.reactive.function.client.WebClientResponseException;
 //import reactor.netty.http.client.HttpClient;
 
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,15 +118,24 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public boolean allAuthorsValid(String authorsList) {
-        String[] authorNames = authorsList.split(", ");
+    public List<AuthorDto> createAuthorDtos(String authors) {
+        List<String> authorNames = extractFullNames(authors);
+        List<AuthorDto> authorDtoList = getAllAuthors();
+        return authorDtoList.stream()
+                .filter(author -> authorNames.contains(author.getFullName()))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<String> extractFullNames(String input) {
+        List<String> fullNames = new ArrayList<>();
+        Pattern pattern = Pattern.compile("fullName=([^)]+)");
+        Matcher matcher = pattern.matcher(input);
 
-        for (String author : authorNames) {
-            if (authorRepository.findByFullName(author).isEmpty()) {
-                return false;
-            }
+        while (matcher.find()) {
+            String fullName = matcher.group(1).trim();
+            fullNames.add(fullName);
         }
 
-        return true;
+        return fullNames;
     }
 }
