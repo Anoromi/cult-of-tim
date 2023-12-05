@@ -1,7 +1,5 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
-
-import com.example.cult_of_tim.cultoftim.controller.request.AuthorRequest;
 import com.example.cult_of_tim.cultoftim.converter.AuthorConverter;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.entity.Author;
@@ -20,10 +18,8 @@ import reactor.netty.http.client.HttpClient;
 //import org.springframework.web.reactive.function.client.WebClientResponseException;
 //import reactor.netty.http.client.HttpClient;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;

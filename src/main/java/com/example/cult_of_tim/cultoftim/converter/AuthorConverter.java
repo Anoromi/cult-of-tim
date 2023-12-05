@@ -5,9 +5,6 @@ import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.entity.Author;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class AuthorConverter {
     public AuthorDto toDto(Author author) {
@@ -32,13 +29,6 @@ public class AuthorConverter {
                 .id(authorDto.getId())
                 //.firstName(authorDto.getFirstName())
                 //.lastName(authorDto.getLastName())
-                .fullName(authorDto.getFullName())
-                .build();
-    }
-
-    public AuthorRequest dtoToRequest(AuthorDto authorDto) {
-        return AuthorRequest.builder()
-                .id(authorDto.getId())
                 .fullName(authorDto.getFullName())
                 .build();
     }
