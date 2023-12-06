@@ -26,8 +26,6 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -48,30 +46,9 @@ public class CartController {
         return "cart/list";
     }
 
-    @GetMapping("/add/{bookId}")
-    public String addToCartPage(@PathVariable Long bookId, Model model) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        model.addAttribute("book", book.orElse(null));
-        return "cart/add_to_cart";
-    }
-
-    @PostMapping("/add/{bookId}")
-    public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
-
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
 
 
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book id"));
 
-        if(user.isPresent()) {
-            CartItem cartItem = new CartItem();
-            cartItem.setUser(user.get());
-            cartItem.setBook(book);
-
-            cartItemRepository.save(cartItem);
-        }
-        return "redirect:/cart/list";
-    }
     @PostMapping("/buy")
     public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         Optional<User> user = userRepository.findByUsername(userDTO.getUsername());

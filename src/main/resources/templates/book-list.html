@@ -43,6 +43,9 @@
       <td>
         <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a>
       </td>
+      <td>
+        <a th:href="@{/add/{id}(id=${book.id})}" class="btn btn-info">Add to cart</a>
+      </td>
 
     </tr>
   </table>
@@ -64,6 +67,9 @@
       </td>
       <td>
         <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
+      </td>
+      <td>
+        <a th:href="@{/add/{id}(id=${book.id})}" class="btn btn-info">Add to cart</a>
       </td>
     </tr>
   </table>
