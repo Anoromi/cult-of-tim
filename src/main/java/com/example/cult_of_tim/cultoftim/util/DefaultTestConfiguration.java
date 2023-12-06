@@ -4,10 +4,7 @@ import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.auth.UserRoles;
 import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
-import com.example.cult_of_tim.cultoftim.service.AuthorService;
-import com.example.cult_of_tim.cultoftim.service.BookService;
-import com.example.cult_of_tim.cultoftim.service.CategoryService;
-import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import com.example.cult_of_tim.cultoftim.service.*;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +23,8 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
     final CategoryService categoryService;
     final PromotionService promotionService;
     final UserService userService;
+    final PurchaseService purchaseService;
+    final FundsService fundsService;
 
     final PromotionDiscountRepository promotionDiscountRepository;
 
@@ -37,18 +36,17 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
     public void run() throws Exception {
         logger.debug("Debugging hello");
         logger.debug("Debugging hello");
-        userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
+        var defaultUser = userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
+        //fundsService.addFunds();
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         try {
             System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
 
         }
 
         var adminUser = userService.registerUser("admin", "admin@gmail.com", "1234Abcd@");
         userService.setUserRole(adminUser, UserRoles.ADMIN);
-
 
 
         AuthorDto author = authorService.createAuthor("First Second");
@@ -58,6 +56,7 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         bookDto.setTitle("title");
         bookDto.setAuthors(List.of(author));
         bookDto.setCategories(List.of(category));
+        bookDto.setQuantity(2);
         BookDto book = bookService.createBook(bookDto);
 
         PromotionDto promdto = new PromotionDto();
@@ -70,6 +69,12 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         promotionDiscountDto.setBookId(book.getId());
         promotionDiscountDto.setDiscountPercentage(50);
         promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
+
+        //purchaseService.purchaseBooks(defaultUser, List.of(book.getId()));
+
+
+
+
 
         //bookService.addBookFromOpenLibrary("9780545029360", 10);
         //bookService.addBookFromOpenLibrary("9780545029365", 10);

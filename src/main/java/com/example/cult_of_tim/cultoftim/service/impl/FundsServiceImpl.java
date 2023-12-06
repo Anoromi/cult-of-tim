@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class FundsServiceImpl implements FundsService {
 
-    private double currentBalance = 0.0;
     private final UserRepository userRepository;
 
     @Autowired
@@ -25,16 +25,16 @@ public class FundsServiceImpl implements FundsService {
         this.userRepository = userRepository;
 
     }
-    public double getCurrentBalance() {
-        return currentBalance;
+
+
+    @Override
+    public void addFunds(UUID userId, int amount) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty())
+            return;
+        optionalUser.get().setBalance(optionalUser.get().getBalance() + amount);
     }
 
-    public void addFunds(double amount) {
-
-        currentBalance += amount;
-
-        System.out.println("Added " + amount + " UAH to the account. Current balance: " + currentBalance + " UAH");
-    }
     public void updateUserBalance(UserDTO userDTO) {
 
         Optional<User> optionalUser = userRepository.findById(userDTO.getUserId());

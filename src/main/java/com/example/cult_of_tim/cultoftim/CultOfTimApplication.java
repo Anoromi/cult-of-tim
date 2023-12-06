@@ -1,6 +1,7 @@
 package com.example.cult_of_tim.cultoftim;
 
 import com.example.cult_of_tim.cultoftim.util.InitialDatabaseSeeder;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

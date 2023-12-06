@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface FundsService {
-    public double getCurrentBalance();
 
-    public void addFunds(double amount);
-    public void updateUserBalance(UserDTO userDTO);
+    void addFunds(UUID userId, int amount);
+
+    void updateUserBalance(UserDTO userDTO);
 }
 
