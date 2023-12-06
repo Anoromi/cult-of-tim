@@ -26,9 +26,20 @@ public class Promotion {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PromotionDiscount> discounts;
 
     private boolean globalPromotion;
 
+    @Override
+    public String toString() {
+        return "Promotion{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", discounts=" + discounts +
+                ", globalPromotion=" + globalPromotion +
+                '}';
+    }
 }
