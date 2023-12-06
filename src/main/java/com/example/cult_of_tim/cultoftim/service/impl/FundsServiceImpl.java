@@ -36,7 +36,7 @@ public class FundsServiceImpl implements FundsService {
         System.out.println("Added " + amount + " UAH to the account. Current balance: " + currentBalance + " UAH");
     }
     public void updateUserBalance(UserDTO userDTO) {
-        
+
         Optional<User> optionalUser = userRepository.findById(userDTO.getUserId());
 
         if (optionalUser.isPresent()) {
