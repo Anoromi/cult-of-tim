@@ -17,5 +17,7 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    boolean allCategoriesValid(String categories);
+    List<CategoryDto> createCategoryDtos(String categories);
+
+    List<String> extractNames(String input);
 }

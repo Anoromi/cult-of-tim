@@ -2,9 +2,9 @@ package com.example.cult_of_tim.cultoftim.controller;
 
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.example.cult_of_tim.cultoftim.auth.UserContext;
-import com.example.cult_of_tim.cultoftim.controller.request.BookRequest;
-import com.example.cult_of_tim.cultoftim.converter.BookConverter;
+import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
+import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -24,13 +24,10 @@ public class BookPageController {
     private final BookService bookService;
     private final AuthorService authorService;
     private final CategoryService categoryService;
-    private final BookConverter bookConverter;
 
     @Autowired
-    public BookPageController(BookService bookService, BookConverter bookConverter,
-                              AuthorService authorService, CategoryService categoryService) {
+    public BookPageController(BookService bookService, AuthorService authorService, CategoryService categoryService) {
         this.bookService = bookService;
-        this.bookConverter = bookConverter;
         this.authorService = authorService;
         this.categoryService = categoryService;
     }
@@ -44,104 +41,97 @@ public class BookPageController {
             role = user.get().getRole();
         }
         model.addAttribute("userRole", role);
-        List<BookDto> books = bookService.getAllBooks();
-        model.addAttribute("books", books);
+        model.addAttribute("books", bookService.getAllBooks());
         return "book-list";
     }
 
     @GetMapping("/books/add")
-    public String showAddBookForm(Model model){
-        model.addAttribute("createBookRequest", new BookRequest());
+    public String addBookPage(Model model){
+        model.addAttribute("createBookDto", new BookDto());
+        model.addAttribute("authors", authorService.getAllAuthors());
+        model.addAttribute("selectedAuthors", new ArrayList<AuthorDto>());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("selectedCategories", new ArrayList<CategoryDto>());
         return "book-add";
-    }
-
-    @GetMapping("/books/edit")
-    public String showEditBookPage(Model model){
-        model.addAttribute("createBookRequest", new BookRequest());
-        return "book-edit";
-    }
-
-    @GetMapping("/books/delete")
-    public String showDeleteBookPage(Model model){
-        model.addAttribute("createBookRequest", new BookRequest());
-        return "book-delete";
     }
 
     @PostMapping("/books/add")
     public String addBook(@Valid @RequestParam("title") String bookTitle,
-                          @Valid @RequestParam("authors") String authorsInput,
-                          @Valid @RequestParam("categories") String categoriesInput,
-                          @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
+                          @Valid @RequestParam("selectedAuthors") String authors,
+                          @Valid @RequestParam("selectedCategories") String categories,
+                          @Valid @RequestParam("quantity") int bookQuantity,
+                          @Valid @ModelAttribute BookDto createBookDto,
                           BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "book-add";
         }
 
-        boolean isTitleValid = bookService.isTitleValid(bookTitle);
-        boolean areInvalidAuthors = authorService.allAuthorsValid(authorsInput);
-        boolean areInvalidCategories = categoryService.allCategoriesValid(categoriesInput);
+        boolean bookExists = bookService.bookExists(bookTitle);
 
-        if (!isTitleValid){
+        if (bookExists){
             return "redirect:/books/add?title";
         }
-        else if (!areInvalidAuthors) {
-            return "redirect:/books/add?authors";
-        }
-        else if (!areInvalidCategories) {
-            return "redirect:/books/add?categories";
+        else if (bookQuantity < 0) {
+            return "redirect:/books/add?quantity";
         }
 
-        bookService.createBook(bookConverter.toDto(bookRequest));
+        createBookDto.setTitle(bookTitle);
+        createBookDto.setAuthors(authorService.createAuthorDtos(authors));
+        createBookDto.setCategories(categoryService.createCategoryDtos(categories));
+        createBookDto.setQuantity(bookQuantity);
+
+        bookService.createBook(createBookDto);
 
         return "redirect:/books/list";
     }
 
-    @PostMapping("/books/edit")
-    public String editBook(@Valid @RequestParam("bookId") Long id,
+    @GetMapping("/books/edit/{id}")
+    public String editBookPage(@PathVariable Long id, Model model){
+        BookDto bookDto = bookService.getBookById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
+        model.addAttribute("book", bookDto);
+        model.addAttribute("authors", authorService.getAllAuthors());
+        model.addAttribute("selectedAuthors", bookDto.getAuthors());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("selectedCategories", bookDto.getCategories());
+        return "book-edit";
+    }
+
+    @PostMapping("/books/edit/{id}")
+    public String editBook(@PathVariable Long id,
                            @Valid @RequestParam("title") String bookTitle,
-                           @Valid @RequestParam("authors") String authorsInput,
-                           @Valid @RequestParam("categories") String categoriesInput,
-                           @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
+                           @Valid @RequestParam("selectedAuthors") String authors,
+                           @Valid @RequestParam("selectedCategories") String categories,
+                           @Valid @RequestParam("quantity") int bookQuantity,
+                           @Valid @ModelAttribute("updateBookDto") BookDto updatedBookDto,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "book-edit";
         }
 
-        boolean isTitleValid = bookService.isTitleValid(bookTitle);
-        boolean areInvalidAuthors = authorService.allAuthorsValid(authorsInput);
-        boolean areInvalidCategories = categoryService.allCategoriesValid(categoriesInput);
+        boolean bookExists = bookService.bookExists(bookTitle);
+        boolean bookTitleMatchesOld = bookService.oldTitleMatchNew(id, bookTitle);
 
-        if (!isTitleValid){
-            return "redirect:/books/edit?title";
+        if (bookExists && !bookTitleMatchesOld){
+            return "redirect:/books/edit/" + id + "?title";
         }
-        else if (!areInvalidAuthors) {
-            return "redirect:/books/edit?authors";
-        }
-        else if (!areInvalidCategories) {
-            return "redirect:/books/edit?categories";
+        else if (bookQuantity < 0) {
+            return "redirect:/books/edit/" + id + "?quantity";
         }
 
-        bookService.updateBook(id, bookConverter.toDto(bookRequest));
+        updatedBookDto.setTitle(bookTitle);
+        updatedBookDto.setAuthors(authorService.createAuthorDtos(authors));
+        updatedBookDto.setCategories(categoryService.createCategoryDtos(categories));
+        updatedBookDto.setQuantity(bookQuantity);
+
+        bookService.updateBook(id, updatedBookDto);
 
         return "redirect:/books/list";
     }
 
-    @PostMapping("/books/delete")
-    public String deleteBook(@Valid @RequestParam("title") String title,
-                             @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "book-delete";
-        }
-
-        List<BookDto> books = bookService.getAllBooks();
-        for (BookDto book : books){
-            if (book.getTitle().equals(title)) {
-                bookService.deleteBook(book.getId());
-                return "redirect:/books/list";
-            }
-        }
-
-        return "redirect:/books/delete?title";
+    @GetMapping("/books/delete/{id}")
+    public String deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return "redirect:/books/list";
     }
 }

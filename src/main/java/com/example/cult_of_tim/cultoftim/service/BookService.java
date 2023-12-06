@@ -24,5 +24,7 @@ public interface BookService {
 
     void deleteBook(Long id);
 
-    boolean isTitleValid(String title);
+    boolean bookExists(String title);
+
+    boolean oldTitleMatchNew(Long id, String newTitle);
 }

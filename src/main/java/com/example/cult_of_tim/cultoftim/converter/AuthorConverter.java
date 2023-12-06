@@ -16,7 +16,7 @@ public class AuthorConverter {
                 .build();
     }
 
-    public AuthorDto toDto(AuthorRequest author) {
+    public AuthorDto requestToDto(AuthorRequest author) {
         return AuthorDto.builder()
                 .id(author.getId())
                 .fullName(author.getFullName())

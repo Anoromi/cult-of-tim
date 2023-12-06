@@ -123,6 +123,7 @@ public class BookServiceImpl implements BookService {
         newBook.setTitle(bookDto.getTitle());
         newBook.setAuthors(creationBook.getAuthors());
         newBook.setCategories(creationBook.getCategories());
+        newBook.setQuantity(creationBook.getQuantity());
         Book savedBook = bookRepository.save(newBook);
         return bookConverter.toDto(savedBook);
     }
@@ -139,6 +140,7 @@ public class BookServiceImpl implements BookService {
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthors(updatedBook.getAuthors());
         existingBook.setCategories(updatedBook.getCategories());
+        existingBook.setQuantity(updatedBook.getQuantity());
 
         Book savedBook = bookRepository.save(existingBook);
         return bookConverter.toDto(savedBook);
@@ -151,9 +153,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean isTitleValid(String title) {
+    public boolean bookExists(String title) {
         List<Book> books = bookRepository.findByTitle(title);
-        return books.isEmpty();
+        return !books.isEmpty();
+    }
+
+    @Override
+    public boolean oldTitleMatchNew(Long id, String newTitle)
+    {
+        Optional<Book> book = bookRepository.findById(id);
+        return book.isPresent() && book.get().getTitle().equals(newTitle);
     }
 
     @Autowired

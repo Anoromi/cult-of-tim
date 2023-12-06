@@ -19,5 +19,7 @@ public interface AuthorService {
 
     void deleteAuthor(Long id);
 
-    boolean allAuthorsValid(String authorsList);
+    List<AuthorDto> createAuthorDtos(String authors);
+
+    List<String> extractFullNames(String input);
 }

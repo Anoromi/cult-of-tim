@@ -8,8 +8,11 @@ import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,15 +68,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean allCategoriesValid(String categories) {
-        String[] categoriesArray = categories.split(", ");
+    public List<CategoryDto> createCategoryDtos(String categories) {
+        List<String> categoryNames = extractNames(categories);
+        List<CategoryDto> categoryDtoList = getAllCategories();
+        return categoryDtoList.stream()
+                .filter(category -> categoryNames.contains(category.getName()))
+                .collect(Collectors.toList());
+    }
 
-        for (String category : categoriesArray) {
-            if (categoryRepository.findByName(category).isEmpty()) {
-                return false;
-            }
+    @Override
+    public List<String> extractNames(String input) {
+        List<String> names = new ArrayList<>();
+        Pattern pattern = Pattern.compile("name=([^)]+)");
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            String fullName = matcher.group(1).trim();
+            names.add(fullName);
         }
 
-        return true;
+        return names;
     }
 }
