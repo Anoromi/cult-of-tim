@@ -89,12 +89,10 @@ public class BookServiceImpl implements BookService {
             bookRepository.save(book);
 
 
-
         } catch (WebClientResponseException e) {
             if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
                 throw new IllegalArgumentException("Isbn13 book not found");
         }
-
 
 
     }
@@ -118,14 +116,8 @@ public class BookServiceImpl implements BookService {
     //TODO creation dto
     @Override
     public BookDto createBook(BookDto bookDto) {
-        Book newBook = new Book();
         Book creationBook = bookConverter.toEntity(bookDto);
-        newBook.setTitle(bookDto.getTitle());
-        newBook.setAuthors(creationBook.getAuthors());
-        newBook.setCategories(creationBook.getCategories());
-        newBook.setQuantity(creationBook.getQuantity());
-        Book savedBook = bookRepository.save(newBook);
-        return bookConverter.toDto(savedBook);
+        return bookConverter.toDto(bookRepository.save(creationBook));
     }
 
     @Override
@@ -159,8 +151,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean oldTitleMatchNew(Long id, String newTitle)
-    {
+    public boolean oldTitleMatchNew(Long id, String newTitle) {
         Optional<Book> book = bookRepository.findById(id);
         return book.isPresent() && book.get().getTitle().equals(newTitle);
     }

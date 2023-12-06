@@ -14,6 +14,7 @@ public class BookDto {
     private List<AuthorDto> authors;
     private List<CategoryDto> categories;
     private int quantity;
+    private int price;
     private String isbn13;
 
     //private boolean isAvailable()

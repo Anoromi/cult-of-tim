@@ -35,9 +35,8 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
     @Override
     public void run() throws Exception {
         logger.debug("Debugging hello");
-        logger.debug("Debugging hello");
         var defaultUser = userService.registerUser("anoromi", "emailexample@gmail.com", "1234Abcd@");
-        //fundsService.addFunds();
+        fundsService.addFunds(defaultUser, 1000);
         System.out.println(userService.login("emailexample@gmail.com", "1234Abcd@"));
         try {
             System.out.println(userService.login("emailexample@gmail.com", "wrongPass"));
@@ -57,6 +56,7 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         bookDto.setAuthors(List.of(author));
         bookDto.setCategories(List.of(category));
         bookDto.setQuantity(2);
+        bookDto.setPrice(100);
         BookDto book = bookService.createBook(bookDto);
 
         PromotionDto promdto = new PromotionDto();
@@ -70,10 +70,7 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         promotionDiscountDto.setDiscountPercentage(50);
         promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
 
-        //purchaseService.purchaseBooks(defaultUser, List.of(book.getId()));
-
-
-
+        purchaseService.purchaseBooks(defaultUser, List.of(book.getId()));
 
 
         //bookService.addBookFromOpenLibrary("9780545029360", 10);

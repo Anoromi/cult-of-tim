@@ -22,6 +22,7 @@ public class BookConverter {
                 .authors(book.getAuthors().stream().map(authorConverter::toDto).collect(Collectors.toList()))
                 .categories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()))
                 .quantity(book.getQuantity())
+                .price(book.getPrice())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class BookConverter {
                 .title(book.getTitle())
                 .authors(book.getAuthors().stream().map(authorConverter::requestToDto).collect(Collectors.toList()))
                 .categories(book.getCategories().stream().map(categoryConverter::toDto).collect(Collectors.toList()))
+                .price(book.getPrice())
                 .quantity(book.getQuantity())
                 .build();
     }
@@ -42,6 +44,7 @@ public class BookConverter {
                 .authors(bookDto.getAuthors().stream().map(authorConverter::toEntity).collect(Collectors.toList()))
                 .categories(bookDto.getCategories().stream().map(categoryConverter::toEntity).collect(Collectors.toList()))
                 .quantity(bookDto.getQuantity())
+                .price(bookDto.getPrice())
                 .build();
     }
 }
