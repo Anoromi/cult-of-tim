@@ -119,6 +119,7 @@ public class BookServiceImpl implements BookService {
         newBook.setTitle(bookDto.getTitle());
         newBook.setAuthors(creationBook.getAuthors());
         newBook.setCategories(creationBook.getCategories());
+        newBook.setPrice(creationBook.getPrice());
         newBook.setQuantity(creationBook.getQuantity());
         Book savedBook = bookRepository.save(newBook);
         return bookConverter.toDto(savedBook);
@@ -135,6 +136,7 @@ public class BookServiceImpl implements BookService {
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthors(updatedBook.getAuthors());
         existingBook.setCategories(updatedBook.getCategories());
+        existingBook.setPrice(updatedBook.getPrice());
         existingBook.setQuantity(updatedBook.getQuantity());
 
         Book savedBook = bookRepository.save(existingBook);

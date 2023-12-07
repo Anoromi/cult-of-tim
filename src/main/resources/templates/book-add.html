@@ -12,6 +12,11 @@
         Book with a title that you have entered already exists.
     </div>
 </div>
+<div th:if="${param.price}">
+    <div class="alert alert-danger">
+        You cannot enter a negative price.
+    </div>
+</div>
 <div th:if="${param.quantity}">
     <div class="alert alert-danger">
         You cannot enter a negative quantity.
@@ -37,6 +42,11 @@
             <input type="checkbox" th:checked="${selectedCategories.contains(category)}" name="selectedCategories" th:value="${category}" th:required>
             <label th:for="${#ids.seq('selectedCategories')}" th:text="${category.name}">Category</label>
         </ul>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" class="form-control" required>
     </div>
 
     <div class="form-group">

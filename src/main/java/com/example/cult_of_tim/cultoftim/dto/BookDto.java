@@ -11,6 +11,7 @@ import java.util.List;
 public class BookDto {
     private Long id;
     private String title;
+    private Integer price;
     private List<AuthorDto> authors;
     private List<CategoryDto> categories;
     private int quantity;
