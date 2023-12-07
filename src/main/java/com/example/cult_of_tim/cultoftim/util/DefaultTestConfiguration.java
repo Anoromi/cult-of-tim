@@ -8,10 +8,13 @@ import com.example.cult_of_tim.cultoftim.service.*;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -71,6 +74,9 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         promotionService.addBookWithDiscountToPromotion(promotionDiscountDto);
 
         purchaseService.purchaseBooks(defaultUser, List.of(book.getId()));
+
+        Date date = new Date();
+        date = Date.from(date.toInstant().plus(10, ChronoUnit.SECONDS));
 
 
         //bookService.addBookFromOpenLibrary("9780545029360", 10);

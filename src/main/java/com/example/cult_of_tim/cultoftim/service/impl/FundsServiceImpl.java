@@ -33,6 +33,7 @@ public class FundsServiceImpl implements FundsService {
         if (optionalUser.isEmpty())
             return;
         optionalUser.get().setBalance(optionalUser.get().getBalance() + amount);
+        userRepository.save(optionalUser.get());
     }
 
     public void updateUserBalance(UserDTO userDTO) {
