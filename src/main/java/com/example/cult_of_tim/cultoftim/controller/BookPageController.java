@@ -150,9 +150,9 @@ public class BookPageController {
     }
 
 
-    @PostMapping("/add/{bookId}")
+    @GetMapping("/add/{bookId}")
     public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
-/*
+
         Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
 
 
@@ -166,7 +166,7 @@ public class BookPageController {
             cartItemRepository.save(cartItem);
         }
 
- */
+
         return "redirect:/cart/list";
     }
 }
