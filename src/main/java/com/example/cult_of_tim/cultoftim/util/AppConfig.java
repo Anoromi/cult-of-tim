@@ -2,19 +2,18 @@ package com.example.cult_of_tim.cultoftim.util;
 
 import com.example.cult_of_tim.cultoftim.dto.BookPurchaseDto;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.SimpleStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.*;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -69,7 +67,6 @@ public class AppConfig {
     }
 
 
-
     @Autowired
     PurchaseReader purchaseReader;
 
@@ -80,27 +77,8 @@ public class AppConfig {
         stepBuilder.reader(purchaseReader);
         purchaseReader.open(new ExecutionContext());
         stepBuilder.writer(itemWriter());
-        stepBuilder.processor(new ItemProcessor<BookPurchaseDto, BookPurchaseDto>() {
-            @Override
-            public BookPurchaseDto process(BookPurchaseDto item) throws Exception {
-                return item;
-            }
-        });
-        stepBuilder.listener(new ItemReadListener<BookPurchaseDto>() {
-            @Override
-            public void beforeRead() {
-                ItemReadListener.super.beforeRead();
-            }
-
-            @Override
-            public void afterRead(BookPurchaseDto item) {
-                ItemReadListener.super.afterRead(item);
-            }
-
-            @Override
-            public void onReadError(Exception ex) {
-                ItemReadListener.super.onReadError(ex);
-            }
+        stepBuilder.processor(item -> item);
+        stepBuilder.listener(new ItemReadListener<>() {
         });
         return stepBuilder.build();
     }
