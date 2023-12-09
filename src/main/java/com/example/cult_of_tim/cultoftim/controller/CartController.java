@@ -59,15 +59,18 @@ public class CartController {
             List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
 
             double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
+            User realUser = user.get();
+            if (realUser.getBalance() >= totalCost) {
 
-            if (userDTO.getBalance() >= totalCost) {
 
-                userDTO.setBalance((int) (userDTO.getBalance() - totalCost));
+                realUser.setBalance((int) (userDTO.getBalance() - totalCost));
+
+
 
                 cartItemRepository.deleteAll(cartItems);
 
 
-                userService.updateUser(userDTO.getEmail(), user.get());
+                userService.updateUser(userDTO.getEmail(), realUser);
 
                 return "cart/list";
             } else {
