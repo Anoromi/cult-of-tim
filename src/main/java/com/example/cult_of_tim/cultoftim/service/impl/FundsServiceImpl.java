@@ -18,19 +18,15 @@ import java.util.Optional;
 @Service
 public class FundsServiceImpl implements FundsService {
 
-    private UserRepository userRepository;
+    @Autowired
     private UserService userService;
 
-    @Autowired
-    public FundsServiceImpl(UserRepository userRepository) {
 
-
-    }
 
 
     public void updateUserBalance(UserDTO userDTO) {
 
-        Optional<User> optionalUser = userRepository.findById(userDTO.getUserId());
+        Optional<User> optionalUser = userService.getUserById(userDTO.getUserId());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();

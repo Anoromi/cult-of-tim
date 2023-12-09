@@ -3,6 +3,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
@@ -26,6 +27,8 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -33,7 +36,7 @@ public class CartController {
     @GetMapping("/list")
     public String viewCart(Model model, @AuthenticationPrincipal UserDTO userDTO) {
 
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
 
 
         if (user.isPresent()) {
@@ -51,21 +54,22 @@ public class CartController {
 
     @PostMapping("/buy")
     public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
         if (user.isPresent()) {
             List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
 
             double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
 
-            if (userDTO.getBalance() > totalCost) {
+            if (userDTO.getBalance() >= totalCost) {
 
                 userDTO.setBalance((int) (userDTO.getBalance() - totalCost));
 
                 cartItemRepository.deleteAll(cartItems);
 
-                userRepository.save(user.get());
 
-                return "redirect:/cart/list";
+                userService.updateUser(userDTO.getEmail(), user.get());
+
+                return "cart/list";
             } else {
                 model.addAttribute("error", "Not enough money to complete the purchase.");
 
