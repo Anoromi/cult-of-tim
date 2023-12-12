@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class FundsServiceImpl implements FundsService {
@@ -21,8 +20,7 @@ public class FundsServiceImpl implements FundsService {
     private final UserRepository userRepository;
 
     @Autowired
-    public FundsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private UserService userService;
 
     }
 
@@ -38,13 +36,15 @@ public class FundsServiceImpl implements FundsService {
 
     public void updateUserBalance(UserDTO userDTO) {
 
-        Optional<User> optionalUser = userRepository.findById(userDTO.getUserId());
+        Optional<User> optionalUser = userService.getUserById(userDTO.getUserId());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
 
             user.setBalance(userDTO.getBalance());
+
+            userService.updateUser(user.getEmail(), user);
 
 
             userRepository.save(user);

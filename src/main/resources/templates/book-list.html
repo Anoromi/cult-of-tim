@@ -1,80 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Book list</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Book list</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <h1 class="header">Books</h1>
 
 <div th:if="${userRole == 'Admin'}">
-  <table class="table">
-    <tr>
-      <th>Book name</th>
-      <th>Book author(s)</th>
-      <th>Book category(ies)</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Editing</th>
-      <th>Deleting</th>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>Book name</th>
+            <th>Book author(s)</th>
+            <th>Book category(ies)</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Editing</th>
+            <th>Deleting</th>
+        </tr>
 
-    <tr th:each="book : ${books}">
-      <td th:text="${book.title}">Book name</td>
-      <td>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}">Book name</td>
+            <td>
         <span th:each="author, iterStat : ${book.authors}">
             <span th:text="${author.getFullName()}"></span>
             <span th:if="${!iterStat.last}">,</span>
         </span>
-      </td>
-      <td>
+            </td>
+            <td>
         <span th:each="category, iterStat : ${book.categories}">
             <span th:text="${category.getName()}"></span>
             <span th:if="${!iterStat.last}">,</span>
         </span>
-      </td>
+            </td>
 
-      <td th:text="${book.price}">Price</td>
+            <td th:text="${book.price}">Price</td>
 
-      <td th:text="${book.quantity}">Quantity</td>
+            <td th:text="${book.quantity}">Quantity</td>
 
-      <td>
-      <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-info">Edit</a>
-      </td>
+            <td>
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-info">Edit</a>
+            </td>
 
-      <td>
-        <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a>
-      </td>
+            <td>
+                <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a>
+            </td>
+            <td>
+                <a th:href="@{/add/{id}(id=${book.id})}" class="btn btn-info">Add to cart</a>
+            </td>
 
-    </tr>
-  </table>
-  <a href="/books/add" class="btn btn-primary">Add a Book</a>
+        </tr>
+    </table>
+    <a href="/books/add" class="btn btn-primary">Add a Book</a>
 </div>
 
 <div th:if="${userRole == 'Default'}">
-  <table class="table">
-    <tr>
-      <th>Book name</th>
-      <th>Book author(s)</th>
-      <th>Book category(ies)</th>
-      <th>Price</th>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>Book name</th>
+            <th>Book author(s)</th>
+            <th>Book category(ies)</th>
+            <th>Price</th>
+        </tr>
 
-    <tr th:each="book : ${books}">
-      <td th:text="${book.title}">Book name</td>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}">Book name</td>
+            <td>
+                <span th:each="author : ${book.authors}" th:text="${author.getFullName()}"></span>
+            </td>
+            <td>
+                <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
+            </td>
+            <td th:text="${book.price}">Price</td>
+            <td>
+                <a th:href="@{/add/{id}(id=${book.id})}" class="btn btn-info">Add to cart</a>
+            </td>
 
-      <td>
-        <span th:each="author : ${book.authors}" th:text="${author.getFullName()}"></span>
-      </td>
-
-      <td>
-        <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
-      </td>
-
-      <td th:text="${book.price}">Price</td>
-    </tr>
-  </table>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

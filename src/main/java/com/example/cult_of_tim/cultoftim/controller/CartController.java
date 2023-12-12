@@ -3,6 +3,7 @@ package com.example.cult_of_tim.cultoftim.controller;
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
@@ -27,7 +28,7 @@ public class CartController {
     private UserRepository userRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private UserService userService;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -35,7 +36,7 @@ public class CartController {
     @GetMapping("/list")
     public String viewCart(Model model, @AuthenticationPrincipal UserDTO userDTO) {
 
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
 
 
         if (user.isPresent()) {
@@ -48,47 +49,30 @@ public class CartController {
         return "cart/list";
     }
 
-    @GetMapping("/add/{bookId}")
-    public String addToCartPage(@PathVariable Long bookId, Model model) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        model.addAttribute("book", book.orElse(null));
-        return "cart/add_to_cart";
-    }
-
-    @PostMapping("/add/{bookId}")
-    public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
-
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
 
 
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book id"));
 
-        if(user.isPresent()) {
-            CartItem cartItem = new CartItem();
-            cartItem.setUser(user.get());
-            cartItem.setBook(book);
-
-            cartItemRepository.save(cartItem);
-        }
-        return "redirect:/cart/list";
-    }
     @PostMapping("/buy")
     public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
         if (user.isPresent()) {
             List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
 
             double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
+            User realUser = user.get();
+            if (realUser.getBalance() >= totalCost) {
 
-            if (userDTO.getBalance() > totalCost) {
 
-                userDTO.setBalance((int) (userDTO.getBalance() - totalCost));
+                realUser.setBalance((int) (userDTO.getBalance() - totalCost));
+
+
 
                 cartItemRepository.deleteAll(cartItems);
 
-                userRepository.save(user.get());
 
-                return "redirect:/cart/list";
+                userService.updateUser(userDTO.getEmail(), realUser);
+
+                return "cart/list";
             } else {
                 model.addAttribute("error", "Not enough money to complete the purchase.");
 

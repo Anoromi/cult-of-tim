@@ -2,13 +2,16 @@ package com.example.cult_of_tim.cultoftim.controller;
 
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.example.cult_of_tim.cultoftim.auth.UserContext;
-import com.example.cult_of_tim.cultoftim.dto.*;
+import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
+import com.example.cult_of_tim.cultoftim.dto.BookDto;
+import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -143,13 +146,28 @@ public class BookPageController {
 
     @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
-
-/*        List<PromotionDto> promotions = promotionService.getAllPromotions();
-
-        for (PromotionDto promotion : promotions) {
-            if (promotion.g)
-        }*/
         bookService.deleteBook(id);
         return "redirect:/books/list";
+    }
+
+
+    @GetMapping("/add/{bookId}")
+    public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
+
+        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+
+
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book id"));
+
+        if(user.isPresent()) {
+            CartItem cartItem = new CartItem();
+            cartItem.setUser(user.get());
+            cartItem.setBook(book);
+
+            cartItemRepository.save(cartItem);
+        }
+
+
+        return "redirect:/cart/list";
     }
 }
