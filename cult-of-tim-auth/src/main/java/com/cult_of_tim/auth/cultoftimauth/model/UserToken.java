@@ -1,11 +1,13 @@
 package com.cult_of_tim.auth.cultoftimauth.model;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@ToString
 public class UserToken {
 
     @Id
@@ -14,7 +16,7 @@ public class UserToken {
     private Date expiresAt;
 
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
 

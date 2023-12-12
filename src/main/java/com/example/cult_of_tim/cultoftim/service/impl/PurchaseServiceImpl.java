@@ -53,7 +53,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<PurchaseDto> getPurchasesByUserId(Long userId) {
+    public List<PurchaseDto> getPurchasesByUserId(UUID userId) {
         List<Purchase> purchases = purchaseRepository.findByUserId(userId);
         return purchases.stream()
                 .map(purchaseConverter::toDto)
@@ -77,6 +77,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void deletePurchaseById(Long id) {
         purchaseRepository.deleteById(id);
     }
+
     @Override
     public PurchaseDto purchaseBooks(UUID userId, List<Long> bookIds) {
 
@@ -91,7 +92,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             }
         }
 
-        int  totalCost = booksToPurchase.stream()
+        int totalCost = booksToPurchase.stream()
                 .mapToInt(Book::getPrice)
                 .sum();
 
@@ -99,7 +100,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<Promotion> activePromotions = promotionRepository.findAll();
         activePromotions = activePromotions.stream().filter(x -> now.isBefore(x.getEndDate())).collect(Collectors.toList());
 
-        int  totalDiscountAmount = 0;
+        int totalDiscountAmount = 0;
 
 
         for (Promotion promotion : activePromotions) {
@@ -113,7 +114,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 totalDiscountAmount += discountAmount;
             }
         }
-        totalCost-= totalDiscountAmount;
+        totalCost -= totalDiscountAmount;
 
         if (user.getBalance() < totalCost) {
             throw new IllegalStateException("Insufficient funds to make the purchase");

@@ -16,4 +16,8 @@ public interface CategoryService {
     CategoryDto updateCategory(Long id, CategoryDto updatedCategory);
 
     void deleteCategory(Long id);
+
+    List<CategoryDto> createCategoryDtos(String categories);
+
+    List<String> extractNames(String input);
 }

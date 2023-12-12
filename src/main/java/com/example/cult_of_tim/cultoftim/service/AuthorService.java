@@ -11,9 +11,15 @@ public interface AuthorService {
 
     List<AuthorDto> getAllAuthors();
 
-    AuthorDto createAuthor(String firstName, String lastName);
+    AuthorDto createAuthor(String fullName);
+
+    AuthorDto createAuthorFromOpenLibrary(String openLibrary);
 
     AuthorDto updateAuthor(Long id, AuthorDto updatedAuthor);
 
     void deleteAuthor(Long id);
+
+    List<AuthorDto> createAuthorDtos(String authors);
+
+    List<String> extractFullNames(String input);
 }

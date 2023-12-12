@@ -25,11 +25,11 @@ public class CultOfTimAuthConfiguration {
     //    return new WithoutPasswordChecker();
     //}
 
-    @Bean
+   /* @Bean
     @ConditionalOnProperty(prefix = "cultoftim.auth", name = "checkPassword", havingValue = "false")
     public UserChecker noPasswordChecker(UserRepository userDao) {
         return new WithoutPasswordChecker(userDao);
-    }
+    }*/
 
     @Bean
     @ConditionalOnMissingBean(UserChecker.class)
@@ -44,7 +44,7 @@ public class CultOfTimAuthConfiguration {
     //}
 
     @Bean
-@ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
+    @ConditionalOnExpression("${cultoftim.auth.dev} or not ${cultoftim.auth.checkTokenExpiry}")
     public TokenValidator noExpirationChecker(UserRepository userRepository) {
         return new TokenValidatorNoExpiration(userRepository);
     }

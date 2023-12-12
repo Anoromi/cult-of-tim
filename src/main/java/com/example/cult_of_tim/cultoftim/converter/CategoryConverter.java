@@ -1,5 +1,6 @@
 package com.example.cult_of_tim.cultoftim.converter;
 
+import com.example.cult_of_tim.cultoftim.controller.request.CategoryRequest;
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
 import com.example.cult_of_tim.cultoftim.entity.Category;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,13 @@ import org.springframework.stereotype.Component;
 public class CategoryConverter {
 
     public CategoryDto toDto(Category category) {
+        return CategoryDto.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .build();
+    }
+
+    public CategoryDto toDto(CategoryRequest category) {
         return CategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())

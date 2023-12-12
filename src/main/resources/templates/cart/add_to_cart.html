@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart</title>
+</head>
+<body>
+<h1>Add to Cart</h1>
+
+<div th:if="${book}">
+    <h2 th:text="${book.title}"></h2>
+    <p th:text="${book.description}"></p>
+    <p th:text="${book.price}"></p>
+
+    <form method="post" th:action="@{/cart/add/{bookId}(bookId=${book.id})}">
+        <button type="submit">Add to Cart</button>
+    </form>
+</div>
+
+<div th:unless="${book}">
+    <p>Book not found</p>
+</div>
+
+<a href="/books">Back to Books</a>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Welcome to the Main Page!</h1>
+<nav>
+    <ul>
+        <li><a th:href="@{/login}">Login</a></li>
+        <li><a th:href="@{/books}">Books</a></li>
+        <li><a th:href="@{/authors}">Authors</a></li>
+        <li><a th:href="@{/promotions}">Promotions</a></li>
+        <li><a th:href="@{/addFunds}">Add Funds</a></li>
+        <li><a th:href="@{/cart/list}">Shopping Cart</a></li>
+    </ul>
+</nav>
+</body>
+</html>

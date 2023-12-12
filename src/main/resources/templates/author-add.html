@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Author</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h2 class="header">Add Author</h2>
+  <form th:action="@{/authors/add}" method="post" class="author-form">
+    <div class="form-group">
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" name="fullName" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Author</button>
+  </form>
+</div>
+</body>
+</html>

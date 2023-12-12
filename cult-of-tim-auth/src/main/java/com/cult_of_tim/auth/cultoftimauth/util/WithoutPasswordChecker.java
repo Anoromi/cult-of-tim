@@ -2,12 +2,10 @@ package com.cult_of_tim.auth.cultoftimauth.util;
 
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
-import com.cult_of_tim.auth.cultoftimauth.service.impl.UserMockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -35,12 +33,16 @@ public class WithoutPasswordChecker implements UserChecker {
             if (logger.isDebugEnabled()) {
                 logger.debug(lookupUserMarker, "Found user with email: {}", email);
             }
+            return user;
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug(lookupUserMarker, "User not found for email: {}", email);
             }
         }
 
+        user = userRepository.findByUsername(email);
+
         return user;
+
     }
 }

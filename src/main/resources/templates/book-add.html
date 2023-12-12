@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Adding a book</h2>
+<div th:if="${param.title}">
+    <div class="alert alert-danger">
+        Book with a title that you have entered already exists.
+    </div>
+</div>
+<div th:if="${param.price}">
+    <div class="alert alert-danger">
+        You cannot enter a negative price.
+    </div>
+</div>
+<div th:if="${param.quantity}">
+    <div class="alert alert-danger">
+        You cannot enter a negative quantity.
+    </div>
+</div>
+<form class="form" id="addBookForm" th:action="@{/books/add}" method="post">
+    <div class="form-group">
+        <label for="title">Book title:</label>
+        <input type="text" id="title" name="title" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        Author(s):
+        <ul th:each="author : ${authors}">
+            <input type="checkbox" th:checked="${selectedAuthors.contains(author)}" name="selectedAuthors" th:value="${author}" th:required>
+            <label th:for="${#ids.seq('selectedAuthors')}" th:text="${author.fullName}">Author</label>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        Category(ies):
+        <ul th:each="category : ${categories}">
+            <input type="checkbox" th:checked="${selectedCategories.contains(category)}" name="selectedCategories" th:value="${category}" th:required>
+            <label th:for="${#ids.seq('selectedCategories')}" th:text="${category.name}">Category</label>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" class="form-control" required>
+    </div>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Add Book</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("addBookForm");
+        form.addEventListener("submit", function (event) {
+            var selectedAuthors = document.querySelectorAll('input[name="selectedAuthors"]:checked');
+            var selectedCategories = document.querySelectorAll('input[name="selectedCategories"]:checked');
+
+            if (selectedAuthors.length === 0) {
+                alert("Please, choose at least one author for the book.");
+                event.preventDefault();
+            }
+            else if (selectedCategories.length === 0) {
+                alert("Please, choose at least one category for the book.");
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,20 +1,30 @@
 package com.cult_of_tim.auth.cultoftimauth.service.impl;
 
+import com.cult_of_tim.auth.cultoftimauth.converter.UserConverter;
+import com.cult_of_tim.auth.cultoftimauth.dto.LoggedUserDTO;
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
+import com.cult_of_tim.auth.cultoftimauth.exception.AuthException;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.model.UserToken;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import com.cult_of_tim.auth.cultoftimauth.repositories.UserTokenRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.cult_of_tim.auth.cultoftimauth.util.PasswordEncrypter;
 import com.cult_of_tim.auth.cultoftimauth.util.UserChecker;
 import com.cult_of_tim.auth.cultoftimauth.validator.EmailValidator;
 import com.cult_of_tim.auth.cultoftimauth.validator.PasswordValidator;
+import com.cult_of_tim.auth.cultoftimauth.validator.TokenValidator;
+import lombok.AllArgsConstructor;
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserMockService implements UserService {
     private final UserRepository userRepository;
 
@@ -22,19 +32,18 @@ public class UserMockService implements UserService {
 
     private final PasswordValidator passwordValidator;
 
-    private final UserChecker passwordChecker;
+    private final UserChecker userChecker;
+
+    private final UserTokenRepository userTokenRepository;
+
+    private final UserConverter userConverter;
+
+    private final TokenValidator tokenValidator;
 
     private final Logger logger = LoggerFactory.getLogger(UserMockService.class);
 
     public final Marker authMarker = MarkerFactory.getMarker("AUTH");
 
-    @Autowired
-    public UserMockService(UserRepository userRepository, EmailValidator emailValidator, PasswordValidator passwordValidator, UserChecker passwordChecker) {
-        this.userRepository = userRepository;
-        this.emailValidator = emailValidator;
-        this.passwordValidator = passwordValidator;
-        this.passwordChecker = passwordChecker;
-    }
 
     @Override
     public Optional<User> getUserById(UUID id) {
@@ -47,19 +56,28 @@ public class UserMockService implements UserService {
     }
 
     @Override
-    public UUID registerUser(String username, String email, String password) throws IllegalArgumentException {
+    public UUID registerUser(String username, String email, String password) throws AuthException {
         User newUser = new User();
 
         if (!emailValidator.isValidEmail(email)) {
-            throw new IllegalArgumentException("Email is invalid!");
+            throw new AuthException("Email is invalid!");
         }
         if (!passwordValidator.isValidPassword(password)) {
-            throw new IllegalArgumentException("Password is invalid!");
+            throw new AuthException("Password is invalid!");
+        }
+
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new AuthException("Email is already used");
+        }
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new AuthException("Username is already used");
         }
 
         newUser.setEmail(email);
         newUser.setPassword(PasswordEncrypter.encryptPassword(password));
         newUser.setUsername(username);
+        newUser.setRole("Default");
 
         MDC.put("user", username);
         logger.info(authMarker, "Registered user");
@@ -79,29 +97,77 @@ public class UserMockService implements UserService {
     }
 
     @Override
+    public void deleteAllExpiredTokens() {
+        Date now = new Date();
+        userTokenRepository.deleteAllByExpiresAtBefore(now);
+    }
+
+    @Override
     public void deleteUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         user.ifPresent(value -> userRepository.deleteById(value.getUserId()));
     }
 
     @Override
-    public boolean login(String email, String password) throws IllegalArgumentException {
+    public LoggedUserDTO login(String emailOrUsername, String password) throws IllegalArgumentException {
         if (logger.isDebugEnabled()) {
-            logger.debug(authMarker, "Attempting login for user with email: {}", email);
+            logger.debug(authMarker, "Attempting login for user with email/username: {}", emailOrUsername);
         }
 
-        var user = passwordChecker.lookupUser(email, password);
+        Optional<User> user = userChecker.lookupUser(emailOrUsername, password);
 
         if (user.isPresent()) {
+            UserToken userToken = new UserToken();
+            userToken.setUser(user.get());
+            userToken.setExpiresAt(getExpireDate(12));
+            userTokenRepository.save(userToken);
+
             if (logger.isInfoEnabled()) {
-                logger.info(authMarker, "User with email {} has successfully logged in", email);
+                logger.info(authMarker, "User with email/username {} has successfully logged in", emailOrUsername);
             }
-            return true;
-        } else {
-            if (logger.isInfoEnabled()) {
-                logger.info(authMarker, "Login attempt failed for user with email: {}", email);
-            }
-            return false;
+            return LoggedUserDTO.builder().token(userToken.getTokenId().toString()).user(userConverter.toDTO(user.get())).build();
         }
+
+        if (logger.isInfoEnabled()) {
+            logger.info(authMarker, "Login attempt failed for user with email/username: {}", emailOrUsername);
+        }
+        throw new IllegalArgumentException("Login attempt failed for user with email/username: " + emailOrUsername);
+    }
+
+    @Override
+    public Optional<UserDTO> getUserByToken(String token) {
+        var userToken = userTokenRepository.findById(UUID.fromString(token));
+        System.out.println(userTokenRepository.findAll());
+        if (userToken.isEmpty()) {
+            return Optional.empty();
+        }
+        var user = tokenValidator.validateToken(
+                userToken.get());
+        return user.map(userConverter::toDTO);
+    }
+
+    @Override
+    public void setUserRole(UUID id, String role) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) return;
+
+        var user = optionalUser.get();
+        user.setRole(role);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserBy(String emailOrUsername, String password) throws AuthException {
+        var optionalUser = userChecker.lookupUser(emailOrUsername, password);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new AuthException("Username or password is wrong");
+    }
+
+    private Date getExpireDate(Integer hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
     }
 }

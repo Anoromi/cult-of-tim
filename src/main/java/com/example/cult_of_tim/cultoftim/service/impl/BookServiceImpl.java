@@ -1,12 +1,25 @@
 package com.example.cult_of_tim.cultoftim.service.impl;
 
+import com.example.cult_of_tim.cultoftim.converter.AuthorConverter;
 import com.example.cult_of_tim.cultoftim.converter.BookConverter;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
+import com.example.cult_of_tim.cultoftim.external.OpenLibraryBook;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
+import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +29,10 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+
+    private AuthorService authorService;
+    private AuthorConverter authorConverter;
+
     private final BookConverter bookConverter;
 
     @Autowired
@@ -24,7 +41,9 @@ public class BookServiceImpl implements BookService {
         this.bookConverter = bookConverter;
     }
 
+
     @Override
+    @Cacheable("books")
     public Optional<BookDto> getBookById(Long id) {
         return bookRepository.findById(id).map(bookConverter::toDto);
     }
@@ -35,6 +54,49 @@ public class BookServiceImpl implements BookService {
         return books.stream()
                 .map(bookConverter::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addBookFromOpenLibrary(String isbn13, int quantity) {
+        try {
+            var result = WebClient.builder()
+                    .baseUrl("https://openlibrary.org")
+                    .clientConnector(new ReactorClientHttpConnector(
+                            HttpClient.create().followRedirect(true)
+                    ))
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build().get().uri("/isbn/{isbn}.json", isbn13)
+
+                    .retrieve()
+                    .toEntity(OpenLibraryBook.class)
+                    .block();
+
+            assert result != null;
+            assert result.getBody() != null;
+            var bodyBook = result.getBody();
+
+            var addedAuthors = bodyBook.authors().stream().map(
+                    v -> authorConverter.toEntity(authorService.createAuthorFromOpenLibrary(v.key().replace("/authors/", "")))
+            ).toList();
+
+            var book = new Book();
+            book.setTitle(bodyBook.title());
+            book.setIsbn13(isbn13);
+            book.setAuthors(addedAuthors);
+
+            book.setQuantity(quantity);
+
+            bookRepository.save(book);
+
+
+
+        } catch (WebClientResponseException e) {
+            if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
+                throw new IllegalArgumentException("Isbn13 book not found");
+        }
+
+
+
     }
 
     @Override
@@ -56,16 +118,12 @@ public class BookServiceImpl implements BookService {
     //TODO creation dto
     @Override
     public BookDto createBook(BookDto bookDto) {
-        Book newBook = new Book();
         Book creationBook = bookConverter.toEntity(bookDto);
-        newBook.setTitle(bookDto.getTitle());
-        newBook.setAuthors(creationBook.getAuthors());
-        newBook.setCategories(creationBook.getCategories());
-        Book savedBook = bookRepository.save(newBook);
-        return bookConverter.toDto(savedBook);
+        return bookConverter.toDto(bookRepository.save(creationBook));
     }
 
     @Override
+    @CachePut(value = "books", key = "id")
     public BookDto updateBook(Long id, BookDto updatedBookDto) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
@@ -76,6 +134,8 @@ public class BookServiceImpl implements BookService {
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthors(updatedBook.getAuthors());
         existingBook.setCategories(updatedBook.getCategories());
+        existingBook.setPrice(updatedBook.getPrice());
+        existingBook.setQuantity(updatedBook.getQuantity());
 
         Book savedBook = bookRepository.save(existingBook);
         return bookConverter.toDto(savedBook);
@@ -84,5 +144,28 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean bookExists(String title) {
+        List<Book> books = bookRepository.findByTitle(title);
+        return !books.isEmpty();
+    }
+
+    @Override
+    public boolean oldTitleMatchNew(Long id, String newTitle)
+    {
+        Optional<Book> book = bookRepository.findById(id);
+        return book.isPresent() && book.get().getTitle().equals(newTitle);
+    }
+
+    @Autowired
+    public void setAuthorService(AuthorService authorService) {
+        this.authorService = authorService;
+    }
+
+    @Autowired
+    public void setAuthorConverter(AuthorConverter authorConverter) {
+        this.authorConverter = authorConverter;
     }
 }

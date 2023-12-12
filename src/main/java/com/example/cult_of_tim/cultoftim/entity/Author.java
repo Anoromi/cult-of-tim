@@ -21,11 +21,14 @@ public class Author {
     @Column(name = "author_id")
     private Long id;
 
-    @Column(length = 100)
-    private String firstName;
+    //@Column(length = 100)
+    //private String firstName;
 
-    @Column(length = 100)
-    private String lastName;
+    //@Column(length = 100)
+    //private String lastName;
+
+
+    private String fullName;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -34,5 +37,8 @@ public class Author {
             },
             mappedBy = "authors")
     private List<Book> books;
+
+    @Column(length = 20)
+    private String openLibraryId;
 
 }

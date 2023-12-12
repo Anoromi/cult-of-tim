@@ -1,13 +1,13 @@
 package com.cult_of_tim.auth.cultoftimauth.validator.regex;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Regex for email and password validation
  * @author Oleksandr Severhin
  */
-@Component
+@Configuration
 public class EmailPasswordValidationRegex {
 
     /**

@@ -16,7 +16,7 @@ public class PromotionDiscount {
 
     @Id
     @ManyToOne
-    @JoinColumn(name="promotion_id", referencedColumnName="promotion_id")
+    @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
     private Promotion promotion;
 
 
@@ -26,6 +26,15 @@ public class PromotionDiscount {
     private Book book;
 
     private int discountPercentage;
+
+    @Override
+    public String toString() {
+        return "PromotionDiscount{" +
+                "promotion=" + promotion.getId() +
+                ", book=" + book.getId() +
+                ", discountPercentage=" + discountPercentage +
+                '}';
+    }
 }
 
 

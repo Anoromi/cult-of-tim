@@ -12,6 +12,8 @@ public interface BookService {
     List<BookDto> getAllBooks();
 
 
+    void addBookFromOpenLibrary(String isbn13, int count);
+
     List<BookDto> getBooksByAuthorId(Long authorId);
 
     List<BookDto> getBooksByCategoryId(Long categoryId);
@@ -21,4 +23,8 @@ public interface BookService {
     BookDto updateBook(Long id, BookDto updatedBook);
 
     void deleteBook(Long id);
+
+    boolean bookExists(String title);
+
+    boolean oldTitleMatchNew(Long id, String newTitle);
 }
