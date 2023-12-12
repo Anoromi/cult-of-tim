@@ -3,26 +3,28 @@ package com.example.cult_of_tim.cultoftim.service.impl;
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.converter.PromotionConverter;
 import com.example.cult_of_tim.cultoftim.converter.PromotionDiscountConverter;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.FundsService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class FundsServiceImpl implements FundsService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     private UserService userService;
 
-    }
 
 
     @Override

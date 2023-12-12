@@ -28,7 +28,5 @@ public class BookRequest {
     private List<CategoryRequest> categories;
     @NotNull @Min(0)
     private int quantity;
-    @NotNull
-    private int price;
     private String isbn13;
 }

@@ -20,26 +20,12 @@ import java.util.Date;
 public class PurchaseReader extends JdbcCursorItemReader<BookPurchaseDto> {
 
     public PurchaseReader(@Autowired DataSource dataSource) {
-        //System.out.println("Run " + previousRun);
         setDataSource(dataSource);
         setSql("SELECT id, username, purchase_date FROM purchase INNER JOIN USER_TABLE ON USER_TABLE.user_id = purchase.user_id "
                 //+ "WHERE purchase_date > " + new java.sql.Date(previousRun.getTime()).toString()
         );
-        //setSql("SELECT id, purchase_date FROM purchase");
-        //setSql("SELECT id FROM purchase");
-        //dataSource.getConnection().prepareCall()
         setFetchSize(100);
 
-        try {
-            //var statement = dataSource.getConnection().prepareCall("SELECT id, purchase_date FROM purchase");
-            //statement.execute();
-            //while (statement.getMoreResults()) {
-            //    var heh = statement.getLong("id");
-            //}
-        } catch (Exception e) {
-
-        }
-        //set
         setRowMapper(new BookPurchaseRowMapper());
     }
 
@@ -48,11 +34,6 @@ public class PurchaseReader extends JdbcCursorItemReader<BookPurchaseDto> {
         @Override
         public BookPurchaseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-            //Employee employee = new Employee();
-            //employee.setId(rs.getInt("id"));
-            //employee.setName(rs.getString("name"));
-            //employee.setSalary(rs.getInt("salary"));
-            //return new BookPurchaseDto(2L, LocalDateTime.now(), "Hello");
             return new BookPurchaseDto(
                     rs.getLong("id"),
                     rs.getDate("purchase_date").toLocalDate().atStartOfDay(),

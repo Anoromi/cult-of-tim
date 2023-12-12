@@ -5,11 +5,9 @@ import com.example.cult_of_tim.cultoftim.auth.UserContext;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
-import com.example.cult_of_tim.cultoftim.service.AuthorService;
-import com.example.cult_of_tim.cultoftim.service.BookService;
-import com.example.cult_of_tim.cultoftim.service.CategoryService;
-import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import com.example.cult_of_tim.cultoftim.service.*;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,28 +19,21 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class BookPageController {
 
     private final BookService bookService;
     private final PromotionService promotionService;
     private final AuthorService authorService;
     private final CategoryService categoryService;
-
-    @Autowired
-    public BookPageController(BookService bookService, PromotionService promotionService,
-                              AuthorService authorService, CategoryService categoryService) {
-        this.bookService = bookService;
-        this.promotionService = promotionService;
-        this.authorService = authorService;
-        this.categoryService = categoryService;
-    }
+    private final CartService cartService;
 
     @GetMapping("/books/list")
     public String listBooks(Model model) {
         String role = "Default";
         UserContext userContext = new UserContext();
         Optional<UserDTO> user = userContext.getUser();
-        if (user.isPresent()){
+        if (user.isPresent()) {
             role = user.get().getRole();
         }
         model.addAttribute("userRole", role);
@@ -51,7 +42,7 @@ public class BookPageController {
     }
 
     @GetMapping("/books/add")
-    public String addBookPage(Model model){
+    public String addBookPage(Model model) {
         model.addAttribute("createBookDto", new BookDto());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("selectedAuthors", new ArrayList<AuthorDto>());
@@ -74,13 +65,11 @@ public class BookPageController {
 
         boolean bookExists = bookService.bookExists(bookTitle);
 
-        if (bookExists){
+        if (bookExists) {
             return "redirect:/books/add?title";
-        }
-        else if (price < 0) {
+        } else if (price < 0) {
             return "redirect:/books/add?price";
-        }
-        else if (bookQuantity < 0) {
+        } else if (bookQuantity < 0) {
             return "redirect:/books/add?quantity";
         }
 
@@ -96,7 +85,7 @@ public class BookPageController {
     }
 
     @GetMapping("/books/edit/{id}")
-    public String editBookPage(@PathVariable Long id, Model model){
+    public String editBookPage(@PathVariable Long id, Model model) {
         BookDto bookDto = bookService.getBookById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
         model.addAttribute("book", bookDto);
@@ -123,13 +112,11 @@ public class BookPageController {
         boolean bookExists = bookService.bookExists(bookTitle);
         boolean bookTitleMatchesOld = bookService.oldTitleMatchNew(id, bookTitle);
 
-        if (bookExists && !bookTitleMatchesOld){
+        if (bookExists && !bookTitleMatchesOld) {
             return "redirect:/books/edit/" + id + "?title";
-        }
-        else if (price < 0) {
+        } else if (price < 0) {
             return "redirect:/books/edit/" + id + "?price";
-        }
-        else if (bookQuantity < 0) {
+        } else if (bookQuantity < 0) {
             return "redirect:/books/edit/" + id + "?quantity";
         }
 
@@ -154,18 +141,7 @@ public class BookPageController {
     @GetMapping("/add/{bookId}")
     public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
 
-        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
-
-
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book id"));
-
-        if(user.isPresent()) {
-            CartItem cartItem = new CartItem();
-            cartItem.setUser(user.get());
-            cartItem.setBook(book);
-
-            cartItemRepository.save(cartItem);
-        }
+        cartService.addToCart(userDTO, bookId);
 
 
         return "redirect:/cart/list";
