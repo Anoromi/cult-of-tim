@@ -14,6 +14,7 @@
       <th>Book name</th>
       <th>Book author(s)</th>
       <th>Book category(ies)</th>
+      <th>Price</th>
       <th>Quantity</th>
       <th>Editing</th>
       <th>Deleting</th>
@@ -33,6 +34,8 @@
             <span th:if="${!iterStat.last}">,</span>
         </span>
       </td>
+
+      <td th:text="${book.price}">Price</td>
 
       <td th:text="${book.quantity}">Quantity</td>
 
@@ -55,16 +58,21 @@
       <th>Book name</th>
       <th>Book author(s)</th>
       <th>Book category(ies)</th>
+      <th>Price</th>
     </tr>
 
     <tr th:each="book : ${books}">
       <td th:text="${book.title}">Book name</td>
+
       <td>
         <span th:each="author : ${book.authors}" th:text="${author.getFullName()}"></span>
       </td>
+
       <td>
         <span th:each="category : ${book.categories}" th:text="${category.getName()}"></span>
       </td>
+
+      <td th:text="${book.price}">Price</td>
     </tr>
   </table>
 </div>

@@ -43,8 +43,8 @@ public class BookConverter {
                 .title(bookDto.getTitle())
                 .authors(bookDto.getAuthors().stream().map(authorConverter::toEntity).collect(Collectors.toList()))
                 .categories(bookDto.getCategories().stream().map(categoryConverter::toEntity).collect(Collectors.toList()))
-                .quantity(bookDto.getQuantity())
                 .price(bookDto.getPrice())
+                .quantity(bookDto.getQuantity())
                 .build();
     }
 }

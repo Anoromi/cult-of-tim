@@ -89,10 +89,12 @@ public class BookServiceImpl implements BookService {
             bookRepository.save(book);
 
 
+
         } catch (WebClientResponseException e) {
             if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
                 throw new IllegalArgumentException("Isbn13 book not found");
         }
+
 
 
     }
@@ -132,6 +134,7 @@ public class BookServiceImpl implements BookService {
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthors(updatedBook.getAuthors());
         existingBook.setCategories(updatedBook.getCategories());
+        existingBook.setPrice(updatedBook.getPrice());
         existingBook.setQuantity(updatedBook.getQuantity());
 
         Book savedBook = bookRepository.save(existingBook);
@@ -139,7 +142,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @CacheEvict("books")
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
@@ -151,7 +153,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean oldTitleMatchNew(Long id, String newTitle) {
+    public boolean oldTitleMatchNew(Long id, String newTitle)
+    {
         Optional<Book> book = bookRepository.findById(id);
         return book.isPresent() && book.get().getTitle().equals(newTitle);
     }

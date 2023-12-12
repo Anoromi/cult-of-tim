@@ -20,6 +20,8 @@ public class BookRequest {
     private Long id;
     @NotBlank
     private String title;
+    @NotNull @Min(0)
+    private Integer price;
     @NotEmpty
     private List<AuthorRequest> authors;
     @NotEmpty
