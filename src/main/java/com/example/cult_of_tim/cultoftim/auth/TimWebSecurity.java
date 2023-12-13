@@ -53,6 +53,8 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/cart/buy")
                     .permitAll();
+            authorizeHttpRequests.requestMatchers("/cart/clear")
+                    .permitAll();
             authorizeHttpRequests.requestMatchers("/add/**")
                     .permitAll();
 

@@ -20,12 +20,16 @@
     <tr th:each="item : ${cartItems}">
         <td th:text="${item.book.title}"></td>
         <td th:text="${item.book.price}"></td>
+        <td th:text="${item.quantity}"></td>
     </tr>
     </tbody>
 </table>
 
 <form th:action="@{/cart/buy}" method="post">
     <button type="submit">Buy All Books</button>
+</form>
+<form th:action="@{/cart/clear}" method="post">
+    <button type="submit">Clear Cart</button>
 </form>
 
 

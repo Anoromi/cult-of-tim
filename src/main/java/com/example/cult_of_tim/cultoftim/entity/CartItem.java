@@ -24,4 +24,7 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
+
+    @Column(name = "quantity")
+    private int quantity;
 }

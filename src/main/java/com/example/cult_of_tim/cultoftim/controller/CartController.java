@@ -8,6 +8,7 @@ import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
+import com.example.cult_of_tim.cultoftim.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,15 +24,15 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+    private final UserService userService;
+    private final CartItemService cartItemService;
 
     @Autowired
-    private UserRepository userRepository;
+    public CartController(UserService userService, CartItemService cartItemService) {
+        this.userService = userService;
+        this.cartItemService = cartItemService;
+    }
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
 
     @GetMapping("/list")
     public String viewCart(Model model, @AuthenticationPrincipal UserDTO userDTO) {
@@ -40,9 +41,7 @@ public class CartController {
 
 
         if (user.isPresent()) {
-            List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
-
-
+            List<CartItem> cartItems = cartItemService.getCartItemsByUser(user.get());
             model.addAttribute("cartItems", cartItems);
         }
 
@@ -56,24 +55,13 @@ public class CartController {
     public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         Optional<User> user = userService.getUserById(userDTO.getUserId());
         if (user.isPresent()) {
-            List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
-
-            double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
-            User realUser = user.get();
-            if (realUser.getBalance() >= totalCost) {
-
-
-                realUser.setBalance((int) (userDTO.getBalance() - totalCost));
-
-
-
-                cartItemRepository.deleteAll(cartItems);
-
-
+            User realUser = cartItemService.buyAllBooks(user.get());
+            if(realUser!=null) {
                 userService.updateUser(userDTO.getEmail(), realUser);
 
                 return "cart/list";
-            } else {
+            }
+            else {
                 model.addAttribute("error", "Not enough money to complete the purchase.");
 
                 return "cart/list";
@@ -82,6 +70,17 @@ public class CartController {
         else{
             model.addAttribute("error", "No User");
 
+            return "cart/list";
+        }
+    }
+    @PostMapping("/clear")
+    public String clearCart(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
+        if (user.isPresent()) {
+            cartItemService.clearAllBooks(user.get());
+            return "redirect:/cart/list";
+        } else {
+            model.addAttribute("error", "No User");
             return "cart/list";
         }
     }
