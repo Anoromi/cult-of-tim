@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Promotion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Adding a Promotion</h2>
+
+<div th:if="${param.startDate}">
+    <div class="alert alert-danger">
+        Please enter a valid start date.
+    </div>
+</div>
+<div th:if="${param.endDate}">
+    <div class="alert alert-danger">
+        Please enter a valid end date.
+    </div>
+</div>
+
+<form class="form" id="addPromotionForm" th:action="@{/promotions/add}" method="post" th:object="${promotionDto}">
+    <div class="form-group">
+        <label for="description">Promotion description:</label>
+        <input type="text" id="description" name="description" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start Date: YYYY-MM-DD HH:MM:SS</label>
+        <input type="text" id="startDate" name="startDate" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date: YYYY-MM-DD HH:MM:SS</label>
+        <input type="text" id="endDate" name="endDate" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" required>
+    </div>
+
+    <div class="form-group">
+        <label for="globalPromotion">Global Promotion:</label>
+        <input type="checkbox" id="globalPromotion" name="globalPromotion">
+    </div>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Add Promotion</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("addPromotionForm");
+        form.addEventListener("submit", function (event) {
+            var startDateInput = document.getElementById("startDate");
+            var endDateInput = document.getElementById("endDate");
+
+            startDateInput.value = formatDate(startDateInput.value);
+            endDateInput.value = formatDate(endDateInput.value);
+
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            if (startDate > endDate) {
+                alert("End date should be after the start date.");
+                event.preventDefault();
+            }
+
+            function formatDate(dateString) {
+                var parts = dateString.split(' ');
+                var dateParts = parts[0].split('-');
+                var timeParts = parts[1].split(':');
+
+                return dateParts[0] + '-' + dateParts[1] + '-' + dateParts[2] +
+                    'T' + timeParts[0] + ':' + timeParts[1] + ':' + timeParts[2];
+            }
+        });
+    });
+</script>
+</body>
+</html>

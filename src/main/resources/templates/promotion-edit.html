@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Promotion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Editing a Promotion</h2>
+
+
+<div th:if="${param.startDate}">
+    <div class="alert alert-danger">
+        Please enter a valid start date.
+    </div>
+</div>
+<div th:if="${param.endDate}">
+    <div class="alert alert-danger">
+        Please enter a valid end date.
+    </div>
+</div>
+
+<form class="form" th:action="@{/promotions/edit/{id}(id=${promotion.id})}" method="post" th:object="${promotion}"
+      id="editPromotionForm">
+    <div class="form-group">
+        <label for="description">Promotion description:</label>
+        <input type="text" id="description" name="description" class="form-control" th:value="${promotion.description}"
+               required>
+    </div>
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="text" id="startDate" name="startDate" class="form-control"
+               th:value="${#dates.format(promotion.startDate, 'yyyy-MM-dd HH:mm:ss')}" required>
+    </div>
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="text" id="endDate" name="endDate" class="form-control"
+               th:value="${#dates.format(promotion.endDate, 'yyyy-MM-dd HH:mm:ss')}" required>
+    </div>
+    <div class="form-group">
+        <label for="globalPromotion">Global Promotion:</label>
+        <input type="checkbox" id="globalPromotion" name="globalPromotion" th:checked="${promotion.globalPromotion}">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Edit Promotion</button>
+</form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("editPromotionForm");
+        form.addEventListener("submit", function (event) {
+            var startDateInput = document.getElementById("startDate");
+            var endDateInput = document.getElementById("endDate");
+
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            if (startDate > endDate) {
+                alert("End date should be after the start date.");
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+</html>

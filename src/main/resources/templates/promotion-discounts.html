@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotion Discounts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h1 class="header">Promotion Discounts</h1>
+
+<div th:if="${#lists.isEmpty(discountViews)}">
+    <p>Currently no discounts</p>
+</div>
+<div th:if="${not #lists.isEmpty(discountViews)}">
+    <table class="table">
+        <tr>
+            <th>Book Name</th>
+            <th>Discount Percentage</th>
+        </tr>
+
+        <tr th:each="discountView : ${discountViews}">
+            <td th:text="${discountView.bookName}">Book Name</td>
+            <td th:text="${discountView.discountPercentage}">Discount Percentage</td>
+
+            <td>
+                <a th:href="@{'/discounts/edit/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
+                   class="btn btn-warning">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{'/discounts/delete/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
+                   class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{'/discounts/add/' + ${promotionId}}" class="btn btn-primary">Add a Discount to this Promotion</a>
+
+    <a href="/promotions/list" class="btn btn-primary">Back to Promotions</a>
+</div>
+</body>
+</html>

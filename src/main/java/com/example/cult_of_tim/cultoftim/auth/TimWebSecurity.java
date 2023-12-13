@@ -66,9 +66,15 @@ public class TimWebSecurity {
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/promotions/**")
                     .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/discounts/**")
+                    .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/authors/**")
+                    .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/promotions/**")
+                    .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/discounts/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
@@ -76,13 +82,18 @@ public class TimWebSecurity {
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/promotions/**")
                     .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/discounts/**")
+                    .hasAuthority(UserRoles.ADMIN);
 
             authorizeHttpRequests.requestMatchers("/css/**")
                     .permitAll();
 
             // GET for authorized
 //            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**").authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**")
+                    .authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/discounts/**")
+                    .authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/list").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/add")

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h1 class="header">Promotions</h1>
+
+<table class="table">
+    <tr>
+        <th>Description</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Is Global Promotion?</th>
+        <th>Discounts</th>
+    </tr>
+
+    <tr th:each="promotion : ${promotions}">
+        <td th:text="${promotion.description}">Description</td>
+        <td th:text="${promotion.startDate}">Start Date</td>
+        <td th:text="${promotion.endDate}">End Date</td>
+        <td th:text="${promotion.globalPromotion ? 'Yes' : 'No'}">Yes/No</td>
+        <td>
+            <form th:action="@{/promotions/discounts}" th:object="${promotion}" method="post">
+                <button type="submit" class="btn btn-primary">View Discounts</button>
+            </form>
+        </td>
+    </tr>
+    <a href="/promotions/add" class="btn btn-primary">Add New Promotion</a>
+</table>
+</body>
+</html>

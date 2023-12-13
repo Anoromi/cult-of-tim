@@ -2,37 +2,36 @@ package com.example.cult_of_tim.cultoftim.service.impl;
 
 import com.example.cult_of_tim.cultoftim.converter.PromotionConverter;
 import com.example.cult_of_tim.cultoftim.converter.PromotionDiscountConverter;
+import com.example.cult_of_tim.cultoftim.dto.DiscountIndependentView;
 import com.example.cult_of_tim.cultoftim.dto.PromotionDiscountDto;
 import com.example.cult_of_tim.cultoftim.dto.PromotionDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.Promotion;
 import com.example.cult_of_tim.cultoftim.entity.PromotionDiscount;
+import com.example.cult_of_tim.cultoftim.entity.PromotionDiscountID;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
+import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
+    private final PromotionDiscountRepository promotionDiscountRepository;
     private final BookRepository bookRepository;
     private final PromotionConverter promotionConverter;
     private final PromotionDiscountConverter promotionDiscountConverter;
-
-    @Autowired
-    public PromotionServiceImpl(PromotionRepository promotionRepository, BookRepository bookRepository, PromotionConverter promotionConverter, PromotionDiscountConverter promotionDiscountConverter) {
-        this.promotionRepository = promotionRepository;
-        this.bookRepository = bookRepository;
-        this.promotionConverter = promotionConverter;
-        this.promotionDiscountConverter = promotionDiscountConverter;
-    }
 
     @Override
     public Optional<PromotionDto> getPromotionById(Long id) {
@@ -44,6 +43,50 @@ public class PromotionServiceImpl implements PromotionService {
         List<Promotion> promotions = promotionRepository.findAll();
         return promotions.stream()
                 .map(promotionConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PromotionDiscountDto> getAllPromotionDiscounts(Long id) {
+        Promotion promotion = promotionRepository.getReferenceById(id);
+        return promotion.getDiscounts().stream()
+                .map(promotionDiscountConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public PromotionDiscountDto getDiscountByIds(Long promotionId, Long bookId) {
+        Optional<PromotionDiscount> promotion = promotionDiscountRepository.findByPromotionIdAndBookId(promotionId, bookId);
+        return promotion.map(promotionDiscountConverter::toDto).orElse(null);
+    }
+
+
+    @Override
+    public List<DiscountIndependentView> getAllIndependentDiscounts() {
+        List<PromotionDiscount> discounts = promotionDiscountRepository.findAll();
+        return convertToViewList(discounts);
+    }
+
+    @Override
+    public List<DiscountIndependentView> getAllIndependentDiscountsByBookName(String bookName) {
+        List<Book> books = bookRepository.findByTitle(bookName);
+
+        if (books.isEmpty())
+            return Collections.emptyList();
+
+        Book book = books.get(0);
+        List<PromotionDiscount> discounts = promotionDiscountRepository.findByBookId(book.getId());
+        return convertToViewList(discounts);
+    }
+
+    private List<DiscountIndependentView> convertToViewList(List<PromotionDiscount> discounts) {
+        return discounts.stream()
+                .map(discount -> DiscountIndependentView.builder()
+                        .bookName(discount.getBook().getTitle())
+                        .discountPercentage(discount.getDiscountPercentage())
+                        .startDate(discount.getPromotion().getStartDate())
+                        .endDate(discount.getPromotion().getEndDate())
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -151,5 +194,34 @@ public class PromotionServiceImpl implements PromotionService {
         } else {
             throw new IllegalArgumentException("Promotion discount for the Book with id: " + discountDto.getBookId() + " is already created");
         }
+    }
+
+    @Override
+    @Transactional
+    public void updatePromotionDiscount(PromotionDiscountDto discountDto) {
+        Optional<PromotionDiscount> discountOptional = promotionDiscountRepository.findByPromotionIdAndBookId(discountDto.getPromotionId(), discountDto.getBookId());
+        PromotionDiscount discount = discountOptional.orElse(null);
+        if (discount == null)
+            throw new IllegalArgumentException("Trying to update nonexistent discount for the Book with id: " + discountDto.getBookId());
+        discount.setDiscountPercentage(discountDto.getDiscountPercentage());
+        promotionDiscountRepository.save(discount);
+    }
+
+    @Override
+    public void deletePromotionDiscount(Long promotionId, Long bookId) {
+        promotionDiscountRepository.deleteById(new PromotionDiscountID(promotionId, bookId));
+    }
+
+    @Override
+    public Integer getPrice(Long bookId, Integer originalPrice) {
+        Integer maxDiscount = getMaxDiscount(bookId);
+        return originalPrice * (100 - maxDiscount) / 100;
+    }
+
+    private Integer getMaxDiscount(Long bookId) {
+        Optional<PromotionDiscount> discount = promotionDiscountRepository.findByBookId(bookId).stream().max(
+                Comparator.comparingInt(PromotionDiscount::getDiscountPercentage)
+        );
+        return discount.map(PromotionDiscount::getDiscountPercentage).orElse(0);
     }
 }

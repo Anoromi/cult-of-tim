@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotion Discounts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Promotion Discounts</h2>
+
+<form class="form" th:action="@{/discounts/list}" method="get">
+    <div class="form-group">
+        <label for="bookName">Filter by Book:</label>
+        <input type="text" id="bookName" name="bookName" class="form-control" placeholder="Enter Book name">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+
+    <a th:href="@{/discounts/list}" class="btn btn-secondary">Clear Filters</a>
+</form>
+
+<table class="table">
+    <tr>
+        <th>Book Name</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Discount Percentage</th>
+    </tr>
+
+    <tr th:each="discount : ${discounts}">
+        <td th:text="${discount.bookName}">Book Name</td>
+        <td th:text="${discount.startDate}">Start date</td>
+        <td th:text="${discount.endDate}">End date</td>
+        <td th:text="${discount.discountPercentage}">Discount Percentage</td>
+    </tr>
+</table>
+</body>
+</html>

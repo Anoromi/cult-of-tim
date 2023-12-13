@@ -4,16 +4,14 @@ import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
-import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
-import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
+import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,6 +31,9 @@ public class CartController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
+    @Autowired
+    private PromotionService promotionService;
+
     @GetMapping("/list")
     public String viewCart(Model model, @AuthenticationPrincipal UserDTO userDTO) {
 
@@ -50,21 +51,22 @@ public class CartController {
     }
 
 
-
-
     @PostMapping("/buy")
     public String buyAllBooks(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         Optional<User> user = userService.getUserById(userDTO.getUserId());
         if (user.isPresent()) {
             List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
 
-            double totalCost = cartItems.stream().mapToDouble(item -> item.getBook().getPrice()).sum();
+            double totalCost = cartItems.stream()
+                    .mapToDouble(item ->
+                            promotionService.getPrice(item.getBook().getId(), item.getBook().getPrice())
+                    )
+                    .sum();
             User realUser = user.get();
             if (realUser.getBalance() >= totalCost) {
 
 
                 realUser.setBalance((int) (userDTO.getBalance() - totalCost));
-
 
 
                 cartItemRepository.deleteAll(cartItems);
@@ -78,8 +80,7 @@ public class CartController {
 
                 return "cart/list";
             }
-        }
-        else{
+        } else {
             model.addAttribute("error", "No User");
 
             return "cart/list";

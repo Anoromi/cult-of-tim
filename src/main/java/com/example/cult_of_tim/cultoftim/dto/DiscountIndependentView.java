@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PromotionDto {
-    private Long id;
-    private String description;
+public class DiscountIndependentView {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    //    private List<PromotionDiscountDto> discounts;
-    private boolean globalPromotion;
+    private String bookName;
+    private int discountPercentage;
 }
-
