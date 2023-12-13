@@ -8,16 +8,17 @@ import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import com.example.cult_of_tim.cultoftim.service.FundsService;
 import com.example.cult_of_tim.cultoftim.service.PurchaseService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
+@Transactional
 public class PurchaseTest {
 
     @Autowired
@@ -34,9 +35,6 @@ public class PurchaseTest {
 
     @Autowired
     FundsService fundsService;
-
-
-
 
 
     @Test
