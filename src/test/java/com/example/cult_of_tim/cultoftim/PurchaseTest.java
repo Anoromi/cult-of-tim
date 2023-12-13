@@ -8,17 +8,15 @@ import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CategoryService;
 import com.example.cult_of_tim.cultoftim.service.FundsService;
 import com.example.cult_of_tim.cultoftim.service.PurchaseService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
-@Transactional
 public class PurchaseTest {
 
     @Autowired
@@ -38,26 +36,30 @@ public class PurchaseTest {
 
 
     @Test
-    @Transactional
-    @Rollback
     void basicPurchaseTest() throws AuthException {
         var book = createBook(10);
         var user = registerUser();
         var purchase = purchaseService.purchaseBooks(user, List.of(book));
+        Assertions.assertNotNull(purchase);
+        Assertions.assertNotNull(purchase.getId());
     }
 
     @Test
-    @Transactional
-    @Rollback
     void otherPurchaseTest() throws AuthException {
         var book = createBook(0);
         var user = registerUser();
-        var purchase = purchaseService.purchaseBooks(user, List.of(book));
+        try {
+            purchaseService.purchaseBooks(user, List.of(book));
+            Assertions.fail("Can't purchase unavailable book");
+        } catch (Exception ignored) {
+
+        }
 
     }
 
     UUID registerUser() throws AuthException {
-        var user = userService.registerUser("testUser", "test@user.com", "testPassword1_");
+
+        var user = userService.registerUser(UUID.randomUUID() + "testUser", UUID.randomUUID() + "test@user.com", "testPassword1_");
         fundsService.addFunds(user, 1000);
         return user;
     }
@@ -68,7 +70,6 @@ public class PurchaseTest {
     }
 
     CategoryDto createCategory() {
-        var category = categoryService.createCategory("testCategory");
-        return category;
+        return categoryService.createCategory("testCategory");
     }
 }
