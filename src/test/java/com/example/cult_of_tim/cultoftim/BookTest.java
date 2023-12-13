@@ -39,6 +39,7 @@ public class BookTest {
     @MockBean
     private AuthorRepository authorRepository;
 
+
     @Test
     void testGetAllBooks() {
         List<Book> books = new ArrayList<>();
