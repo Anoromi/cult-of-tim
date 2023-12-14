@@ -1,5 +1,7 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
+import com.example.cult_of_tim.cultoftim.auth.UserContext;
 import com.example.cult_of_tim.cultoftim.controller.request.CreateAuthorRequest;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AuthorPageController {
@@ -25,8 +28,15 @@ public class AuthorPageController {
     }
     @GetMapping("/authors/list")
     public String listPage(Model model){
+        String role = "Default";
+        UserContext userContext = new UserContext();
+        Optional<UserDTO> user = userContext.getUser();
+        if (user.isPresent()) {
+            role = user.get().getRole();
+        }
         List<AuthorDto> authors = authorService.getAllAuthors();
         model.addAttribute("authors", authors);
+        model.addAttribute("userRole", role);
         return "author-list";
     }
 

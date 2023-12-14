@@ -4,9 +4,12 @@ import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
+import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,18 +23,13 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/cart")
+@AllArgsConstructor
 public class CartController {
+    private final UserService userService;
+    private final CartItemService cartItemService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private CartItemRepository cartItemRepository;
 
-    @Autowired
     private PromotionService promotionService;
 
     @GetMapping("/list")
@@ -41,9 +39,7 @@ public class CartController {
 
 
         if (user.isPresent()) {
-            List<CartItem> cartItems = cartItemRepository.findByUser(user.get());
-
-
+            List<CartItem> cartItems = cartItemService.getCartItemsByUser(user.get());
             model.addAttribute("cartItems", cartItems);
         }
 
@@ -75,14 +71,27 @@ public class CartController {
                 userService.updateUser(userDTO.getEmail(), realUser);
 
                 return "cart/list";
-            } else {
+            }
+            else {
                 model.addAttribute("error", "Not enough money to complete the purchase.");
 
                 return "cart/list";
             }
-        } else {
+        }
+        else{
             model.addAttribute("error", "No User");
 
+            return "cart/list";
+        }
+    }
+    @PostMapping("/clear")
+    public String clearCart(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
+        if (user.isPresent()) {
+            cartItemService.clearAllBooks(user.get());
+            return "redirect:/cart/list";
+        } else {
+            model.addAttribute("error", "No User");
             return "cart/list";
         }
     }

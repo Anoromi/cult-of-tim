@@ -1,10 +1,16 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
 import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
+import com.cult_of_tim.auth.cultoftimauth.model.User;
+import com.cult_of_tim.auth.cultoftimauth.service.UserService;
 import com.example.cult_of_tim.cultoftim.auth.UserContext;
+import com.example.cult_of_tim.cultoftim.converter.BookConverter;
 import com.example.cult_of_tim.cultoftim.dto.AuthorDto;
 import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.dto.CategoryDto;
+import com.example.cult_of_tim.cultoftim.entity.Book;
+import com.example.cult_of_tim.cultoftim.entity.CartItem;
+import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
 import com.example.cult_of_tim.cultoftim.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,7 +32,10 @@ public class BookPageController {
     private final PromotionService promotionService;
     private final AuthorService authorService;
     private final CategoryService categoryService;
-    private final CartService cartService;
+    private final CartItemService cartItemService;
+    private final UserService userService;
+    private final BookConverter bookConverter;
+    private final CartItemRepository cartItemRepository;
 
     @GetMapping("/books/list")
     public String listBooks(Model model) {
@@ -141,7 +150,28 @@ public class BookPageController {
     @GetMapping("/add/{bookId}")
     public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal UserDTO userDTO) {
 
-        cartService.addToCart(userDTO, bookId);
+        Optional<User> user = userService.getUserById(userDTO.getUserId());
+
+
+        Optional<BookDto> book = bookService.getBookById(bookId);
+        Book realBook=null;
+        if (book.isPresent())
+            realBook = bookConverter.toEntity(book.get());
+
+        if(user.isPresent()&&realBook!=null) {
+            CartItem cart = cartItemService.bookExistsCartItem(bookId, user.get());
+            if(cart!=null){
+                cart.setQuantity(cart.getQuantity()+1);
+                cartItemService.updateCartItem(cart.getId(), cart );
+            }
+            else{
+                CartItem cartItem = new CartItem();
+                cartItem.setUser(user.get());
+                cartItem.setBook(realBook);
+                cartItem.setQuantity(1);
+                cartItemRepository.save(cartItem);
+            }
+        }
 
 
         return "redirect:/cart/list";
