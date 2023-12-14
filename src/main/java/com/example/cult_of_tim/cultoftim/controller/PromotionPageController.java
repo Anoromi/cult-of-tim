@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 
@@ -67,7 +68,10 @@ public class PromotionPageController {
             return "promotion-add";
         }
 
-        if (promotionDto.getEndDate().isBefore(LocalDateTime.now())) {
+        var startDate = promotionDto.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        var endDate = promotionDto.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        if (endDate.isBefore(LocalDateTime.now()) || endDate.isBefore(startDate)) {
             return "redirect:/promotions/add?endDate";
         }
 
@@ -92,7 +96,10 @@ public class PromotionPageController {
             return "promotion-edit";
         }
 
-        if (updatedPromotionDto.getEndDate().isBefore(LocalDateTime.now())) {
+        var startDate = updatedPromotionDto.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        var endDate = updatedPromotionDto.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        if (endDate.isBefore(LocalDateTime.now()) || endDate.isBefore(startDate)) {
             return "redirect:/promotions/edit?endDate";
         }
 

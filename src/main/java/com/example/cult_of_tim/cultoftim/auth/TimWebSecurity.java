@@ -45,18 +45,8 @@ public class TimWebSecurity {
                     .permitAll();
             authorizeHttpRequests.requestMatchers("/register")
                     .permitAll();
-            authorizeHttpRequests.requestMatchers("/addFunds")
-                    .permitAll();
-            authorizeHttpRequests.requestMatchers("/cart/list")
-                    .permitAll();
-            authorizeHttpRequests.requestMatchers("/cart/add/**")
-                    .permitAll();
-            authorizeHttpRequests.requestMatchers("/cart/buy")
-                    .permitAll();
             authorizeHttpRequests.requestMatchers("/add/**")
                     .permitAll();
-
-
 
 
             // POST, PUT, DELETE for admin
@@ -92,6 +82,8 @@ public class TimWebSecurity {
 //            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**")
                     .authenticated();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/discounts")
+                    .authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/discounts/**")
                     .authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/books/list").authenticated();
@@ -106,13 +98,22 @@ public class TimWebSecurity {
 
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/test/**").permitAll();
 
+            authorizeHttpRequests.requestMatchers("/addFunds")
+                    .authenticated();
+            authorizeHttpRequests.requestMatchers("/cart/list")
+                    .authenticated();
+            authorizeHttpRequests.requestMatchers("/cart/add/**")
+                    .authenticated();
+            authorizeHttpRequests.requestMatchers("/cart/buy")
+                    .authenticated();
+
             //authorizeHttpRequests.anyRequest().authenticated();
             //authorizeHttpRequests.requestMatchers("")
             //authorizeHttpRequests.requestMatchers(Http)
         });
-        http.exceptionHandling((e) -> {
-            e.disable();
-        });
+        //http.exceptionHandling((e) -> {
+        //    e.disable();
+        //});
 
         // TODO fix forwarding
         /*http.formLogin(

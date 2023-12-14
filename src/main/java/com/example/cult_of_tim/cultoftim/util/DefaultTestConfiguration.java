@@ -6,12 +6,14 @@ import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
 import com.example.cult_of_tim.cultoftim.service.*;
 import lombok.AllArgsConstructor;
+import org.hibernate.query.sqm.TemporalUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -63,8 +65,8 @@ public class DefaultTestConfiguration implements InitialDatabaseSeeder {
         BookDto book = bookService.createBook(bookDto);
 
         PromotionDto promdto = new PromotionDto();
-        promdto.setStartDate(LocalDateTime.now());
-        promdto.setEndDate(LocalDateTime.now().plusDays(2));
+        promdto.setStartDate(Date.from(Instant.now()));
+        promdto.setEndDate(Date.from(Instant.now().plus(2, ChronoUnit.DAYS)));
         PromotionDto promotion = promotionService.createPromotion(promdto);
 
         PromotionDiscountDto promotionDiscountDto = new PromotionDiscountDto();

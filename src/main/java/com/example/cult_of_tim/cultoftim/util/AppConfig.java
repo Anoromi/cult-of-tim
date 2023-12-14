@@ -83,7 +83,7 @@ public class AppConfig {
         return stepBuilder.build();
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 1000000)
     public void launchJob() throws Exception {
         Date date = new Date();
         Date previousRun = new Date();
