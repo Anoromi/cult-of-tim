@@ -4,10 +4,13 @@ import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
 import com.cult_of_tim.auth.cultoftimauth.model.User;
 import com.cult_of_tim.auth.cultoftimauth.repositories.UserRepository;
 import com.cult_of_tim.auth.cultoftimauth.service.UserService;
+import com.example.cult_of_tim.cultoftim.converter.BookConverter;
+import com.example.cult_of_tim.cultoftim.dto.BookDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
+import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.CartItemService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import lombok.AllArgsConstructor;
@@ -32,6 +35,10 @@ public class CartController {
     private CartItemRepository cartItemRepository;
 
     private PromotionService promotionService;
+    @Autowired
+    private BookService bookService;
+    @Autowired
+    private BookConverter bookConverter;
 
     @GetMapping("/list")
     public String viewCart(Model model, @AuthenticationPrincipal UserDTO userDTO) {
@@ -61,17 +68,34 @@ public class CartController {
                     .sum();
             User realUser = user.get();
             if (realUser.getBalance() >= totalCost) {
+                int k = 0;
 
+                for (CartItem cartItem : cartItems) {
+                    Book book = cartItem.getBook();
 
-                realUser.setBalance((int) (userDTO.getBalance() - totalCost));
+                    if (book.getQuantity() - cartItem.getQuantity() < 0) {
+                        k=1;
+                        break;
+                    }
+                }
+                if(k==0){
+                    for (CartItem cartItem : cartItems) {
+                        BookDto updatedBookDto = bookConverter.toDto(cartItem.getBook());
+                        Book book = cartItem.getBook();
+                        updatedBookDto.setQuantity(book.getQuantity() - cartItem.getQuantity());
+                        bookService.updateBook(book.getId(), updatedBookDto);
+                    }
+                    realUser.setBalance((int) (userDTO.getBalance() - totalCost));
+                    cartItemRepository.deleteAll(cartItems);
+                    userService.updateUser(userDTO.getEmail(), realUser);
+                    return "cart/list";
+                }
+                else {
+                    model.addAttribute("error", "No books.");
 
+                    return "cart/list";
+                }
 
-                cartItemRepository.deleteAll(cartItems);
-
-
-                userService.updateUser(userDTO.getEmail(), realUser);
-
-                return "cart/list";
             }
             else {
                 model.addAttribute("error", "Not enough money to complete the purchase.");
