@@ -37,3 +37,4 @@ out/
 .vscode/
 
 logs.txt
+/purchase_records.txt
