@@ -23,17 +23,17 @@
             <td th:text="${discountView.discountPercentage}">Discount Percentage</td>
 
             <td>
-                <a th:href="@{'/discounts/edit/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
+                <a th:if="${userRole == 'Admin'}" th:href="@{'/discounts/edit/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
                    class="btn btn-warning">Edit</a>
             </td>
             <td>
-                <a th:href="@{'/discounts/delete/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
+                <a th:if="${userRole == 'Admin'}" th:href="@{'/discounts/delete/' + ${discountView.bookId} + '/promotion/' + ${promotionId}}"
                    class="btn btn-danger">Delete</a>
             </td>
         </tr>
     </table>
 </div>
-<a th:href="@{'/discounts/add/' + ${promotionId}}" class="btn btn-primary">Add a Discount to this Promotion</a>
+<a th:if="${userRole == 'Admin'}" th:href="@{'/discounts/add/' + ${promotionId}}" class="btn btn-primary">Add a Discount to this Promotion</a>
 
 <a href="/promotions/list" class="btn btn-primary">Back to Promotions</a>
 </body>

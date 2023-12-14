@@ -23,10 +23,13 @@
         <td th:text="${promotion.endDate}">End Date</td>
         <td th:text="${promotion.globalPromotion ? 'Yes' : 'No'}">Yes/No</td>
         <td>
+            <a th:if="${userRole == 'Admin'}" th:href="@{/promotions/edit/{id}(id=${promotion.id})}" class="btn btn-primary">Edit Promotion</a>
+        </td>
+        <td>
             <a th:href="@{/promotions/discounts/{id}(id=${promotion.id})}" class="btn btn-primary">View Discounts</a>
         </td>
     </tr>
-    <a href="/promotions/add" class="btn btn-primary">Add New Promotion</a>
+    <a th:if="${userRole == 'Admin'}" href="/promotions/add" class="btn btn-primary">Add New Promotion</a>
 </table>
 <a th:href="@{/}">Back to Main Page</a>
 </body>

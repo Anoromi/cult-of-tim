@@ -1,5 +1,7 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
+import com.cult_of_tim.auth.cultoftimauth.dto.UserDTO;
+import com.example.cult_of_tim.cultoftim.auth.UserContext;
 import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
@@ -25,13 +27,13 @@ public class PromotionPageController {
 
     @GetMapping("/promotions/list")
     public String listPromotions(Model model) {
-        /*String role = "Default";
+        String role = "Default";
         UserContext userContext = new UserContext();
         Optional<UserDTO> user = userContext.getUser();
         if (user.isPresent()) {
             role = user.get().getRole();
         }
-        model.addAttribute("userRole", role);*/
+        model.addAttribute("userRole", role);
         List<PromotionDto> promotions = promotionService.getAllPromotions();
         model.addAttribute("promotions", promotions);
         return "promotion-list";
@@ -39,6 +41,14 @@ public class PromotionPageController {
 
     @GetMapping("/promotions/discounts/{promotionId}")
     public String viewDiscounts(@PathVariable Long promotionId, @ModelAttribute PromotionDto promotion, Model model) {
+        String role = "Default";
+        UserContext userContext = new UserContext();
+        Optional<UserDTO> user = userContext.getUser();
+        if (user.isPresent()) {
+            role = user.get().getRole();
+        }
+        model.addAttribute("userRole", role);
+
         List<PromotionDiscountDto> discounts = promotionService.getAllPromotionDiscounts(promotionId);
         List<PromotionDiscountView> discountViews = discounts.stream()
                 .map(discount ->
