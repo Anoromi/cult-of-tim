@@ -56,7 +56,7 @@ public class CartController {
 
             double totalCost = cartItems.stream()
                     .mapToDouble(item ->
-                            promotionService.getPrice(item.getBook().getId(), item.getBook().getPrice())
+                            promotionService.getPrice(item.getBook().getId(), item.getBook().getPrice())*item.getQuantity()
                     )
                     .sum();
             User realUser = user.get();
