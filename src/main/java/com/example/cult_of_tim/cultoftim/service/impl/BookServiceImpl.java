@@ -123,7 +123,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @CachePut(value = "books", key = "id")
+    @CachePut(value = "books", key = "#id")
     public BookDto updateBook(Long id, BookDto updatedBookDto) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
