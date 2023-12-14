@@ -8,6 +8,7 @@ import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.CartItem;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.CartItemRepository;
+import com.example.cult_of_tim.cultoftim.service.CartItemService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
