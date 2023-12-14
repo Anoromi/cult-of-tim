@@ -26,10 +26,15 @@ public class Promotion {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PromotionDiscount> discounts;
 
     private boolean globalPromotion;
+
+
+    public void removeDiscount(PromotionDiscount discount) {
+        discounts.remove(discount);
+    }
 
     @Override
     public String toString() {

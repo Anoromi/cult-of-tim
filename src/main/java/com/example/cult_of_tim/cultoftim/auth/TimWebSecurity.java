@@ -70,6 +70,8 @@ public class TimWebSecurity {
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/discounts/**")
                     .hasAuthority(UserRoles.ADMIN);
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/promotions/discounts/**")
+                    .authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/books/**")
                     .hasAuthority(UserRoles.ADMIN);
             authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/authors/**")
@@ -94,7 +96,7 @@ public class TimWebSecurity {
 //            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotion/**").authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/**")
                     .authenticated();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/discounts")
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/promotions/discounts/**")
                     .authenticated();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/discounts/**")
                     .authenticated();

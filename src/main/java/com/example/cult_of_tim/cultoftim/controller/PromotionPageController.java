@@ -1,9 +1,6 @@
 package com.example.cult_of_tim.cultoftim.controller;
 
-import com.example.cult_of_tim.cultoftim.dto.DiscountIndependentView;
-import com.example.cult_of_tim.cultoftim.dto.PromotionDiscountDto;
-import com.example.cult_of_tim.cultoftim.dto.PromotionDiscountView;
-import com.example.cult_of_tim.cultoftim.dto.PromotionDto;
+import com.example.cult_of_tim.cultoftim.dto.*;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import com.example.cult_of_tim.cultoftim.service.PromotionService;
 import jakarta.validation.Valid;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -39,19 +37,19 @@ public class PromotionPageController {
         return "promotion-list";
     }
 
-    @PostMapping("/promotions/discounts")
-    public String viewDiscounts(@ModelAttribute PromotionDto promotion, Model model) {
-        List<PromotionDiscountDto> discounts = promotionService.getAllPromotionDiscounts(promotion.getId());
+    @GetMapping("/promotions/discounts/{promotionId}")
+    public String viewDiscounts(@PathVariable Long promotionId, @ModelAttribute PromotionDto promotion, Model model) {
+        List<PromotionDiscountDto> discounts = promotionService.getAllPromotionDiscounts(promotionId);
         List<PromotionDiscountView> discountViews = discounts.stream()
                 .map(discount ->
                         PromotionDiscountView.builder()
                                 .bookId(discount.getBookId())
-                                .promotionId(promotion.getId())
+                                .promotionId(promotionId)
                                 .bookName(bookService.getBookById(discount.getBookId()).get().getTitle())
                                 .discountPercentage(discount.getDiscountPercentage())
                                 .build()
                 ).toList();
-        model.addAttribute("promotionId", promotion.getId());
+        model.addAttribute("promotionId", promotionId);
         model.addAttribute("discountViews", discountViews);
         return "promotion-discounts";
     }
@@ -122,6 +120,32 @@ public class PromotionPageController {
         return "discount-list";
     }
 
+    @GetMapping("/discounts/add/{promotionId}")
+    public String addDiscountPage(@PathVariable Long promotionId, Model model) {
+        model.addAttribute("discountView", PromotionDiscountView.builder().promotionId(promotionId).build());
+        return "discount-add";
+    }
+
+    @PostMapping("/discounts/add")
+    public String addDiscount(@Valid @ModelAttribute PromotionDiscountView discountView, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "discount-add";
+        }
+
+        Optional<BookDto> bookDtoOptional = bookService.getBookByTitle(discountView.getBookName());
+        if(bookDtoOptional.isEmpty())
+            return "redirect:/discounts/add?bookTitle";
+        Long bookId = bookDtoOptional.get().getId();
+        PromotionDiscountDto discountDto = PromotionDiscountDto.builder()
+                .promotionId(discountView.getPromotionId())
+                .bookId(bookId)
+                .discountPercentage(discountView.getDiscountPercentage())
+                .build();
+        promotionService.addBookWithDiscountToPromotion(discountDto);
+
+        return "redirect:/promotions/list";
+    }
+
     @GetMapping("/discounts/edit/{bookId}/promotion/{promotionId}")
     public String editDiscountPage(@PathVariable Long bookId, @PathVariable Long promotionId, Model model) {
         PromotionDiscountDto discountDto = promotionService.getDiscountByIds(bookId, promotionId);
@@ -148,11 +172,11 @@ public class PromotionPageController {
         return "redirect:/promotions/list";
     }
 
-    @GetMapping("/promotions/delete/{bookId}/promotion/{promotionId}")
-    public String deleteBook(@PathVariable Long bookId,
-                             @PathVariable Long promotionId) {
+    @GetMapping("/discounts/delete/{bookId}/promotion/{promotionId}")
+    public String deleteDiscount(@PathVariable Long bookId,
+                                 @PathVariable Long promotionId) {
         promotionService.deletePromotionDiscount(bookId, promotionId);
-        return "redirect:/books/list";
+        return "redirect:/promotions/list";
     }
 
 }

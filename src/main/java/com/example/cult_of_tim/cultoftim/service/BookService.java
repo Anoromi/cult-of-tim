@@ -9,6 +9,8 @@ public interface BookService {
 
     Optional<BookDto> getBookById(Long id);
 
+    Optional<BookDto> getBookByTitle(String title);
+
     List<BookDto> getAllBooks();
 
 

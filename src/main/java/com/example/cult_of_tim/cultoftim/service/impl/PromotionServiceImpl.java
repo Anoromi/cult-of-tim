@@ -8,7 +8,6 @@ import com.example.cult_of_tim.cultoftim.dto.PromotionDto;
 import com.example.cult_of_tim.cultoftim.entity.Book;
 import com.example.cult_of_tim.cultoftim.entity.Promotion;
 import com.example.cult_of_tim.cultoftim.entity.PromotionDiscount;
-import com.example.cult_of_tim.cultoftim.entity.PromotionDiscountID;
 import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionDiscountRepository;
 import com.example.cult_of_tim.cultoftim.repositories.PromotionRepository;
@@ -208,8 +207,17 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional
     public void deletePromotionDiscount(Long promotionId, Long bookId) {
-        promotionDiscountRepository.deleteById(new PromotionDiscountID(promotionId, bookId));
+        PromotionDiscount discount = promotionDiscountRepository.findByPromotionIdAndBookId(promotionId, bookId).orElse(null);
+
+        if (discount != null) {
+            Promotion promotion = discount.getPromotion();
+            promotion.removeDiscount(discount);
+
+            promotionRepository.save(promotion);
+            promotionDiscountRepository.delete(discount);
+        }
     }
 
     @Override

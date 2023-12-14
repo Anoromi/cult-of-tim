@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Discount</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<h2 class="header">Adding a Discount</h2>
+
+<div th:if="${param.bookTitle}">
+    <div class="alert alert-danger">
+        Please enter a valid book title.
+    </div>
+</div>
+<div th:if="${param.discountPercentage}">
+    <div class="alert alert-danger">
+        Please enter a valid discount percentage.
+    </div>
+</div>
+
+<form class="form" id="addDiscountForm" th:action="@{/discounts/add}" method="post" th:object="${discountView}">
+    <div class="form-group">
+        <label for="bookName">Book Title:</label>
+        <input type="text" id="bookName" name="bookName" class="form-control" required>
+    </div>
+
+    <input type="hidden" name="promotionId" th:value="${discountView.promotionId}"/>
+
+    <div class="form-group">
+        <label for="discountPercentage">Discount Percentage:</label>
+        <input type="number" id="discountPercentage" name="discountPercentage" class="form-control" required
+               min="0" max="100">
+    </div>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Add Discount</button>
+</form>
+
+</body>
+</html>

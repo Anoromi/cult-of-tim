@@ -9,7 +9,6 @@ import com.example.cult_of_tim.cultoftim.repositories.BookRepository;
 import com.example.cult_of_tim.cultoftim.service.AuthorService;
 import com.example.cult_of_tim.cultoftim.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +45,14 @@ public class BookServiceImpl implements BookService {
     @Cacheable("books")
     public Optional<BookDto> getBookById(Long id) {
         return bookRepository.findById(id).map(bookConverter::toDto);
+    }
+
+    @Override
+    public Optional<BookDto> getBookByTitle(String title) {
+        List<Book> book = bookRepository.findByTitle(title);
+        if (book.isEmpty())
+            return Optional.empty();
+        return Optional.of(bookConverter.toDto(book.get(0)));
     }
 
     @Override
@@ -89,12 +96,10 @@ public class BookServiceImpl implements BookService {
             bookRepository.save(book);
 
 
-
         } catch (WebClientResponseException e) {
             if (e.getStatusCode().equals(HttpStatusCode.valueOf(404)))
                 throw new IllegalArgumentException("Isbn13 book not found");
         }
-
 
 
     }
@@ -153,8 +158,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean oldTitleMatchNew(Long id, String newTitle)
-    {
+    public boolean oldTitleMatchNew(Long id, String newTitle) {
         Optional<Book> book = bookRepository.findById(id);
         return book.isPresent() && book.get().getTitle().equals(newTitle);
     }

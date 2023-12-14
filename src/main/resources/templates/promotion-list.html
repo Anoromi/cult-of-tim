@@ -23,9 +23,7 @@
         <td th:text="${promotion.endDate}">End Date</td>
         <td th:text="${promotion.globalPromotion ? 'Yes' : 'No'}">Yes/No</td>
         <td>
-            <form th:action="@{/promotions/discounts}" th:object="${promotion}" method="post">
-                <button type="submit" class="btn btn-primary">View Discounts</button>
-            </form>
+            <a th:href="@{/promotions/discounts/{id}(id=${promotion.id})}" class="btn btn-primary">View Discounts</a>
         </td>
     </tr>
     <a href="/promotions/add" class="btn btn-primary">Add New Promotion</a>
